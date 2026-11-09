@@ -1237,8 +1237,7 @@
     async function loadManagedContent() {
       // The visual editor's same-origin iframe is supplied with a local draft
       // by its authenticated parent. Never fetch published content over it.
-      if (window.parent !== window &&
-          new URLSearchParams(window.location.search).has('visual-preview')) return;
+      if (new URLSearchParams(window.location.search).has('visual-preview')) return;
       // Load the last saved public snapshot first: if Supabase is not configured,
       // the existing website continues to work normally.
       try {
