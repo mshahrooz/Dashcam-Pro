@@ -455,7 +455,7 @@
         const token = session.data && session.data.session && session.data.session.access_token;
         if (!token) throw new Error("Sign in again to request HTML publishing.");
         const cfg = window.DASHCAM_SUPABASE;
-        const response = await fetch(cfg.url.replace(/\\/$/, "") + "/functions/v1/publish-html", {
+        const response = await fetch((cfg.url.endsWith("/") ? cfg.url.slice(0, -1) : cfg.url) + "/functions/v1/publish-html", {
           method: "POST",
           headers: {
             "Authorization": "Bearer " + token,
