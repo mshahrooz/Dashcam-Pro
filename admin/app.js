@@ -447,7 +447,33 @@
       rowVersion = result.data.updated_at;
       savedModel = JSON.stringify(model);
       markSaved();
-      notice("Published to Supabase. The live site updates now; SEO-ready HTML is automatically refreshed by GitHub Pages on its scheduled deployment (typically within several minutes).");
+      // Publishing the database is separate from deploying the static HTML.
+      // Request a build immediately through the authenticated Supabase Edge Function.
+      $("saveStatus").textContent = "Saved to Supabase · requesting HTML deployment…";
+      try {
+        const session = await client.auth.getSession();
+        const token = session.data && session.data.session && session.data.session.access_token;
+        if (!token) throw new Error("Sign in again to request HTML publishing.");
+        const cfg = window.DASHCAM_SUPABASE;
+        const response = await fetch(cfg.url.replace(/\\/$/, "") + "/functions/v1/publish-html", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + token,
+            "apikey": cfg.anonKey,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ published_at: rowVersion })
+        });
+        const publication = await response.json();
+        if (!response.ok || !publication.ok) {
+          throw new Error(publication.error || "Unable to request HTML deployment.");
+        }
+        $("saveStatus").textContent = "Supabase saved · HTML deployment requested";
+        notice("Saved successfully. GitHub HTML deployment requested; check Actions for completion.");
+      } catch (publishError) {
+        $("saveStatus").textContent = "Supabase saved · HTML deployment needs attention";
+        notice("Content saved to Supabase, but HTML was NOT deployed: " + publishError.message, true);
+      }
     } catch (error) {
       markDirty();
       notice("Publish failed: " + error.message,true);

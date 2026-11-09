@@ -68,3 +68,12 @@ You can use the **Desktop / Tablet / Mobile** buttons to preview responsive layo
 ## Static HTML synchronization
 
 `site-template.html` is the source of truth for layout, styling, and scripts. GitHub Actions reads published Supabase CMS content and renders the homepage into `_site/index.html`, commits the generated root `index.html` and `cms-data.json`, then deploys it to GitHub Pages. Edit `site-template.html` rather than the auto-generated `index.html` when changing the layout. The visual dashboard is unchanged. The deployment runs for code pushes and every five minutes to detect new Supabase publishes; scheduled runs can be delayed. GitHub Actions uses the browser-safe Supabase publishable key; it does not require any private API key. If a publish is not reflected in View Page Source, inspect the GitHub Actions run for failures.
+
+
+### Reliable publish trigger (required one-time setup)
+
+The admin dashboard now calls the authenticated `publish-html` Supabase Edge Function after a successful CMS save. The function checks the Supabase signed-in user AND their membership in `public.cms_editors`, then requests GitHub's `workflow_dispatch` for `.github/workflows/deploy.yml`. This is separate from the GitHub scheduled workflow (which can be delayed or entirely skipped).
+
+**Required:** Create a fine-grained GitHub personal access token scoped to repository `mshahrooz/Dashcam-Pro` with **Actions: Read and write** permission, then in Supabase Dashboard > Edge Functions > Secrets create the secret `GITHUB_WORKFLOW_TOKEN` with that token. Never add the token to `supabase-config.js`, browser code, the repository, or `cms-data.json`. If missing, the admin explicitly reports that Supabase saved the content but static HTML was **not** deployed.
+
+After the secret is configured, editing and clicking **Publish changes** invokes the workflow immediately, which regenerates and commits the root `index.html` and deploys GitHub Pages. A scheduled 5-minute check remains only as a fallback (not a latency guarantee). Check the GitHub Actions run for success before expecting the updated View Page Source.
