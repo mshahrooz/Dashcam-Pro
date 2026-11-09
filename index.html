@@ -1157,6 +1157,8 @@
       });
       document.querySelectorAll('[data-cms-image]').forEach(el => {
         const key = el.getAttribute('data-cms-image');
+        // Keep the original homepage hero image; do not replace it with CMS content.
+        if (key === 'hero_background_image') return;
         if (Object.prototype.hasOwnProperty.call(site, key)) el.setAttribute('src', String(site[key]));
       });
     }
