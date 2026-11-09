@@ -205,7 +205,7 @@
 <!-- ============================= HERO ============================= -->
 <section class="relative overflow-hidden bg-zinc-950" id="home">
 <div class="absolute inset-0">
-<img alt="Professional dash camera mounted inside a modern vehicle at dusk" class="h-full w-full object-cover opacity-40" loading="eager" src="generated/hero-premium.jpg"/>
+<img alt="Professional dash camera mounted inside a modern vehicle at dusk" class="h-full w-full object-cover opacity-40" data-cms-image="hero_background_image" loading="eager" src="generated/hero-premium.jpg"/>
 <div class="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/85 to-zinc-950/30"></div>
 <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-zinc-950/40"></div>
 </div>
@@ -299,7 +299,7 @@
 <div class="grid items-center gap-6 rounded-2xl border border-white/10 bg-gradient-to-r from-zinc-900 to-zinc-950 p-6 sm:p-8 lg:grid-cols-12">
 <div class="lg:col-span-4">
 <div class="relative overflow-hidden rounded-xl">
-<img alt="Rideshare driver picking up a passenger in Burnaby" class="h-40 w-full object-cover sm:h-48" loading="lazy" src="generated/rideshare.png"/>
+<img alt="Rideshare driver picking up a passenger in Burnaby" class="h-40 w-full object-cover sm:h-48" data-cms-image="rideshare_image" loading="lazy" src="generated/rideshare.png"/>
 <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/80 to-transparent"></div>
 <span class="absolute bottom-3 left-3 rounded-full bg-red-600 px-3 py-1 text-xs font-bold uppercase tracking-wider">For drivers</span>
 </div>
@@ -398,7 +398,7 @@
 <div class="grid items-center gap-12 lg:grid-cols-2">
 <div class="relative order-2 lg:order-1">
 <div class="relative overflow-hidden rounded-3xl shadow-2xl">
-<img alt="Technician hardwiring a dash cam behind a car's trim" class="h-[420px] w-full object-cover sm:h-[480px]" loading="lazy" src="generated/install.png"/>
+<img alt="Technician hardwiring a dash cam behind a car's trim" class="h-[420px] w-full object-cover sm:h-[480px]" data-cms-image="install_image" loading="lazy" src="generated/install.png"/>
 <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/40 to-transparent"></div>
 </div>
 <div class="absolute -bottom-6 -left-2 sm:left-6">
@@ -481,7 +481,7 @@
 <div class="relative">
 <div class="absolute -inset-3 rounded-3xl bg-gradient-to-br from-red-600/30 to-transparent blur-2xl"></div>
 <div class="relative overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
-<img alt="Tesla Model interior touchscreen with a discreet dash cam installed" class="h-[440px] w-full object-cover sm:h-[500px]" loading="lazy" src="generated/tesla.png"/>
+<img alt="Tesla Model interior touchscreen with a discreet dash cam installed" class="h-[440px] w-full object-cover sm:h-[500px]" data-cms-image="tesla_image" loading="lazy" src="generated/tesla.png"/>
 <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/70 via-transparent to-transparent"></div>
 <div class="absolute bottom-5 left-5 right-5 flex items-center justify-between rounded-xl border border-white/10 bg-zinc-950/60 px-4 py-3 backdrop-blur">
 <div>
@@ -962,6 +962,7 @@
 </footer>
 </div>
 <!-- ============================= SCRIPTS ============================= -->
+<script src="supabase-config.js"></script>
 <script>
     // ---- Data (mirrors src/lib/site-data.ts) ----
     let PRODUCTS = [
@@ -1115,9 +1116,9 @@
     }
 
 
-    // ================= GOOGLE SHEETS CONTENT FEED =================
-    // After deploying the Apps Script web app, paste its /exec URL below.
-    const GOOGLE_SHEETS_FEED_URL = "cms-data.json";
+    // ================= SUPABASE CONTENT MANAGEMENT =================
+    // The local snapshot is a resilient fallback until the Supabase project is configured.
+    const CONTENT_FALLBACK_URL = "cms-data.json";
 
     function cmsSetText(el, value) {
       if (!el || value === undefined || value === null) return;
@@ -1165,7 +1166,7 @@
 
     function cmsApplyStructured(data) {
       if (Array.isArray(data.products)) {
-        PRODUCTS = data.products;
+        PRODUCTS = data.products.filter(item => item.published !== false);
         renderFeatured();
         const activeTab = document.querySelector('.tab-btn.bg-red-600')?.dataset.tab || 'top';
         renderTabs(activeTab);
@@ -1226,19 +1227,40 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    async function loadGoogleSheetsContent() {
-      // Static JSON is updated by GitHub Actions from the Google Sheet.
-      // A failed request preserves the original HTML so the page stays usable.
+    async function loadManagedContent() {
+      // Load the last saved public snapshot first: if Supabase is not configured,
+      // the existing website continues to work normally.
       try {
-        const response = await fetch(GOOGLE_SHEETS_FEED_URL, { cache: 'no-cache' });
+        const response = await fetch(CONTENT_FALLBACK_URL, {cache:'no-store'});
         if (!response.ok) throw new Error('HTTP ' + response.status);
-        const data = await response.json();
-        if (!data || data.ok !== true) throw new Error('Invalid CMS data');
-        if (data.siteContent) cmsApplyText(data.siteContent);
-        cmsApplyStructured(data);
-        document.documentElement.setAttribute('data-sheets-cms', 'loaded');
+        const fallback = await response.json();
+        if (fallback && fallback.ok === true) {
+          if (fallback.siteContent) cmsApplyText(fallback.siteContent);
+          cmsApplyStructured(fallback);
+        }
       } catch (error) {
-        console.warn('Static Google Sheets CMS could not load; showing the saved content.', error);
+        console.warn('Local content snapshot unavailable; keeping the HTML defaults.', error);
+      }
+
+      const cfg = window.DASHCAM_SUPABASE || {};
+      if (!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(cfg.url || '') ||
+          !cfg.anonKey || cfg.anonKey.includes('YOUR_')) return;
+
+      try {
+        const library = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+        const supabaseClient = library.createClient(cfg.url, cfg.anonKey, {
+          auth: {persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}
+        });
+        const result = await supabaseClient.from('cms_content').select('payload')
+          .eq('id','main').maybeSingle();
+        if (result.error) throw result.error;
+        const live = result.data && result.data.payload;
+        if (!live || live.ok !== true || !live.siteContent) throw new Error('Invalid CMS data');
+        cmsApplyText(live.siteContent);
+        cmsApplyStructured(live);
+        document.documentElement.setAttribute('data-supabase-cms','loaded');
+      } catch (error) {
+        console.warn('Live content not available; showing the saved website snapshot.', error);
       }
     }
 
@@ -1251,7 +1273,7 @@
       renderBrandTiles();
       renderMobileNav();
       lucide.createIcons();
-      loadGoogleSheetsContent();
+      loadManagedContent();
 
       // Header scroll state
       const navbar = document.getElementById("navbar");
