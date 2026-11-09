@@ -427,6 +427,50 @@
     render();
     notice("Product removed from the draft.");
   }
+  async function requestHtmlDeployment() {
+    const session = await client.auth.getSession();
+    if (session.error) throw session.error;
+    const token = session.data && session.data.session && session.data.session.access_token;
+    if (!token) throw new Error("Sign in again to request HTML publishing.");
+    const cfg = window.DASHCAM_SUPABASE;
+    const response = await fetch((cfg.url.endsWith("/") ? cfg.url.slice(0, -1) : cfg.url) + "/functions/v1/publish-html", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "apikey": cfg.anonKey,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ published_at: rowVersion })
+    });
+    let publication;
+    try { publication = await response.json(); }
+    catch (_) { throw new Error("Publishing service returned an invalid response."); }
+    if (!response.ok || !publication.ok) {
+      throw new Error(publication.error || "Unable to request HTML deployment.");
+    }
+    return publication;
+  }
+  async function syncHtmlNow() {
+    if (saving) return;
+    if (dirty) {
+      notice("Publish your unsaved edits before syncing the HTML.", true);
+      return;
+    }
+    const button = $("syncHtmlButton");
+    button.disabled = true;
+    button.textContent = "Requesting…";
+    try {
+      await requestHtmlDeployment();
+      $("saveStatus").textContent = "GitHub HTML deployment requested";
+      notice("GitHub accepted the HTML rebuild request. Check GitHub Actions for completion.");
+    } catch (error) {
+      $("saveStatus").textContent = "HTML synchronization needs attention";
+      notice("HTML sync failed: " + error.message, true);
+    } finally {
+      button.disabled = false;
+      button.textContent = "↻   Sync HTML now";
+    }
+  }
   async function save() {
     if (!dirty || saving) return;
     if (!model || !model.siteContent || !Array.isArray(model.products)) {
@@ -451,23 +495,7 @@
       // Request a build immediately through the authenticated Supabase Edge Function.
       $("saveStatus").textContent = "Saved to Supabase · requesting HTML deployment…";
       try {
-        const session = await client.auth.getSession();
-        const token = session.data && session.data.session && session.data.session.access_token;
-        if (!token) throw new Error("Sign in again to request HTML publishing.");
-        const cfg = window.DASHCAM_SUPABASE;
-        const response = await fetch((cfg.url.endsWith("/") ? cfg.url.slice(0, -1) : cfg.url) + "/functions/v1/publish-html", {
-          method: "POST",
-          headers: {
-            "Authorization": "Bearer " + token,
-            "apikey": cfg.anonKey,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ published_at: rowVersion })
-        });
-        const publication = await response.json();
-        if (!response.ok || !publication.ok) {
-          throw new Error(publication.error || "Unable to request HTML deployment.");
-        }
+        await requestHtmlDeployment();
         $("saveStatus").textContent = "Supabase saved · HTML deployment requested";
         notice("Saved successfully. GitHub HTML deployment requested; check Actions for completion.");
       } catch (publishError) {
@@ -536,6 +564,7 @@
   document.addEventListener("change",handleField);
   $("loginForm").addEventListener("submit",signIn);
   $("saveButton").addEventListener("click",save);
+  $("syncHtmlButton").addEventListener("click",syncHtmlNow);
   $("signOutButton").addEventListener("click",signOut);
   $("fieldSearch").addEventListener("input",() => {if(section==="text")render();});
   window.addEventListener("beforeunload",(event) => {if(dirty){event.preventDefault();event.returnValue="";}});
