@@ -1117,7 +1117,7 @@
 
     // ================= GOOGLE SHEETS CONTENT FEED =================
     // After deploying the Apps Script web app, paste its /exec URL below.
-    const GOOGLE_SHEETS_FEED_URL = "https://script.google.com/macros/s/AKfycbwz5qx0OBcmg66shMVIOjSrzn0mOXBUo8MHJ7Bd1zUfePUQp2LTrPAvrwkof8FrMORd/exec";
+    const GOOGLE_SHEETS_FEED_URL = "cms-data.json";
 
     function cmsSetText(el, value) {
       if (!el || value === undefined || value === null) return;
@@ -1226,45 +1226,21 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    function loadGoogleSheetsContent() {
-      if (!GOOGLE_SHEETS_FEED_URL || GOOGLE_SHEETS_FEED_URL.indexOf('PASTE_') === 0) {
-        console.info('Google Sheets CMS: add the Apps Script /exec URL to GOOGLE_SHEETS_FEED_URL after setup.');
-        return;
+    async function loadGoogleSheetsContent() {
+      // Static JSON is updated by GitHub Actions from the Google Sheet.
+      // A failed request preserves the original HTML so the page stays usable.
+      try {
+        const response = await fetch(GOOGLE_SHEETS_FEED_URL, { cache: 'no-cache' });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        const data = await response.json();
+        if (!data || data.ok !== true) throw new Error('Invalid CMS data');
+        if (data.siteContent) cmsApplyText(data.siteContent);
+        cmsApplyStructured(data);
+        document.documentElement.setAttribute('data-sheets-cms', 'loaded');
+      } catch (error) {
+        console.warn('Static Google Sheets CMS could not load; showing the saved content.', error);
       }
-      const callbackName = '__burnabyDashcamSheetsCallback';
-      let completed = false;
-      const script = document.createElement('script');
-      const cleanUp = () => {
-        completed = true;
-        script.remove();
-        if (window[callbackName]) delete window[callbackName];
-      };
-      window[callbackName] = function(data) {
-        try {
-          if (!data || data.ok !== true) {
-            console.warn('Google Sheets CMS returned an error; preserving the original page content.');
-            return;
-          }
-          if (data.siteContent) cmsApplyText(data.siteContent);
-          cmsApplyStructured(data);
-          document.documentElement.setAttribute('data-sheets-cms', 'loaded');
-        } catch (error) {
-          console.error('Google Sheets CMS could not apply the returned content:', error);
-        } finally {
-          cleanUp();
-        }
-      };
-      const separator = GOOGLE_SHEETS_FEED_URL.includes('?') ? '&' : '?';
-      // 30-second URL buckets avoid a per-visitor cache-buster while keeping edits reasonably fresh.
-      script.src = GOOGLE_SHEETS_FEED_URL + separator + 'callback=' + callbackName + '&v=' + Math.floor(Date.now()/30000);
-      script.async = true;
-      script.onerror = () => {
-        if (!completed) console.warn('Google Sheets CMS feed could not be loaded. Original page content remains visible.');
-        cleanUp();
-      };
-      document.head.appendChild(script);
     }
-
 
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("year").textContent = new Date().getFullYear();
