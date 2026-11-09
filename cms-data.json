@@ -22,7 +22,7 @@
     "google_review_count": "640+",
     "hero_badge": "Now serving all of Burnaby & Metro Vancouver",
     "hero_title_before": "Dash Cams & Installation ",
-    "hero_title_highlight": "Professional Dash Cam",
+    "hero_title_highlight": "Burnaby",
     "hero_description": "Premium 1, 2 & 3-channel dash cams from BlackVue, VIOFO & Thinkware — expertly hardwired with clean, hidden wiring and true parking-mode protection.",
     "hero_bullet_1": "Lifetime workmanship warranty",
     "hero_bullet_2": "Certified BlackVue & VIOFO installer",
@@ -143,8 +143,8 @@
       "category": "2-Channel",
       "price": 549.99,
       "oldPrice": 599.99,
-      "rating": 5.0,
-      "reviews": 128.0,
+      "rating": 5,
+      "reviews": 128,
       "blurb": "4K UHD front + Full HD rear, built-in Wi-Fi & GPS, Sony STARVIS 2 sensor.",
       "tags": [
         "4K Front",
@@ -168,8 +168,8 @@
       "category": "2-Channel",
       "price": 429.99,
       "oldPrice": null,
-      "rating": 5.0,
-      "reviews": 96.0,
+      "rating": 5,
+      "reviews": 96,
       "blurb": "2K QHD front + Full HD rear with Full HD interior option, cloud connectivity.",
       "tags": [
         "2K Front",
@@ -192,8 +192,8 @@
       "category": "2-Channel",
       "price": 269.99,
       "oldPrice": 299.99,
-      "rating": 5.0,
-      "reviews": 211.0,
+      "rating": 5,
+      "reviews": 211,
       "blurb": "True 4K dual-channel with Sony STARVIS sensor, HDR, and buffered parking mode.",
       "tags": [
         "4K Dual",
@@ -216,8 +216,8 @@
       "category": "2-Channel",
       "price": 449.99,
       "oldPrice": null,
-      "rating": 4.0,
-      "reviews": 84.0,
+      "rating": 4,
+      "reviews": 84,
       "blurb": "4K UHD Wi-Fi dash cam with radar parking mode and Thinkware Cloud integration.",
       "tags": [
         "4K UHD",
@@ -240,8 +240,8 @@
       "category": "3-Channel",
       "price": 299.99,
       "oldPrice": 329.99,
-      "rating": 5.0,
-      "reviews": 167.0,
+      "rating": 5,
+      "reviews": 167,
       "blurb": "4K front, 1440p cabin, and 1080p rear — full 155° triple-channel coverage.",
       "tags": [
         "3-Channel",
@@ -264,8 +264,8 @@
       "category": "Accessory",
       "price": 199.99,
       "oldPrice": null,
-      "rating": 5.0,
-      "reviews": 73.0,
+      "rating": 5,
+      "reviews": 73,
       "blurb": "Portable battery pack for safe, reliable parking-mode recording without drain.",
       "tags": [
         "Parking Mode",
@@ -321,7 +321,7 @@
       "quote": "Installed a BlackVue 2-channel with parking mode in my Camry. Wiring is invisible and the parking footage already saved me from a bogus claim. Best in Burnaby, hands down.",
       "name": "Daniel R.",
       "role": "Uber Driver · Metrotown",
-      "rating": 5.0
+      "rating": 5
     },
     {
       "id": "review-2",
@@ -329,7 +329,7 @@
       "quote": "They know Teslas. They tapped the 12V cleanly and set up the Power Magic battery without voiding anything. Professional, on time, and the cloud works flawlessly.",
       "name": "Priya S.",
       "role": "Tesla Model 3 Owner · Brentwood",
-      "rating": 5.0
+      "rating": 5
     },
     {
       "id": "review-3",
@@ -337,7 +337,7 @@
       "quote": "We outfitted 14 delivery vans with 3-channel Vantrue cams. Scheduling was easy, installs were tidy, and the fleet footage portal paid for itself in the first month.",
       "name": "Marcus L.",
       "role": "Fleet Manager · Royal Oak",
-      "rating": 5.0
+      "rating": 5
     },
     {
       "id": "review-4",
@@ -345,7 +345,7 @@
       "quote": "Booked mobile service to my office. They showed up on time, finished in under two hours, and walked me through the app. Genuinely the cleanest install I've seen.",
       "name": "Jennifer K.",
       "role": "Daily Commuter · South Slope",
-      "rating": 5.0
+      "rating": 5
     }
   ],
   "articles": [
