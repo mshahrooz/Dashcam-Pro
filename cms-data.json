@@ -1,0 +1,403 @@
+{
+  "ok": true,
+  "updatedAt": "2026-11-09T12:28:08.001Z",
+  "siteContent": {
+    "meta_title": "Burnaby DashCam Pros | Dash Cam Sales & Installation in Burnaby, BC",
+    "meta_description": "Burnaby's dash cam specialists. Premium 1, 2 & 3-channel dash cams from BlackVue, VIOFO, Thinkware & Vantrue — expertly hardwired with clean, hidden wiring and true parking-mode protection. Same-day appointments across Metro Vancouver.",
+    "meta_keywords": "dash cam Burnaby, dashcam installation Burnaby, BlackVue Burnaby, VIOFO installation, Thinkware dash cam, hardwire dash cam Vancouver, Tesla dash cam install Burnaby, parking mode dash cam BC",
+    "og_title": "Burnaby DashCam Pros | Dash Cam Sales & Installation",
+    "og_description": "Premium dash cams expertly hardwired across Burnaby & Metro Vancouver. Lifetime workmanship warranty.",
+    "twitter_title": "Burnaby DashCam Pros | Sales & Installation",
+    "twitter_description": "Premium dash cams expertly hardwired across Burnaby & Metro Vancouver.",
+    "brand_name": "BURNABY",
+    "brand_tagline": "Pros · Sales & Installation",
+    "phone_display": "(604) 555-0199",
+    "phone_href": "+16045550199",
+    "email_display": "info@burnabydashcampros.ca",
+    "email_href": "info@burnabydashcampros.ca",
+    "business_hours": "Mon–Sat: 9:00 AM – 6:00 PM",
+    "business_address_short": "4501 Kingsway, Burnaby",
+    "business_address_full": "4501 Kingsway, Burnaby, BC V5H 2B9",
+    "business_maps_url": "https://maps.google.com/?q=4501+Kingsway+Burnaby+BC",
+    "google_rating": "4.9",
+    "google_review_count": "640+",
+    "hero_badge": "Now serving all of Burnaby & Metro Vancouver",
+    "hero_title_before": "Dash Cams & Installation ",
+    "hero_title_highlight": "Professional Dash Cam Installation in Burnaby",
+    "hero_description": "Premium 1, 2 & 3-channel dash cams from BlackVue, VIOFO & Thinkware — expertly hardwired with clean, hidden wiring and true parking-mode protection.",
+    "hero_bullet_1": "Lifetime workmanship warranty",
+    "hero_bullet_2": "Certified BlackVue & VIOFO installer",
+    "hero_bullet_3": "Same-day appointments available",
+    "hero_primary_button": "Book an Installation",
+    "hero_secondary_button": "Shop Dash Cams",
+    "hero_rating": "4.9",
+    "hero_rating_text": "· 640+ Google reviews",
+    "install_card_title": "Pro Installation",
+    "install_card_from": "From $149 · ~90 min",
+    "price_2ch_label": "2-Channel Hardwire",
+    "price_2ch_value": "$199",
+    "price_1ch_label": "1-Channel Hardwire",
+    "price_1ch_value": "$149",
+    "price_3ch_label": "3-Channel Hardwire",
+    "price_3ch_value": "$249",
+    "price_battery_label": "Parking Battery Add-on",
+    "price_battery_value": "+$199",
+    "hero_same_day_badge": "Same-day",
+    "hero_mobile_service": "Mobile service across Burnaby",
+    "hero_mobile_book": "Book →",
+    "rideshare_heading": "Trusted by Uber, Lyft & Taxi drivers across Burnaby",
+    "rideshare_description": "3-channel cabin cams with crystal-clear audio, reliable buffered parking mode, and instant cloud clip access — built for the realities of driving for a living in Metro Vancouver.",
+    "rideshare_button": "View Rideshare Kits",
+    "services_eyebrow": "What we do",
+    "services_heading": "Full-service dash cam sales & installation",
+    "services_description": "From picking the right camera to a flawless, warranty-backed hardwire installation — we handle every step so you drive away protected.",
+    "featured_eyebrow": "Featured Products",
+    "featured_heading": "Burnaby's favourite dash cams",
+    "featured_description": "Hand-picked kits our certified technicians install most often — all backed by manufacturer warranty & our lifetime workmanship guarantee.",
+    "featured_button": "Browse all products",
+    "about_stat_value": "100%",
+    "about_stat_label": "Clean-wire installations",
+    "about_warranty_title": "Lifetime warranty",
+    "about_warranty_subtitle": "on all workmanship",
+    "about_eyebrow": "Professional & experienced",
+    "about_heading": "Installation done right — every single time",
+    "about_description": "We treat your vehicle like our own. Every install uses OEM-quality fuse taps, soft-wire routing, and careful trim removal — so the camera works perfectly and the cabin looks untouched.",
+    "about_feature_1_title": "Certified, experienced",
+    "about_feature_1_description": "12+ years installing BlackVue, VIOFO, Thinkware & Vantrue across every make & model.",
+    "about_feature_2_title": "Trusted locally",
+    "about_feature_2_description": "8,500+ vehicles installed in Burnaby with a 4.9-star average across 640+ reviews.",
+    "about_feature_3_title": "Clean-wire guarantee",
+    "about_feature_3_description": "Hidden routing, no visible cables, zero damage to trim — backed by our lifetime workmanship warranty.",
+    "about_feature_4_title": "Always up to date",
+    "about_feature_4_description": "We handle firmware, cloud pairing, and parking-mode tuning after the sale, for life.",
+    "about_button": "Book a clean-wire install",
+    "stat_1_value": "12+",
+    "stat_1_label": "Years in Burnaby",
+    "stat_2_value": "8,500+",
+    "stat_2_label": "Vehicles Installed",
+    "stat_3_value": "100%",
+    "stat_3_label": "Clean-Wire Installs",
+    "stat_4_value": "4.9★",
+    "stat_4_label": "Google Rating",
+    "tesla_eyebrow": "Tesla Specialist",
+    "tesla_heading": "Dash cams engineered for your Tesla",
+    "tesla_description": "Teslas need a different approach. We know the 12V system, Sentry mode quirks, and the clean routing paths for Model 3, Y, S & X — so your camera runs flawlessly without touching your range or warranty.",
+    "tesla_feature_1_title": "12V-architecture aware",
+    "tesla_feature_1_description": "Fuse-tap installs that respect Tesla's low-voltage system.",
+    "tesla_feature_2_title": "Drain-free parking mode",
+    "tesla_feature_2_description": "Power Magic battery packs — no Sentry conflicts, no 12V stress.",
+    "tesla_feature_3_title": "BlackVue Cloud pairing",
+    "tesla_feature_3_description": "Live-view, GPS tracking & instant incident alerts on your phone.",
+    "tesla_feature_4_title": "Clean Model 3/Y/S/X routing",
+    "tesla_feature_4_description": "Hidden cable paths designed for each Tesla's interior geometry.",
+    "tesla_button": "Book your Tesla install",
+    "tesla_card_title": "Tesla Model 3 · 2-CH + Parking",
+    "tesla_card_subtitle": "Clean hardwire · ~90 min",
+    "tesla_card_badge": "Sentry-safe",
+    "brands_eyebrow": "Authorized retailer & installer",
+    "product_tabs_eyebrow": "Shop by popularity",
+    "product_tabs_heading": "Top rated, best sellers & new arrivals",
+    "product_tab_top": "Top Rated",
+    "product_tab_best": "Best Selling",
+    "product_tab_new": "Latest",
+    "showcase_eyebrow": "Client showcase",
+    "showcase_heading": "We've installed in nearly every make & model",
+    "showcase_description": "Select a brand to see real installs from Burnaby drivers — from daily commuters to rideshare fleets to luxury EVs.",
+    "reviews_eyebrow": "From the Burnaby community",
+    "reviews_heading": "Loved by drivers across Metro Vancouver",
+    "reviews_rating": "4.9",
+    "reviews_count": "· 640+ reviews",
+    "cta_heading": "Ready to protect your drive?",
+    "cta_description": "Same-day appointments available across Burnaby. Free quote, honest advice, and a clean install — guaranteed.",
+    "cta_primary_button": "Book Installation",
+    "cta_secondary_button": "(604) 555-0199",
+    "blog_eyebrow": "The latest from our team",
+    "blog_heading": "Guides & insights for Burnaby drivers",
+    "blog_read_all": "Read all articles",
+    "instagram_eyebrow": "Follow our work",
+    "instagram_heading": "See our latest installs",
+    "instagram_description": "Real installs, real cars, real clean wiring — @burnabydashcampros",
+    "contact_eyebrow": "Get in touch",
+    "contact_heading": "Book your Burnaby install",
+    "contact_description": "Tell us about your vehicle and we'll confirm an appointment — usually within one business hour during shop hours.",
+    "contact_phone_label": "Call us",
+    "contact_email_label": "Email us",
+    "contact_address_label": "Visit us",
+    "form_success_heading": "Request received!",
+    "form_submit_button": "Request installation",
+    "form_privacy_note": "By submitting, you agree to be contacted about your installation request. We never share your details.",
+    "newsletter_heading": "Get Burnaby dash cam tips & install deals",
+    "newsletter_description": "Join 4,000+ local drivers. One email a month, no spam, unsubscribe anytime.",
+    "newsletter_placeholder": "you@email.com",
+    "newsletter_button": "Subscribe",
+    "footer_description": "Burnaby's trusted dash cam sales & hardwire installation specialist — serving Metro Vancouver for over 12 years with a lifetime workmanship guarantee.",
+    "footer_shop_heading": "Shop",
+    "footer_service_heading": "Customer Service",
+    "footer_company_heading": "Company",
+    "footer_brands_heading": "Brands we carry & install"
+  },
+  "products": [
+    {
+      "id": "blackvue-dr970x-2ch",
+      "name": "BlackVue DR970X-2CH",
+      "brand": "BlackVue",
+      "category": "2-Channel",
+      "price": 549.99,
+      "oldPrice": 599.99,
+      "rating": 5,
+      "reviews": 128,
+      "blurb": "4K UHD front + Full HD rear, built-in Wi-Fi & GPS, Sony STARVIS 2 sensor.",
+      "tags": [
+        "4K Front",
+        "1080p Rear",
+        "Wi-Fi",
+        "GPS"
+      ],
+      "badges": [
+        "Best Seller"
+      ],
+      "list": [
+        "top",
+        "best"
+      ],
+      "image": "generated/product-1.png"
+    },
+    {
+      "id": "blackvue-dr770x-2ch",
+      "name": "BlackVue DR770X-2CH",
+      "brand": "BlackVue",
+      "category": "2-Channel",
+      "price": 429.99,
+      "oldPrice": null,
+      "rating": 5,
+      "reviews": 96,
+      "blurb": "2K QHD front + Full HD rear with Full HD interior option, cloud connectivity.",
+      "tags": [
+        "2K Front",
+        "Cloud",
+        "Parking Mode"
+      ],
+      "badges": [
+        "New"
+      ],
+      "list": [
+        "top",
+        "new"
+      ],
+      "image": "generated/product-2.png"
+    },
+    {
+      "id": "viofo-a129-pro-duo",
+      "name": "VIOFO A129 Pro Duo",
+      "brand": "VIOFO",
+      "category": "2-Channel",
+      "price": 269.99,
+      "oldPrice": 299.99,
+      "rating": 5,
+      "reviews": 211,
+      "blurb": "True 4K dual-channel with Sony STARVIS sensor, HDR, and buffered parking mode.",
+      "tags": [
+        "4K Dual",
+        "HDR",
+        "Buffered Parking"
+      ],
+      "badges": [
+        "Top Rated"
+      ],
+      "list": [
+        "top",
+        "best"
+      ],
+      "image": "generated/product-3.png"
+    },
+    {
+      "id": "thinkware-u1000",
+      "name": "Thinkware U1000",
+      "brand": "Thinkware",
+      "category": "2-Channel",
+      "price": 449.99,
+      "oldPrice": null,
+      "rating": 4,
+      "reviews": 84,
+      "blurb": "4K UHD Wi-Fi dash cam with radar parking mode and Thinkware Cloud integration.",
+      "tags": [
+        "4K UHD",
+        "Radar Parking",
+        "Cloud"
+      ],
+      "badges": [
+        "Premium"
+      ],
+      "list": [
+        "top",
+        "best"
+      ],
+      "image": "generated/product-4.png"
+    },
+    {
+      "id": "vantrue-n4-3ch",
+      "name": "Vantrue N4 3-Channel",
+      "brand": "Vantrue",
+      "category": "3-Channel",
+      "price": 299.99,
+      "oldPrice": 329.99,
+      "rating": 5,
+      "reviews": 167,
+      "blurb": "4K front, 1440p cabin, and 1080p rear — full 155° triple-channel coverage.",
+      "tags": [
+        "3-Channel",
+        "4K",
+        "Cabin Cam"
+      ],
+      "badges": [
+        "Rideshare Pick"
+      ],
+      "list": [
+        "best",
+        "new"
+      ],
+      "image": "generated/product-5.png"
+    },
+    {
+      "id": "blackvue-power-magic-ultra",
+      "name": "Power Magic Ultra Battery",
+      "brand": "BlackVue",
+      "category": "Accessory",
+      "price": 199.99,
+      "oldPrice": null,
+      "rating": 5,
+      "reviews": 73,
+      "blurb": "Portable battery pack for safe, reliable parking-mode recording without drain.",
+      "tags": [
+        "Parking Mode",
+        "12v/24v",
+        "Li-ion"
+      ],
+      "badges": [],
+      "list": [
+        "best",
+        "new"
+      ],
+      "image": "generated/product-6.png"
+    }
+  ],
+  "services": [
+    {
+      "id": "installation",
+      "published": true,
+      "title": "Professional Installation",
+      "description": "Clean, hidden-wiring installation by certified technicians — backed by a lifetime workmanship warranty.",
+      "linkText": "Learn more",
+      "linkUrl": "#contact"
+    },
+    {
+      "id": "tesla",
+      "published": true,
+      "title": "Tesla Specialists",
+      "description": "12V-aware, fuse-tap, and OBD installations engineered specifically for Tesla Model 3, Y, S & X.",
+      "linkText": "Learn more",
+      "linkUrl": "#contact"
+    },
+    {
+      "id": "mobile",
+      "published": true,
+      "title": "Mobile Service",
+      "description": "We come to your home or office across Burnaby, New West, Coquitlam & Metro Vancouver.",
+      "linkText": "Learn more",
+      "linkUrl": "#contact"
+    },
+    {
+      "id": "support",
+      "published": true,
+      "title": "Lifetime Support",
+      "description": "Firmware updates, cloud setup, and parking-mode tuning for as long as you own the camera.",
+      "linkText": "Learn more",
+      "linkUrl": "#contact"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "review-1",
+      "published": true,
+      "quote": "Installed a BlackVue 2-channel with parking mode in my Camry. Wiring is invisible and the parking footage already saved me from a bogus claim. Best in Burnaby, hands down.",
+      "name": "Daniel R.",
+      "role": "Uber Driver · Metrotown",
+      "rating": 5
+    },
+    {
+      "id": "review-2",
+      "published": true,
+      "quote": "They know Teslas. They tapped the 12V cleanly and set up the Power Magic battery without voiding anything. Professional, on time, and the cloud works flawlessly.",
+      "name": "Priya S.",
+      "role": "Tesla Model 3 Owner · Brentwood",
+      "rating": 5
+    },
+    {
+      "id": "review-3",
+      "published": true,
+      "quote": "We outfitted 14 delivery vans with 3-channel Vantrue cams. Scheduling was easy, installs were tidy, and the fleet footage portal paid for itself in the first month.",
+      "name": "Marcus L.",
+      "role": "Fleet Manager · Royal Oak",
+      "rating": 5
+    },
+    {
+      "id": "review-4",
+      "published": true,
+      "quote": "Booked mobile service to my office. They showed up on time, finished in under two hours, and walked me through the app. Genuinely the cleanest install I've seen.",
+      "name": "Jennifer K.",
+      "role": "Daily Commuter · South Slope",
+      "rating": 5
+    }
+  ],
+  "articles": [
+    {
+      "id": "article-1",
+      "published": true,
+      "title": "Best Dash Cams for Tesla Model 3 & Model Y in 2025",
+      "summary": "Which BlackVue, Thinkware and VIOFO setups work best with Tesla's 12V architecture — and how to avoid battery drain in Sentry mode.",
+      "imagePath": "generated/tesla.png",
+      "linkText": "Read article",
+      "linkUrl": "#blog"
+    },
+    {
+      "id": "article-2",
+      "published": true,
+      "title": "Hardwire vs. Cigarette-Lighter: A Burnaby Driver's Guide",
+      "summary": "The real trade-offs of hardwire installation for parking mode, plus what ICBC and BC drivers should know about continuous recording.",
+      "imagePath": "generated/install.png",
+      "linkText": "Read article",
+      "linkUrl": "#blog"
+    },
+    {
+      "id": "article-3",
+      "published": true,
+      "title": "Top 5 Dash Cams for Rideshare Drivers in Metro Vancouver",
+      "summary": "Uber, Lyft and taxi drivers need cabin audio, reliable parking mode, and fast cloud review. These are the kits we recommend most.",
+      "imagePath": "generated/rideshare.png",
+      "linkText": "Read article",
+      "linkUrl": "#blog"
+    }
+  ],
+  "showcaseCars": [
+    "Tesla",
+    "BMW",
+    "Audi",
+    "Mercedes-Benz",
+    "Honda",
+    "Toyota",
+    "Lexus",
+    "Acura",
+    "Mazda",
+    "Nissan",
+    "Subaru",
+    "Hyundai",
+    "Kia",
+    "Jeep",
+    "Ford",
+    "Volvo",
+    "Porsche",
+    "Jaguar",
+    "Dodge",
+    "Chevrolet"
+  ]
+}
