@@ -1,6 +1,5 @@
-/* Public Supabase connection settings — NOT a service_role key.
-   Configure after creating the Supabase project. Safe to commit a publishable/anon key. */
+/* Public, browser-safe Supabase connection. Never put a secret/service_role key here. */
 window.DASHCAM_SUPABASE = {
-  url: "YOUR_SUPABASE_PROJECT_URL",
-  anonKey: "YOUR_SUPABASE_PUBLISHABLE_KEY"
+  url: "https://uoftclniarkxyqsdudcf.supabase.co",
+  anonKey: "sb_publishable_zFMtpGG906SLquW1hyN44Q_aM_EMJKW"
 };
