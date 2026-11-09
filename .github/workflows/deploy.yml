@@ -1,10 +1,12 @@
-name: Deploy website to GitHub Pages
+name: Deploy SEO-ready website to GitHub Pages
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: read
@@ -19,13 +21,18 @@ jobs:
   deploy:
     environment: github-pages
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Package public website
-        run: |
-          mkdir -p _site
-          cp index.html cms-data.json supabase-config.js .nojekyll _site/
-          cp -R generated admin _site/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser renderer
+        run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Build published SEO HTML
+        run: node scripts/build-seo.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

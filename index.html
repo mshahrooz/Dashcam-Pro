@@ -1242,6 +1242,8 @@
       // Load the last saved public snapshot first: if Supabase is not configured,
       // the existing website continues to work normally.
       try {
+        // Pre-rendered deployments already contain the published content in HTML.
+        if (document.documentElement.hasAttribute('data-static-cms')) throw new Error('Static SEO snapshot already embedded');
         const response = await fetch(CONTENT_FALLBACK_URL, {cache:'no-store'});
         if (!response.ok) throw new Error('HTTP ' + response.status);
         const fallback = await response.json();

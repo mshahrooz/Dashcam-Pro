@@ -447,7 +447,7 @@
       rowVersion = result.data.updated_at;
       savedModel = JSON.stringify(model);
       markSaved();
-      notice("Published successfully. Refresh your live website to see the changes!");
+      notice("Published to Supabase. The live site updates now; SEO-ready HTML is automatically refreshed by GitHub Pages on its scheduled deployment (typically within several minutes).");
     } catch (error) {
       markDirty();
       notice("Publish failed: " + error.message,true);
