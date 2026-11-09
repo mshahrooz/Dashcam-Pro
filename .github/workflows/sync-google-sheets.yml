@@ -1,67 +1,47 @@
-name: Sync Google Sheets and deploy website
+name: Google Sheet to GitHub Pages
 
 on:
   push:
-    branches: [main]
-    paths:
-      - index.html
-      - scripts/sync_google_sheets.py
-      - .github/workflows/sync-google-sheets.yml
-  schedule:
-    # Every 15 minutes, offset from the top of the hour.
-    - cron: '7,22,37,52 * * *'
+    branches:
+      - main
   workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * *'
 
 permissions:
   contents: write
   pages: write
   id-token: write
 
-concurrency:
-  group: pages-google-sheets-sync
-  cancel-in-progress: false
-
 jobs:
   publish:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    environment: github-pages
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true
 
-      - name: Set up Python
+      - name: Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Read Google Sheets CSV and build site
+      - name: Sync spreadsheet data
         run: python scripts/sync_google_sheets.py
 
-      - name: Commit updated content to GitHub only when changed
-        shell: bash
+      - name: Save updated JSON in GitHub
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add cms-data.json
           if ! git diff --cached --quiet; then
-            git commit -m 'Sync website content from Google Sheets [skip ci]'
+            git commit -m 'Sync Google Sheet content [skip ci]'
             git push origin HEAD:main
-          else
-            echo 'Google Sheet unchanged. No content commit necessary.'
           fi
 
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload static website
-        uses: actions/upload-pages-artifact@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
         with:
-          path: '.'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
+          path: .
+      - name: Deploy
         uses: actions/deploy-pages@v4
