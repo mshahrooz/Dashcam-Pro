@@ -23,6 +23,7 @@
     { name: "Other Content", match: () => true }
   ];
   const SECTIONS = {
+    visual: ["Visual Editor", "Click on your actual website to edit the content while seeing each change.", "LIVE PREVIEW"],
     overview: ["Overview", "Your website at a glance", "CONTENT MANAGEMENT"],
     text: ["Website Text", "Edit headlines, buttons, descriptions and business information.", "PAGE CONTENT"],
     products: ["Products", "Manage products, prices, images, badges and product tabs.", "YOUR CATALOG"],
@@ -163,7 +164,7 @@
     $("userEmail").textContent = editorEmail;
     await loadContent();
     showOnly("editorScreen");
-    navigate("overview");
+    navigate("visual");
   }
   async function loadContent() {
     const result = await client.from("cms_content").select("payload,updated_at").eq("id","main").single();
@@ -198,7 +199,9 @@
   }
   function navigate(next) {
     if (!model || !SECTIONS[next]) return;
+    if (section === "visual" && next !== "visual" && window.DashcamVisual) window.DashcamVisual.unmount();
     section = next;
+    document.body.classList.toggle("visual-mode", next === "visual");
     document.querySelectorAll("[data-section]").forEach((el) => {
       el.classList.toggle("active", el.dataset.section === next);
     });
@@ -210,10 +213,12 @@
     $("searchWrap").hidden = next !== "text";
     if (next !== "text") $("fieldSearch").value = "";
     render();
+    if (next === "visual" && window.DashcamVisual) window.DashcamVisual.mount(window.DashcamVisualBridge);
     window.scrollTo({top:0,behavior:"smooth"});
   }
   function render() {
     const map = {
+      visual:() => window.DashcamVisual ? window.DashcamVisual.html() : "<p>Visual editor unavailable. Refresh this page.</p>",
       overview:renderOverview,
       text:renderText,
       products:() => renderRecords("products"),
@@ -235,7 +240,7 @@
     ];
     let html = '<div class="overview-hero"><div><div class="eyebrow">YOUR WEBSITE IS CONNECTED</div>' +
       '<h2>Make changes with confidence.</h2><p>Edit website content here, select Publish, and your changes will appear on the live site on its next refresh. No coding and no spreadsheets required.</p></div>' +
-      '<button type="button" data-go="text">Start editing →</button></div><div class="stat-grid">';
+      '<button type="button" data-go="visual">Open visual editor →</button></div><div class="stat-grid">';
     blocks.forEach((b) => {
       html += '<div class="stat-card"><small>' + esc(b[0]) + '</small><strong>' +
         esc(b[1]) + '</strong><span class="sub">' + esc(b[2]) + '</span></div>';
@@ -456,10 +461,41 @@
     try { await client.auth.signOut(); } catch (_) {}
     model = null;
     dirty = false;
+    document.body.classList.remove("visual-mode");
+    if (window.DashcamVisual) window.DashcamVisual.unmount();
     $("loginForm").reset();
     $("authError").hidden = true;
     showOnly("signInScreen");
   }
+
+  window.DashcamVisualBridge = {
+    getModel: () => model,
+    get: (path) => get(path),
+    set: (path, value) => { set(path, value); markDirty(); },
+    markDirty: markDirty,
+    publish: save,
+    notify: notice,
+    navigate: navigate,
+    isDirty: () => dirty,
+    rollback: () => {
+      if (!savedModel) return;
+      model = JSON.parse(savedModel);
+      markSaved();
+    },
+    upload: async (file) => {
+      if (!file || !["image/jpeg","image/png","image/webp"].includes(file.type)) {
+        throw new Error("Choose a JPG, PNG or WebP image.");
+      }
+      if (file.size > 5 * 1024 * 1024) throw new Error("Image must be smaller than 5 MB.");
+      const ext = {"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[file.type];
+      const objectName = "uploads/" + Date.now() + "-" + Math.random().toString(36).slice(2,10) + "." + ext;
+      const response = await client.storage.from(BUCKET).upload(objectName,file,{
+        contentType:file.type,upsert:false
+      });
+      if (response.error) throw response.error;
+      return client.storage.from(BUCKET).getPublicUrl(objectName).data.publicUrl;
+    }
+  };
 
   document.addEventListener("click", (event) => {
     const go = event.target.closest("[data-go]");

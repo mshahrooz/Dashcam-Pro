@@ -22,6 +22,20 @@ A private web dashboard for your existing GitHub Pages website, **without Google
 
 The live website reads changes directly from Supabase on every page visit, so there is no GitHub Actions polling delay. Existing content stays online from `cms-data.json` until you configure Supabase.
 
+## Visual Editor (recommended for clients)
+
+Open **https://mshahrooz.github.io/Dashcam-Pro/admin/** and sign in.
+
+1. The dashboard opens the **Visual Editor** automatically, showing the real homepage inside the dashboard.
+2. Scroll or use **Jump to** to find the section you want to change.
+3. **Click the text, image, product, service, customer review, article, or vehicle brand** you want to edit.
+4. Use the editing panel to the right (or bottom sheet on mobile). Your draft changes are reflected immediately in the preview.
+5. Click **Publish changes** to save them to Supabase and make them live. The public website reflects updates after refresh, without rebuilding GitHub Pages.
+
+You can use the **Desktop / Tablet / Mobile** buttons to preview responsive layouts. Click **Dashboard** to return to the original detailed editor, including SEO fields and multi-item management. **Discard edits** restores the last published version of the content if you haven't published yet.
+
+**Important:** A preview edit is not public until you publish. The dashboard does not edit HTML layout or CSS; it edits the content fields that the website supports. Existing demo testimonials and other sample claims must be reviewed before publishing.
+
 ## What your dashboard can edit
 
 - Website content: more than 130 headings, paragraphs, CTA labels, business contact details, page metadata and more.
