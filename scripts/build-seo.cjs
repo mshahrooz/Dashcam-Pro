@@ -13,7 +13,9 @@ const { chromium } = require('playwright');
   if (!data || data.ok !== true || !data.siteContent || !Array.isArray(data.products)) throw new Error('Invalid CMS content: deployment stopped');
   await fs.mkdir(out, {recursive:true});
   await Promise.all(['generated','admin'].map(n => fs.cp(path.join(root,n),path.join(out,n),{recursive:true})));
-  await Promise.all(['index.html','supabase-config.js','.nojekyll'].map(n => fs.copyFile(path.join(root,n),path.join(out,n))));
+  await Promise.all(['supabase-config.js','.nojekyll'].map(n => fs.copyFile(path.join(root,n),path.join(out,n))));
+  await fs.copyFile(path.join(root,'site-template.html'),path.join(out,'index.html'));
+
   await fs.writeFile(path.join(out,'cms-data.json'),JSON.stringify(data));
   const types={'.html':'text/html','.js':'text/javascript','.json':'application/json','.css':'text/css','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.svg':'image/svg+xml','.webp':'image/webp'};
   const server=http.createServer(async(req,res)=>{

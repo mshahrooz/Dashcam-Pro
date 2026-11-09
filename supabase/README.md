@@ -64,3 +64,7 @@ You can use the **Desktop / Tablet / Mobile** buttons to preview responsive layo
 - Existing business details, reviews and marketing claims in the seed are examples; verify and replace any unverified information before launch.
 - The current contact/newsletter forms in the original website are visual demonstrations, not connected to a real inbox. This CMS does not change their behavior.
 - For search engines that don't execute JavaScript, changes to SEO meta tags may require a GitHub HTML redeploy to be reflected in crawled HTML. The visitor-facing content updates immediately.
+
+## Static HTML synchronization
+
+`site-template.html` is the source of truth for layout, styling, and scripts. GitHub Actions reads published Supabase CMS content and renders the homepage into `_site/index.html`, commits the generated root `index.html` and `cms-data.json`, then deploys it to GitHub Pages. Edit `site-template.html` rather than the auto-generated `index.html` when changing the layout. The visual dashboard is unchanged. The deployment runs for code pushes and every five minutes to detect new Supabase publishes; scheduled runs can be delayed. GitHub Actions uses the browser-safe Supabase publishable key; it does not require any private API key. If a publish is not reflected in View Page Source, inspect the GitHub Actions run for failures.
