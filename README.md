@@ -74,3 +74,9 @@ python -m http.server 8000
 ```
 
 `CMS_OFFLINE=1` renders using committed `cms-pages.json` without making a Supabase request. Real publishing (default) fetches the live Supabase payload, and deployment fails rather than publishing stale content if the database is unavailable. The editor requires a hosted origin and your existing Supabase login.
+
+## Before-and-after imagery
+
+The matched-angle **after** previews in `assets/images/before-after/*-after.svg` use the corresponding `*-before.png` vehicle interior as their base, with an illustrative camera drawn near the mirror. They demonstrate potential camera placement, **not photographic evidence of a completed customer installation**. Actual placement and hardware may differ. Do not replace the paired images with unrelated vehicle photos; preserve the same angle and vehicle on both sides of each comparison. The old `*-after.png` files are retained only for backwards compatibility and are not linked from current pages.
+
+Service-card images and page-header imagery are stored locally under `generated/`. When changing any page's imagery, update both its published HTML and the matching `site-templates/` file so CMS rebuilds keep the changes. If adding or removing CMS-editable images, update `assets/js/pages-manifest.json` accordingly.
