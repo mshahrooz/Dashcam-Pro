@@ -1,0 +1,59 @@
+name: Compare optimized vs original mobile homepage
+on:
+  push:
+    branches: [perf/optimize-mobile-pagespeed]
+permissions:
+  contents: write
+jobs:
+  compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Set up comparable local site copies
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin main
+          git worktree add --detach /tmp/dashcam-original FETCH_HEAD
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory . > /tmp/optimized-http.log 2>&1 &
+          python3 -m http.server 8766 --bind 127.0.0.1 --directory /tmp/dashcam-original > /tmp/baseline-http.log 2>&1 &
+          sleep 2
+          curl -fsSI http://127.0.0.1:8765/assets/css/tailwind.min.css
+          curl -fsSI http://127.0.0.1:8766/index.html
+      - name: Run mobile Lighthouse on both versions
+        shell: bash
+        run: |
+          npm install -g lighthouse@12 >/tmp/lighthouse-install.log 2>&1
+          lighthouse http://127.0.0.1:8766/index.html --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --form-factor=mobile --screenEmulation.mobile=true --screenEmulation.width=390 --screenEmulation.height=844 --screenEmulation.deviceScaleFactor=2 --throttling-method=simulate --only-categories=performance,accessibility,best-practices,seo --output=json --output-path=/tmp/before-mobile.json --quiet
+          lighthouse http://127.0.0.1:8765/index.html --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --form-factor=mobile --screenEmulation.mobile=true --screenEmulation.width=390 --screenEmulation.height=844 --screenEmulation.deviceScaleFactor=2 --throttling-method=simulate --only-categories=performance,accessibility,best-practices,seo --output=json --output-path=/tmp/after-mobile.json --quiet
+          python3 - <<'PY' > lighthouse-comparison.txt 2>&1
+          import json
+          for label in ['before','after']:
+              d=json.load(open('/tmp/'+label+'-mobile.json'))
+              print('\n==========',label.upper(),'==========')
+              print('Scores:',{k:round(v.get('score',0)*100) for k,v in d.get('categories',{}).items()})
+              for key in ['first-contentful-paint','largest-contentful-paint','speed-index','total-blocking-time','cumulative-layout-shift','interactive']:
+                  a=d['audits'].get(key,{})
+                  print(key,a.get('displayValue'),a.get('numericValue'))
+              for key in ['render-blocking-resources','modern-image-formats','uses-responsive-images','unused-javascript','link-text','aria-allowed-role','aria-required-attr','color-contrast','lcp-discovery-insight']:
+                  a=d['audits'].get(key,{})
+                  print('\nAUDIT:',key,'score',a.get('score'),'display',a.get('displayValue'),'savings',a.get('details',{}).get('overallSavingsMs'))
+                  details=a.get('details',{})
+                  for item in details.get('items',[])[:14]:
+                      print('  ',str(item)[:650])
+          PY
+          cat lighthouse-comparison.txt
+      - name: Save comparison to test branch
+        if: always()
+        shell: bash
+        run: |
+          git add lighthouse-comparison.txt || true
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Record optimized vs original mobile Lighthouse scores [skip ci]' || true
+          git push origin HEAD:perf/optimize-mobile-pagespeed || true
