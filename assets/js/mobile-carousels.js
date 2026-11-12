@@ -133,9 +133,15 @@
           track.setAttribute('aria-label', name);
           track.setAttribute('tabindex', '0');
           cards.forEach(function (card, n) {
-            card.setAttribute('role', 'group');
-            card.setAttribute('aria-roledescription', 'slide');
-            card.setAttribute('aria-label', (n + 1) + ' of ' + cards.length);
+            if (card.tagName.toLowerCase() === 'article') {
+              // Preserve native article semantics; role="group" is invalid here.
+              card.removeAttribute('role');
+              card.removeAttribute('aria-roledescription');
+            } else {
+              card.setAttribute('role', 'group');
+              card.setAttribute('aria-roledescription', 'slide');
+            }
+            card.setAttribute('aria-label', 'Slide ' + (n + 1) + ' of ' + cards.length);
           });
         } else {
           track.removeAttribute('role');

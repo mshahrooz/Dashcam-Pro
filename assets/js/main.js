@@ -84,6 +84,7 @@
         pos = Math.max(0, Math.min(100, p));
         beforeImg.style.clipPath = 'inset(0 ' + (100 - pos) + '% 0 0)';
         handle.style.left = pos + '%';
+        if (knob) knob.setAttribute('aria-valuenow', String(Math.round(pos)));
       }
       setPos(50);
 
@@ -116,6 +117,9 @@
       if (knob) {
         knob.setAttribute('tabindex', '0');
         knob.setAttribute('role', 'slider');
+        knob.setAttribute('aria-valuemin', '0');
+        knob.setAttribute('aria-valuemax', '100');
+        knob.setAttribute('aria-valuenow', String(Math.round(pos)));
         knob.setAttribute('aria-label', 'Drag to compare before and after');
         knob.addEventListener('keydown', function (e) {
           if (e.key === 'ArrowLeft')  { setPos(pos - 4); e.preventDefault(); }

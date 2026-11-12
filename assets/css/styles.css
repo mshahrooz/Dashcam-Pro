@@ -337,3 +337,8 @@ body.drawer-open { overflow: hidden; }
     transition: none !important;
   }
 }
+
+/* Improve low-contrast neutral text without altering layout or typography. */
+header a.group .text-zinc-400 { color: #52525b; }
+section.bg-white .text-zinc-400, section.bg-zinc-50 .text-zinc-400 { color: #52525b; }
+footer.bg-zinc-950 .text-zinc-500 { color: #a1a1aa; }
