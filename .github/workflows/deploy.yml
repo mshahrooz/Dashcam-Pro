@@ -62,4 +62,6 @@ jobs:
       - uses: actions/upload-pages-artifact@v4
         with:
           path: ./_site
+      - name: Wait for GitHub to register the uploaded Pages artifact
+        run: sleep 12
       - uses: actions/deploy-pages@v4
