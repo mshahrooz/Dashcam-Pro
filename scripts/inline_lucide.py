@@ -22,11 +22,23 @@ def svg_for(icon: str, css_class: str, style: str | None) -> str:
                    PACKAGE / 'icons' / 'svg' / f'{icon}.svg']
         options += list(PACKAGE.glob(f'**/{icon}.svg'))
         path = next((p for p in options if p.is_file()), None)
-        # The original template uses the non-standard 'sd-card' alias.
-        if path is None and icon == 'sd-card':
-            path = PACKAGE / 'icons' / 'hard-drive.svg'
+        # Older Lucide aliases were renamed. Preserve semantic equivalents.
+        aliases = {
+            'sd-card': 'hard-drive',
+            'alert-triangle': 'triangle-alert',
+            'home': 'house',
+            'settings-2': 'settings-2',
+        }
         if path is None:
-            raise ValueError(f'Missing Lucide icon asset: {icon}')
+            alias = aliases.get(icon, icon)
+            alternate = PACKAGE / 'icons' / f'{alias}.svg'
+            if alternate.is_file():
+                path = alternate
+        if path is None:
+            print(f'Unrecognized legacy icon {icon}; using neutral circle-help', flush=True)
+            path = PACKAGE / 'icons' / 'circle-help.svg'
+        if not path.is_file():
+            raise ValueError(f'No usable SVG asset for {icon}')
         source = path.read_text(encoding='utf-8').strip()
         # Lucide static assets may begin with an XML declaration or comments.
         start = source.find('<svg')
