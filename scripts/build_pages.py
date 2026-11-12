@@ -102,6 +102,69 @@ def build():
         if not template.is_file():raise RuntimeError('Missing page template: '+page)
         soup=BeautifulSoup(template.read_text(encoding='utf8'),'html.parser')
         restore_original_comments(soup)
+        # The public renderer needs the browser-safe Supabase config to show
+        # recent edits before the static GitHub Pages deployment finishes.
+        # Insert it before cms-live.js, with the correct relative URL on subpages.
+        renderer=soup.find('script',src=re.compile(r'cms-live\\.js        if page == '404.html':
+            robots=soup.find('meta',attrs={'name':'robots'})
+            if not robots:
+                robots=soup.new_tag('meta');robots['name']='robots';soup.head.append(robots)
+            robots['content']='noindex,follow'
+        apply(soup,overrides.get(page,{}))
+        url=BASE+('' if page=='index.html' else page)
+        tag=soup.find('link',rel='canonical')
+        if tag:tag['href']=url
+        if page!='404.html':
+            meta=soup.find('meta',attrs={'property':'og:url'})
+            if not meta:
+                meta=soup.new_tag('meta');meta['property']='og:url';soup.head.append(meta)
+            meta['content']=url
+        dest=OUTPUT/page;dest.parent.mkdir(exist_ok=True,parents=True)
+        dest.write_text('<!DOCTYPE html>\n'+str(soup).replace('<!DOCTYPE html>','',1).lstrip(),encoding='utf8')
+    (OUTPUT/'cms-pages.json').write_text(json.dumps(overrides,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n',encoding='utf8')
+    urls=['  <url><loc>'+BASE+('' if obj['path']=='index.html' else obj['path'])+'</loc></url>' for obj in manifest if obj['path']!='404.html']
+    (OUTPUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+'\n'.join(urls)+'\n</urlset>\n',encoding='utf8')
+    (OUTPUT/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: '+BASE+'sitemap.xml\n',encoding='utf8')
+    print('Built',len(manifest),'static pages with',sum(len((overrides.get(x['path']) or {}).get('text',{})) for x in manifest),'edited text fields.')
+
+if __name__=='__main__':
+    try:build()
+    except Exception as exc:
+        print('Static build failed:',exc,file=sys.stderr)
+        sys.exit(1)
+))
+        if renderer and not soup.find('script',src=re.compile(r'supabase-config\\.js        if page == '404.html':
+            robots=soup.find('meta',attrs={'name':'robots'})
+            if not robots:
+                robots=soup.new_tag('meta');robots['name']='robots';soup.head.append(robots)
+            robots['content']='noindex,follow'
+        apply(soup,overrides.get(page,{}))
+        url=BASE+('' if page=='index.html' else page)
+        tag=soup.find('link',rel='canonical')
+        if tag:tag['href']=url
+        if page!='404.html':
+            meta=soup.find('meta',attrs={'property':'og:url'})
+            if not meta:
+                meta=soup.new_tag('meta');meta['property']='og:url';soup.head.append(meta)
+            meta['content']=url
+        dest=OUTPUT/page;dest.parent.mkdir(exist_ok=True,parents=True)
+        dest.write_text('<!DOCTYPE html>\n'+str(soup).replace('<!DOCTYPE html>','',1).lstrip(),encoding='utf8')
+    (OUTPUT/'cms-pages.json').write_text(json.dumps(overrides,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n',encoding='utf8')
+    urls=['  <url><loc>'+BASE+('' if obj['path']=='index.html' else obj['path'])+'</loc></url>' for obj in manifest if obj['path']!='404.html']
+    (OUTPUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+'\n'.join(urls)+'\n</urlset>\n',encoding='utf8')
+    (OUTPUT/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: '+BASE+'sitemap.xml\n',encoding='utf8')
+    print('Built',len(manifest),'static pages with',sum(len((overrides.get(x['path']) or {}).get('text',{})) for x in manifest),'edited text fields.')
+
+if __name__=='__main__':
+    try:build()
+    except Exception as exc:
+        print('Static build failed:',exc,file=sys.stderr)
+        sys.exit(1)
+)):
+            prefix='../' * (len(pathlib.PurePosixPath(page).parts)-1)
+            cfg_script=soup.new_tag('script',src=prefix+'supabase-config.js')
+            cfg_script['defer']=''
+            renderer.insert_before(cfg_script)
         if page == '404.html':
             robots=soup.find('meta',attrs={'name':'robots'})
             if not robots:
