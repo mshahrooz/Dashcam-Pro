@@ -169,7 +169,5 @@ body.drawer-open { overflow: hidden; }
   body { color: #000; background: #fff; }
 }
 
-/* Decorative dashcam footage has a still-image fallback for reduced-motion users. */
-@media (prefers-reduced-motion: reduce) {
-  .bdp-decorative-video { display: none !important; }
-}
+/* Video playback script pauses muted motion for reduced-motion visitors,
+   while preserving an accessible manual play control. */

@@ -282,9 +282,10 @@
 <div class="grid items-center gap-12 lg:grid-cols-2">
 <div class="relative">
 <div class="overflow-hidden rounded-2xl shadow-xl">
-<div class="relative aspect-[4/3] bg-zinc-900">
+<div class="relative aspect-[4/3] bg-zinc-900" data-video-shell>
 <img alt="Dash cam road view preview" class="absolute inset-0 h-full w-full object-cover" data-cms-img="i006" loading="lazy" src="./generated/hero-premium.jpg"/>
-<video aria-hidden="true" autoplay="" class="bdp-decorative-video absolute inset-0 h-full w-full object-cover" loop="" muted="" playsinline="" poster="./generated/hero-premium.jpg" preload="none" tabindex="-1"><source src="./generated/dashcam-driving.mp4" type="video/mp4"/></video>
+<video data-background-video aria-hidden="true" autoplay="" class="bdp-decorative-video absolute inset-0 h-full w-full object-cover" loop="" muted="" playsinline="" poster="./generated/hero-premium.jpg" preload="auto" tabindex="-1"><source src="./generated/dashcam-driving.mp4" type="video/mp4"/></video>
+<button aria-label="Play video" aria-pressed="false" class="absolute bottom-3 left-3 z-20 rounded-full bg-zinc-950/75 px-4 py-2 text-xs font-semibold text-white shadow-lg transition hover:bg-zinc-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" data-video-toggle type="button">Play video</button>
 </div>
 </div>
 <div class="absolute -bottom-6 -right-6 hidden rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl sm:block">
@@ -587,5 +588,6 @@
 </div>
 </footer>
 <script src="./assets/js/main.js"></script>
+<script src="./assets/js/video-playback.js"></script>
 </div></body>
 </html>
