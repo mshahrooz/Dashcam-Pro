@@ -282,17 +282,18 @@
 <div class="grid items-center gap-12 lg:grid-cols-2">
 <div class="relative">
 <div class="overflow-hidden rounded-2xl shadow-xl">
-<div class="relative aspect-[4/3] bg-zinc-900" data-video-shell="">
-<img alt="Dash cam road view preview" class="absolute inset-0 h-full w-full object-cover" data-cms-img="i006" loading="lazy" src="./generated/hero-premium.jpg"/>
-<video aria-hidden="true" class="bdp-decorative-video absolute inset-0 h-full w-full object-cover" data-background-video="" data-play-trigger="viewport" loop="" muted="" playsinline="" poster="./generated/hero-premium.jpg" preload="auto" tabindex="-1" webkit-playsinline=""><source src="./generated/dashcam-driving.mp4" type="video/mp4"/></video>
-<button aria-label="Play video" aria-pressed="false" class="absolute bottom-3 left-3 z-20 rounded-full bg-zinc-950/75 px-4 py-2 text-xs font-semibold text-white shadow-lg transition hover:bg-zinc-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" data-video-toggle="" type="button">Play video</button>
+<div class="relative aspect-video overflow-hidden rounded-2xl bg-zinc-950 bdp-native-video-player" data-video-shell>
+<video aria-label="Dashcam driving video" class="absolute inset-0 block h-full w-full bg-zinc-950 object-contain" controls data-background-video data-play-trigger="viewport" loop muted playsinline webkit-playsinline preload="auto">
+<source src="./generated/dashcam-driving.mp4" type="video/mp4"/>
+Your browser does not support HTML5 video.
+</video>
 </div>
 </div>
-<div class="absolute -bottom-6 -right-6 hidden rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl sm:block">
+<div class="mt-4 inline-block rounded-xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
 <p class="text-3xl font-extrabold text-zinc-900"><span data-cms-text="t0106">6,000+</span></p>
 <p class="text-sm text-zinc-500"><span data-cms-text="t0107">installs across Metro Vancouver</span></p>
 </div>
-<div class="absolute -top-5 -left-5 hidden rounded-xl bg-red-600 px-4 py-3 text-white shadow-xl sm:block">
+<div class="ml-3 mt-4 inline-block rounded-xl bg-red-600 px-4 py-3 text-white shadow-sm">
 <p class="text-xs font-semibold uppercase tracking-wide"><span data-cms-text="t0108">100% hidden</span></p>
 <p class="text-sm font-bold"><span data-cms-text="t0109">wiring guarantee</span></p>
 </div>

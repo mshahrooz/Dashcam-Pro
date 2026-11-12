@@ -1,20 +1,21 @@
-/* DashCam Pros: viewport-triggered homepage footage, immediate consultation hero. */
+/* Burnaby DashCam Pros: viewport-autoplay for native homepage video, immediate hero playback. */
 (function () {
   'use strict';
 
   function setupVideo(video) {
     var shell = video.closest('[data-video-shell]');
-    var button = shell && shell.querySelector('[data-video-toggle]');
-    if (!shell || !button) return;
+    if (!shell) return;
 
+    var button = shell.querySelector('[data-video-toggle]');
+    var nativeControls = video.hasAttribute('controls');
     var viewportMode = video.getAttribute('data-play-trigger') === 'viewport';
     var inView = !viewportMode;
     var userPaused = false;
-    var reducedMotion = window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var observer = null;
+    var automaticPausePending = false;
+    var reducedMotion = !!(window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-    // Both properties and attributes matter for iOS Safari inline autoplay.
+    // Muted autoplay with inline playback is required for mobile Safari/Chrome.
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
@@ -29,6 +30,7 @@
     function updateUI() {
       var playing = isPlaying();
       shell.classList.toggle('is-video-playing', playing);
+      if (!button) return; // Native player owns its play, scrub, volume and fullscreen controls.
       if (video.error) {
         button.textContent = 'Video unavailable';
         button.setAttribute('aria-label', 'Video unavailable');
@@ -43,13 +45,10 @@
 
     function play() {
       if (video.error) return updateUI();
-      // Re-assert muted/inline state before an autoplay attempt on mobile.
-      video.muted = true;
-      video.playsInline = true;
       try {
-        var promise = video.play();
-        if (promise && typeof promise.then === 'function') {
-          promise.then(updateUI, updateUI);
+        var pending = video.play();
+        if (pending && typeof pending.then === 'function') {
+          pending.then(updateUI, updateUI);
         }
       } catch (error) {
         updateUI();
@@ -64,25 +63,38 @@
       if (shouldAutoplay() && video.paused) play();
     }
 
-    function pause() {
-      if (!video.paused) video.pause();
+    function pauseAutomatically() {
+      if (!video.paused) {
+        automaticPausePending = true;
+        video.pause();
+      }
       updateUI();
     }
 
-    // Explicit user actions override automatic pause/resume until re-enabled.
-    button.addEventListener('click', function () {
-      if (video.paused || video.ended) {
-        userPaused = false;
-        play();
-      } else {
-        userPaused = true;
-        pause();
-      }
+    if (button) {
+      button.addEventListener('click', function () {
+        if (video.paused || video.ended) {
+          userPaused = false;
+          play();
+        } else {
+          userPaused = true;
+          pauseAutomatically();
+        }
+      });
+    }
+
+    video.addEventListener('play', function () {
+      if (nativeControls) userPaused = false;
       updateUI();
     });
-
     video.addEventListener('playing', updateUI);
-    video.addEventListener('pause', updateUI);
+    video.addEventListener('pause', function () {
+      if (nativeControls && !automaticPausePending && inView && !document.hidden) {
+        userPaused = true;
+      }
+      automaticPausePending = false;
+      updateUI();
+    });
     video.addEventListener('loadeddata', function () {
       updateUI();
       tryAutoplay();
@@ -90,39 +102,39 @@
     video.addEventListener('error', updateUI);
 
     document.addEventListener('visibilitychange', function () {
-      if (document.hidden) pause();
+      if (document.hidden) pauseAutomatically();
       else tryAutoplay();
     });
     window.addEventListener('pageshow', tryAutoplay);
 
     if (viewportMode) {
       if ('IntersectionObserver' in window) {
-        observer = new IntersectionObserver(function (entries) {
+        var observer = new IntersectionObserver(function (entries) {
           var entry = entries[0];
           if (!entry) return;
           inView = entry.isIntersecting && entry.intersectionRatio >= 0.15;
           if (inView) tryAutoplay();
-          else pause();
+          else pauseAutomatically();
         }, { threshold: [0, 0.15, 0.4] });
         observer.observe(shell);
       } else {
-        // Older mobile browsers still get scroll-triggered playback.
         function checkVisibility() {
           var rect = shell.getBoundingClientRect();
-          var height = window.innerHeight || document.documentElement.clientHeight;
-          var visible = Math.max(0, Math.min(height, rect.bottom) - Math.max(0, rect.top));
-          inView = visible >= Math.min(rect.height, height) * 0.15;
+          var viewHeight = window.innerHeight || document.documentElement.clientHeight;
+          var visible = Math.max(0, Math.min(viewHeight, rect.bottom) - Math.max(0, rect.top));
+          inView = visible >= Math.min(rect.height, viewHeight) * 0.15;
           if (inView) tryAutoplay();
-          else pause();
+          else pauseAutomatically();
         }
         window.addEventListener('scroll', checkVisibility, { passive: true });
         window.addEventListener('resize', checkVisibility);
         checkVisibility();
       }
     } else {
-      // Consultation page: start right away, without requiring scrolling.
+      // Book Installation hero starts as soon as page markup is ready.
       tryAutoplay();
     }
+
     updateUI();
   }
 
