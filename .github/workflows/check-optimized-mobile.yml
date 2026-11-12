@@ -1,0 +1,58 @@
+name: Validate final mobile PageSpeed optimizations
+on:
+  push:
+    branches: [perf/optimize-mobile-pagespeed]
+permissions:
+  contents: write
+jobs:
+  lighthouse:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Serve original and optimized websites under identical conditions
+        run: |
+          git fetch --no-tags --depth=1 origin main
+          git worktree add --detach /tmp/dashcam-main FETCH_HEAD
+          python3 -m http.server 9765 --bind 127.0.0.1 --directory . >/tmp/after-http.log 2>&1 &
+          python3 -m http.server 9766 --bind 127.0.0.1 --directory /tmp/dashcam-main >/tmp/before-http.log 2>&1 &
+          sleep 2
+          curl -fsSI http://127.0.0.1:9765/index.html
+          curl -fsSI http://127.0.0.1:9765/generated/car-3-768.webp
+      - name: Compare mobile Lighthouse results and remaining opportunities
+        shell: bash
+        run: |
+          npm install -g lighthouse@12 > /tmp/lighthouse.log 2>&1
+          lighthouse http://127.0.0.1:9766/index.html --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --form-factor=mobile --screenEmulation.mobile=true --screenEmulation.width=390 --screenEmulation.height=844 --screenEmulation.deviceScaleFactor=2 --throttling-method=simulate --only-categories=performance,accessibility,best-practices,seo --output=json --output-path=/tmp/before.json --quiet
+          lighthouse http://127.0.0.1:9765/index.html --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --form-factor=mobile --screenEmulation.mobile=true --screenEmulation.width=390 --screenEmulation.height=844 --screenEmulation.deviceScaleFactor=2 --throttling-method=simulate --only-categories=performance,accessibility,best-practices,seo --output=json --output-path=/tmp/after.json --quiet
+          python3 - <<'PY' > perf-check-results.txt 2>&1
+          import json
+          for name in ['before','after']:
+              d=json.load(open('/tmp/'+name+'.json'))
+              print('\n=======',name.upper(),'=======')
+              print('Scores:',{k:round(v.get('score',0)*100) for k,v in d['categories'].items()})
+              for k in ['first-contentful-paint','largest-contentful-paint','speed-index','total-blocking-time','cumulative-layout-shift','interactive']:
+                  a=d['audits'][k]; print(k, a.get('displayValue'),a.get('numericValue'))
+              for k in ['render-blocking-resources','uses-responsive-images','modern-image-formats','unused-javascript','color-contrast','aria-allowed-role','aria-required-attr','link-text','font-display-insight']:
+                  a=d['audits'].get(k,{})
+                  print('AUDIT',k, 'score',a.get('score'),'savings',a.get('details',{}).get('overallSavingsMs'),a.get('displayValue'))
+                  if name=='after' and a.get('score') != 1:
+                      for v in a.get('details',{}).get('items',[])[:9]:
+                          print(' ',str(v)[:650])
+              shifts=d['audits'].get('layout-shifts',{})
+              if name=='after':print('LAYOUT SHIFTS',str(shifts.get('details',{}).get('items',[]))[:1300])
+          PY
+          cat perf-check-results.txt
+      - name: Save performance comparison to feature branch
+        if: always()
+        run: |
+          git add perf-check-results.txt || true
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Capture final mobile Lighthouse comparison [skip ci]' || true
+          git push origin HEAD:perf/optimize-mobile-pagespeed || true
