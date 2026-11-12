@@ -96,6 +96,14 @@ function renderInspector(){let panel=$('editingPanel');panel.replaceChildren();i
   panel.appendChild(field('Embed URL',r.frames[s.id]===undefined?s.el.src:r.frames[s.id],val=>store('frames',s.id,val),true));
  }
 }
+function editEmbeds(){
+ const elements=frameDoc?Array.from(frameDoc.querySelectorAll('[data-cms-frame]')):[];
+ if(!elements.length){toast('There are no editable embedded maps or frames on this page.');return;}
+ selected={kind:'frame',id:elements[0].dataset.cmsFrame,el:elements[0]};
+ frameDoc.querySelectorAll('.cms-selected').forEach(e=>e.classList.remove('cms-selected'));
+ selected.el.classList.add('cms-selected');renderInspector();
+ $('editingPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
 function onPreviewReady(){try{frameDoc=$('preview').contentDocument;if(!frameDoc||!frameDoc.body)return;
  const doc=frameDoc;const style=doc.createElement('style');style.textContent='[data-cms-text],[data-cms-img],[data-cms-href],[data-cms-placeholder],[data-cms-frame]{cursor:pointer!important}[data-cms-text]:hover,[data-cms-img]:hover,[data-cms-href]:hover,[data-cms-placeholder]:hover,[data-cms-frame]:hover{outline:2px dashed #ed4050!important;outline-offset:3px!important}.cms-selected{outline:3px solid #e8293b!important;outline-offset:4px!important;box-shadow:0 0 0 5px #ed405026!important}';
  doc.head.appendChild(style);
@@ -144,6 +152,7 @@ $('loginForm').addEventListener('submit',signIn);$('signOut').addEventListener('
 $('pageSelect').addEventListener('change',e=>navigate(e.target.value));$('preview').addEventListener('load',onPreviewReady);
 $('publish').addEventListener('click',publish);$('publishInspector').addEventListener('click',publish);
 $('syncHtml').addEventListener('click',sync);
+$('editEmbeds').addEventListener('click',editEmbeds);
 $('discardPage').addEventListener('click',()=>{if(!confirm('Discard unpublished edits to this page?'))return;
  const prev=JSON.parse(lastSaved||'{}');if(Object.prototype.hasOwnProperty.call(prev,selectedPage))draft[selectedPage]=prev[selectedPage];else delete draft[selectedPage];
  dirty=JSON.stringify(draft)!==(lastSaved||'{}');$('publish').disabled=!dirty;status(dirty?'Unpublished changes':'All changes saved');navigate(selectedPage);});

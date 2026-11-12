@@ -4,7 +4,22 @@
 Site templates are immutable inputs. The script never executes CMS-controlled HTML.
 """
 import json, os, re, shutil, urllib.request, pathlib, sys
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
+
+# The initial HTML annotation converted original developer comments into visible
+# editor text spans. Restore these as non-rendered HTML comments to preserve
+# the supplied site's appearance and avoid indexing development notes.
+ORIGINAL_SECTION_COMMENTS = set(["3 FULL SLIDERS","5 STEPS","ALL SERVICES","BEFORE / AFTER","BEFORE/AFTER","BEFORE/AFTER TEASER","BRANDS","CHALLENGE / SOLUTION","DETAIL HERO","FAQ","FEATURED CASE STUDIES","FORM","Floating pricing card","GALLERY GRID","HERO (exact replica of the attached reference design)","HOW IT WORKS PREVIEW","INDEX GRID","INFO + MAP","INFORMATIONAL PRICING (no cart)","INTRO + WHAT'S INCLUDED","Main nav","Mobile drawer","PROCESS PREVIEW","RELATED","RELATED CASE STUDY","RESULTS STRIP","RIDESHARE BAND","SERVICE AREA","SERVICES OVERVIEW","STATS","STORY","TESTIMONIAL","TESTIMONIALS","Utility bar","VALUES","WARRANTY","WHAT TO EXPECT","WHY CHOOSE US"])
+
+
+def restore_original_comments(soup):
+    for span in list(soup.find_all('span',attrs={'data-cms-text':True})):
+        if len(span.contents) != 1 or not isinstance(span.contents[0],str):
+            continue
+        label = span.get_text().strip()
+        if label in ORIGINAL_SECTION_COMMENTS and span.get_text().strip() != span.get_text():
+            span.replace_with(Comment(' '+label+' '))
+
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 OUTPUT=ROOT/'_site'
@@ -86,6 +101,12 @@ def build():
         template=ROOT/'site-templates'/page
         if not template.is_file():raise RuntimeError('Missing page template: '+page)
         soup=BeautifulSoup(template.read_text(encoding='utf8'),'html.parser')
+        restore_original_comments(soup)
+        if page == '404.html':
+            robots=soup.find('meta',attrs={'name':'robots'})
+            if not robots:
+                robots=soup.new_tag('meta');robots['name']='robots';soup.head.append(robots)
+            robots['content']='noindex,follow'
         apply(soup,overrides.get(page,{}))
         url=BASE+('' if page=='index.html' else page)
         tag=soup.find('link',rel='canonical')
