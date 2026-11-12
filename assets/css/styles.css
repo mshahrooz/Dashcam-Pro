@@ -171,3 +171,12 @@ body.drawer-open { overflow: hidden; }
 
 /* Video playback script pauses muted motion for reduced-motion visitors,
    while preserving an accessible manual play control. */
+
+/* Display the still-image fallback only until the video is really playing. */
+[data-video-shell] video[data-background-video] {
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+[data-video-shell].is-video-playing video[data-background-video] {
+  opacity: 1;
+}
