@@ -1,0 +1,47 @@
+
+===== BASELINE mobile =====
+URL: https://mshahrooz.github.io/Dashcam-Pro/index.html
+Scores: {'performance': 0.81, 'accessibility': 0.91, 'best-practices': 1, 'seo': 0.92}
+first-contentful-paint 3.4 s 3409.419 0.37
+largest-contentful-paint 3.9 s 3894.825 0.52
+speed-index 3.4 s 3409.419 0.89
+total-blocking-time 0 ms 0 1
+cumulative-layout-shift 0 0 1
+interactive 3.9 s 3927.1854000000003 0.88
+Largest contentful element {'type': 'list', 'items': [{'type': 'table', 'headings': [{'key': 'node', 'valueType': 'node', 'label': 'Element'}], 'items': [{'node': {'type': 'node', 'lhId': 'page-0-IMG', 'path': '1,HTML,1,BODY,0,DIV,1,MAIN,1,SECTION,0,DIV,0,IMG', 'selector': 'main.flex-1 > section#home > div.absolute > img.h-full', 'boundingRect': {'top': 65, 'bottom': 906, 'left': 0, 'right': 390, 'width': 390, 'height': 841}, 'snippet': '<img alt="Professional dash camera mounted inside a modern vehicle at dusk" class="h-full w-full object-cover" data-cms-img="i001" loading="eager" src="./generated/hero-premium.jpg">', 'nodeLabel': 'Professional dash camera mounted inside a modern vehicle at dusk'}}]}, {'type': 'table', 'headings': [{'key': 'phase', 'valueType': 'text', 'label': 'Phase'}, {'key': 'percent', 'valueType': 'text', 'label': '% of LCP'}, {'key': 'timing', 'valueType': 'ms', 'label': 'Timing'}], 'items': [{'phase': 'TTFB', 'timing': 603.55, 'percent': '15%'}, {'phase': 'Load Delay', 'timing': 0, 'percent': '0%'}, {'phase': 'Load Time', 'timing': 42.52300654847386, 'percent': '1%'}, {'phase': 'Render Delay', 'timing': 3248.751993451526, 'percent': '83%'}]}]}
+SUGGESTIONS:
+interactive score 0.88 value 3.9 s savings None None title Time to Interactive
+largest-contentful-paint score 0.52 value 3.9 s savings None None title Largest Contentful Paint
+first-contentful-paint score 0.37 value 3.4 s savings None None title First Contentful Paint
+speed-index score 0.89 value 3.4 s savings None None title Speed Index
+render-blocking-resources score 0 value Est savings of 2,500 ms savings 2498 None title Eliminate render-blocking resources
+aria-allowed-role score 0 value None savings None None title Uses ARIA roles on incompatible elements
+aria-required-attr score 0 value None savings None None title `[role]`s do not have all required `[aria-*]` attributes
+color-contrast score 0 value None savings None None title Background and foreground colors do not have a sufficient contrast ratio.
+unused-javascript score 0.5 value Est savings of 37 KiB savings 0 38201 title Reduce unused JavaScript
+modern-image-formats score 0.5 value Est savings of 714 KiB savings 0 731305.35 title Serve images in next-gen formats
+uses-responsive-images score 0.5 value Est savings of 654 KiB savings 0 669189 title Properly size images
+link-text score 0 value 5 links found savings None None title Links do not have descriptive text
+lcp-discovery-insight score 0 value None savings None None title LCP request discovery
+network-dependency-tree-insight score 0 value None savings None None title Network dependency tree
+
+===== BASELINE desktop =====
+URL: https://mshahrooz.github.io/Dashcam-Pro/index.html
+Scores: {'performance': 0.98, 'accessibility': 0.91, 'best-practices': 1, 'seo': 0.92}
+first-contentful-paint 0.8 s 831.314 0.94
+largest-contentful-paint 0.9 s 873.8159999999999 0.97
+speed-index 0.8 s 831.314 0.99
+total-blocking-time 0 ms 0 1
+cumulative-layout-shift 0.044 0.04378670159790102 0.99
+interactive 0.9 s 878.0662 1
+Largest contentful element {'type': 'list', 'items': [{'type': 'table', 'headings': [{'key': 'node', 'valueType': 'node', 'label': 'Element'}], 'items': [{'node': {'type': 'node', 'lhId': 'page-0-IMG', 'path': '1,HTML,1,BODY,0,DIV,1,MAIN,1,SECTION,0,DIV,0,IMG', 'selector': 'main.flex-1 > section#home > div.absolute > img.h-full', 'boundingRect': {'top': 98, 'bottom': 951, 'left': 0, 'right': 1335, 'width': 1335, 'height': 853}, 'snippet': '<img alt="Professional dash camera mounted inside a modern vehicle at dusk" class="h-full w-full object-cover" data-cms-img="i001" loading="eager" src="./generated/hero-premium.jpg">', 'nodeLabel': 'Professional dash camera mounted inside a modern vehicle at dusk'}}]}, {'type': 'table', 'headings': [{'key': 'phase', 'valueType': 'text', 'label': 'Phase'}, {'key': 'percent', 'valueType': 'text', 'label': '% of LCP'}, {'key': 'timing', 'valueType': 'ms', 'label': 'Timing'}], 'items': [{'phase': 'TTFB', 'timing': 211.554, 'percent': '24%'}, {'phase': 'Load Delay', 'timing': 0, 'percent': '0%'}, {'phase': 'Load Time', 'timing': 206.46004036896167, 'percent': '24%'}, {'phase': 'Render Delay', 'timing': 455.80195963103824, 'percent': '52%'}]}]}
+SUGGESTIONS:
+render-blocking-resources score 0 value Est savings of 540 ms savings 537 None title Eliminate render-blocking resources
+aria-required-attr score 0 value None savings None None title `[role]`s do not have all required `[aria-*]` attributes
+color-contrast score 0 value None savings None None title Background and foreground colors do not have a sufficient contrast ratio.
+unused-javascript score 0.5 value Est savings of 37 KiB savings 0 38201 title Reduce unused JavaScript
+modern-image-formats score 0.5 value Est savings of 714 KiB savings 0 731305.35 title Serve images in next-gen formats
+uses-responsive-images score 0.5 value Est savings of 898 KiB savings 0 919208 title Properly size images
+link-text score 0 value 5 links found savings None None title Links do not have descriptive text
+lcp-discovery-insight score 0 value None savings None None title LCP request discovery
+network-dependency-tree-insight score 0 value None savings None None title Network dependency tree
