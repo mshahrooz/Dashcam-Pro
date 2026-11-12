@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Multipage Visual Editor | Burnaby DashCam Pros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <script src="../supabase-config.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+<div id="loginScreen" class="auth-wrap"><form id="loginForm" class="auth-card">
+  <div class="mark">B<span>·</span></div><div class="eyebrow">SECURE CONTENT STUDIO</div>
+  <h1>Edit every page visually.</h1><p class="muted">Use your existing Supabase editor account to manage all fourteen website pages.</p>
+  <label for="email">Email address</label><input id="email" type="email" required autocomplete="username" placeholder="you@example.com">
+  <label for="password">Password</label><input id="password" type="password" required autocomplete="current-password" placeholder="Password">
+  <p id="loginError" role="alert" class="error" hidden></p>
+  <button id="loginButton" type="submit" class="primary full">Sign in to dashboard</button>
+  <small>Only authorized editors can publish. <a href="../">View live site</a></small>
+</form></div>
+<div id="studio" hidden>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-icon">B<span>·</span></span><div>DashCam Pros <small>CONTENT STUDIO</small></div></div>
+    <div class="side-label">WEBSITE PAGES</div>
+    <nav id="pageNavigation" aria-label="Choose page to edit"></nav>
+    <div class="side-bottom"><span class="live-dot"></span> Supabase connected <button id="signOut" class="signout" type="button">Sign out</button></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar">
+      <div class="heading"><span class="eyebrow">MULTIPAGE VISUAL EDITOR</span><h1 id="pageHeading">Home</h1></div>
+      <div class="actions"><span id="status">All changes saved</span>
+        <a id="openPage" class="secondary" href="../" rel="noopener" target="_blank">↗ View page</a>
+        <button id="syncHtml" type="button" class="secondary">↻ Sync HTML</button>
+        <button id="publish" type="button" class="primary" disabled>Publish changes ↗</button></div>
+    </header>
+    <div class="toolrow"><div class="chooser"><label for="pageSelect">Editing page</label><select id="pageSelect"></select></div>
+      <div class="devices"><button type="button" data-device="desktop" class="active">Desktop</button><button type="button" data-device="tablet">Tablet</button><button type="button" data-device="mobile">Mobile</button></div>
+      <div class="subtle">Click any text, image or link in the preview to edit it.</div>
+    </div>
+    <div class="editor-grid"><div class="canvas"><div id="viewport" data-size="desktop"><iframe id="preview" title="Interactive website page preview"></iframe></div></div>
+      <aside class="inspector" aria-label="Selected page element">
+        <div class="inspector-head"><div class="eyebrow">EDIT SELECTED CONTENT</div><h2 id="selectedTitle">Select an element</h2><p id="selectedHint">Click the website preview to edit text, image, link or SEO fields.</p></div>
+        <div class="inspector-body">
+          <div class="panel" id="editingPanel"><p class="muted">Your edits will show instantly in the preview and remain unpublished until you click Publish changes.</p></div>
+          <details class="seo" open><summary>SEO title & description</summary>
+            <label for="seoTitle">SEO page title</label><input id="seoTitle" data-seo="title" placeholder="Page title">
+            <label for="seoDescription">Meta description</label><textarea id="seoDescription" data-seo="description" rows="4" placeholder="Page description"></textarea>
+          </details>
+        </div>
+        <div class="inspector-footer"><button class="secondary" id="discardPage" type="button">Discard page edits</button><button class="primary" id="publishInspector" type="button">Publish ↗</button></div>
+      </aside></div>
+    <footer>Burnaby DashCam Pros · 14-page visual editor · Content changes become searchable HTML on GitHub Pages.</footer>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

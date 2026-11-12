@@ -1,0 +1,156 @@
+[
+  {
+    "path": "404.html",
+    "label": "404 Page",
+    "title": "Page not found | Burnaby DashCam Pros",
+    "description": "The page you were looking for could not be found.",
+    "text": 71,
+    "images": 0,
+    "links": 50,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "about.html",
+    "label": "About",
+    "title": "About | Burnaby DashCam Pros",
+    "description": "Burnaby DashCam Pros has been Burnaby's dash cam specialist since 2014. Our story, our values, and why we obsess over the part most installers skip: the wiring.",
+    "text": 123,
+    "images": 2,
+    "links": 52,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "case-studies.html",
+    "label": "Case Studies",
+    "title": "Case Studies | Burnaby DashCam Pros",
+    "description": "Representative dash cam installation case studies from Burnaby and Metro Vancouver — commuter, Tesla and rideshare fleet projects with before/after comparisons.",
+    "text": 123,
+    "images": 7,
+    "links": 55,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "case-studies/rideshare-fleet.html",
+    "label": "Defending false claims across a 4-car fleet",
+    "title": "Defending false claims across a 4-car fleet | Case Study | Burnaby DashCam Pros",
+    "description": "Apex Rides operates four vehicles across Metro Vancouver. After two false rider damage claims in three months — each costing them time and a...",
+    "text": 113,
+    "images": 4,
+    "links": 54,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "case-studies/sedan-commuter.html",
+    "label": "Hit-and-run exoneration on Hwy 1",
+    "title": "Hit-and-run exoneration on Hwy 1 | Case Study | Burnaby DashCam Pros",
+    "description": "Marcus commutes daily from Burnaby to downtown Vancouver along Hwy 1. After a parked-vehicle hit-and-run in a Metrotown parkade, the other d...",
+    "text": 113,
+    "images": 4,
+    "links": 54,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "case-studies/tesla-model-3.html",
+    "label": "360° coverage without voiding the warranty",
+    "title": "360° coverage without voiding the warranty | Case Study | Burnaby DashCam Pros",
+    "description": "Priya wanted full 360° dash cam coverage on her Model 3 but had been warned by two other shops that an install would either void her Tesla w...",
+    "text": 113,
+    "images": 4,
+    "links": 54,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "contact.html",
+    "label": "Contact",
+    "title": "Contact | Burnaby DashCam Pros",
+    "description": "Book a dash cam installation in Burnaby. Request a quote, see our hours and location on Kingsway, or call us. Same-day appointments available across Metro Vancouver.",
+    "text": 100,
+    "images": 0,
+    "links": 54,
+    "placeholders": 6,
+    "frames": 1
+  },
+  {
+    "path": "how-it-works.html",
+    "label": "How It Works",
+    "title": "How It Works | Burnaby DashCam Pros",
+    "description": "From booking to protected in five simple steps. See exactly what happens at your dash cam installation appointment in Burnaby, and what our lifetime workmanship warranty covers.",
+    "text": 111,
+    "images": 2,
+    "links": 51,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "index.html",
+    "label": "Home",
+    "title": "Burnaby DashCam Pros | Dash Cam Sales & Installation in Burnaby, BC",
+    "description": "Burnaby's dash cam specialists. Premium 1, 2 & 3-channel dash cams from BlackVue, VIOFO, Thinkware & Vantrue, expertly hardwired with clean, hidden wiring and true parking-mode protection.",
+    "text": 255,
+    "images": 11,
+    "links": 64,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "past-work.html",
+    "label": "Past Work",
+    "title": "Past Work | Burnaby DashCam Pros",
+    "description": "A gallery of before/after dash cam installations and recent work from Burnaby DashCam Pros across Burnaby and Metro Vancouver.",
+    "text": 120,
+    "images": 13,
+    "links": 55,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "services.html",
+    "label": "Services",
+    "title": "Services | Burnaby DashCam Pros",
+    "description": "Dash cam sales, professional hardwire installation, parking-mode setup, rideshare & fleet packages, Tesla & EV specialists, and mobile service across Burnaby and Metro Vancouver.",
+    "text": 174,
+    "images": 1,
+    "links": 60,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "services/installation.html",
+    "label": "Dash Cam Installation",
+    "title": "Dash Cam Installation | Burnaby DashCam Pros",
+    "description": "Clean, hidden wiring. True parking mode. Lifetime workmanship warranty on every install — no cigarette-lighter adapters, no visible cables, no clutter.",
+    "text": 131,
+    "images": 4,
+    "links": 56,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "services/rideshare.html",
+    "label": "Rideshare & Fleet Setup",
+    "title": "Rideshare & Fleet Setup | Burnaby DashCam Pros",
+    "description": "Cabin + road coverage engineered for Uber, Lyft, taxi and small fleet operators. Defend yourself against false claims and lower your risk overnight.",
+    "text": 131,
+    "images": 4,
+    "links": 56,
+    "placeholders": 1,
+    "frames": 0
+  },
+  {
+    "path": "services/tesla.html",
+    "label": "Tesla & EV Specialists",
+    "title": "Tesla & EV Specialists | Burnaby DashCam Pros",
+    "description": "Warranty-safe installs that won't drain your 12V or trigger Tesla service warnings. Routed along factory channels, fully reversible, service-center friendly.",
+    "text": 131,
+    "images": 4,
+    "links": 56,
+    "placeholders": 1,
+    "frames": 0
+  }
+]

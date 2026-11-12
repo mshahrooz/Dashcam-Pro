@@ -1,572 +1,158 @@
-(function () {
-  "use strict";
-  const $ = (id) => document.getElementById(id);
-  const SITE_URL = "../";
-  const BUCKET = "site-media";
-  const GROUPS = [
-    { name: "SEO & Social Sharing", match: (k) => /^(meta_|og_|twitter_)/.test(k) },
-    { name: "Business & Contact Details", match: (k) => /^(brand_name|brand_tagline|phone_|email_|business_|google_)/.test(k) },
-    { name: "Homepage Hero", match: (k) => /^(hero_|install_card_|price_)/.test(k) },
-    { name: "Rideshare Section", match: (k) => /^rideshare_/.test(k) },
-    { name: "Services Section", match: (k) => /^services_/.test(k) },
-    { name: "Products & Featured Items", match: (k) => /^(featured_|product_tab|product_tabs)/.test(k) },
-    { name: "About & Benefits", match: (k) => /^(about_|stat_)/.test(k) },
-    { name: "Tesla Section", match: (k) => /^tesla_/.test(k) },
-    { name: "Vehicle & Brand Showcase", match: (k) => /^(brands_|showcase_)/.test(k) },
-    { name: "Reviews & Trust", match: (k) => /^reviews_/.test(k) },
-    { name: "Call to Action", match: (k) => /^cta_/.test(k) },
-    { name: "Articles", match: (k) => /^blog_/.test(k) },
-    { name: "Social Media", match: (k) => /^instagram_/.test(k) },
-    { name: "Contact & Forms", match: (k) => /^(contact_|form_)/.test(k) },
-    { name: "Newsletter", match: (k) => /^newsletter_/.test(k) },
-    { name: "Footer", match: (k) => /^footer_/.test(k) },
-    { name: "Other Content", match: () => true }
-  ];
-  const SECTIONS = {
-    visual: ["Visual Editor", "Click on your actual website to edit the content while seeing each change.", "LIVE PREVIEW"],
-    overview: ["Overview", "Your website at a glance", "CONTENT MANAGEMENT"],
-    text: ["Website Text", "Edit headlines, buttons, descriptions and business information.", "PAGE CONTENT"],
-    products: ["Products", "Manage products, prices, images, badges and product tabs.", "YOUR CATALOG"],
-    services: ["Services", "Update the four existing service cards and choose which ones are visible.", "WHAT YOU OFFER"],
-    reviews: ["Reviews", "Edit or hide the four review cards. Publish only authentic customer feedback.", "SOCIAL PROOF"],
-    articles: ["Articles", "Edit the three article cards shown on the homepage.", "INSIGHTS & GUIDES"],
-    showcaseCars: ["Vehicle Brands", "Edit the vehicle names shown in the compatibility showcase.", "COMPATIBILITY"],
-    media: ["Images & Media", "Replace hero, installation, rideshare and Tesla section images.", "VISUAL ASSETS"]
-  };
-  const MEDIA = [
-    ["hero_background_image", "Homepage hero background", "The large image behind the homepage headline"],
-    ["rideshare_image", "Rideshare card", "Image shown in the rideshare promo"],
-    ["install_image", "Installation section", "Installation photo in the About section"],
-    ["tesla_image", "Tesla section", "Tesla image beside the Tesla benefits"]
-  ];
-
-  let client = null;
-  let editorEmail = "";
-  let model = null;
-  let savedModel = null;
-  let rowVersion = null;
-  let section = "overview";
-  let dirty = false;
-  let saving = false;
-  let toastTimer = null;
-
-  function esc(value) {
-    return String(value == null ? "" : value).replace(/[&<>"']/g, (char) =>
-      ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
-  }
-  function labelize(key) {
-    return key.replace(/_/g, " ").replace(/\b\w/g, (m) => m.toUpperCase())
-      .replace(/\bOg\b/g,"Open Graph").replace(/\bCta\b/g,"CTA")
-      .replace(/\bSeo\b/g,"SEO").replace(/\bHref\b/g,"Link");
-  }
-  function showOnly(id) {
-    ["loadingScreen","setupScreen","signInScreen","editorScreen"].forEach((name) => {
-      $(name).hidden = name !== id;
-    });
-  }
-  function notice(message, isError) {
-    const el = $("toast");
-    el.textContent = message;
-    el.classList.toggle("error", !!isError);
-    el.hidden = false;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { el.hidden = true; }, 5000);
-  }
-  function configured() {
-    const c = window.DASHCAM_SUPABASE || {};
-    return /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(c.url || "") &&
-      typeof c.anonKey === "string" && c.anonKey.length > 25 &&
-      !c.anonKey.includes("YOUR_");
-  }
-  function isLong(k, v) {
-    return String(v || "").length > 100 ||
-      /description|summary|quote|privacy_note|footer_description|blurb|feature_.*_description/.test(k);
-  }
-  function field(label, path, value, opts) {
-    opts = opts || {};
-    const long = !!opts.long;
-    const span = long ? " span-2" : "";
-    let control = "";
-    if (opts.type === "number") {
-      control = '<input class="field-control" type="number" step="any" data-path="' + esc(path) +
-        '" data-format="number" value="' + esc(value) + '">';
-    } else if (long) {
-      control = '<textarea class="field-control textarea" rows="3" data-path="' + esc(path) +
-        '" data-format="' + esc(opts.format || "string") + '">' + esc(value) + '</textarea>';
-    } else {
-      control = '<input class="field-control" type="text" data-path="' + esc(path) +
-        '" data-format="' + esc(opts.format || "string") + '" value="' + esc(value) + '">';
-    }
-    const upload = opts.image ? '<div class="upload-row"><input type="file" accept="image/png,image/jpeg,image/webp" data-upload="' + esc(path) + '" aria-label="Upload image for ' + esc(label) + '"><small class="muted">PNG, JPG or WebP · max 5 MB</small></div>' : "";
-    return '<div class="field' + span + '"><label>' + esc(label) + '</label>' +
-      control + upload + (opts.hint ? '<span class="hint">' + esc(opts.hint) + '</span>' : "") + '</div>';
-  }
-  function panel(title, note, body, trailing) {
-    return '<section class="panel"><div class="panel-head"><div><h2>' + esc(title) +
-      '</h2><p>' + esc(note || "") + '</p></div>' + (trailing || "") +
-      '</div><div class="panel-body">' + body + '</div></section>';
-  }
-  function get(path) {
-    return path.split(".").reduce((o, k) => o == null ? undefined : o[k], model);
-  }
-  function set(path, value) {
-    const parts = path.split(".");
-    let node = model;
-    for (let i=0; i<parts.length - 1; i++) {
-      if (node[parts[i]] == null) return;
-      node = node[parts[i]];
-    }
-    node[parts[parts.length-1]] = value;
-  }
-  function markDirty() {
-    dirty = true;
-    $("saveButton").disabled = false;
-    $("saveStatus").textContent = "Unpublished changes";
-    $("saveStatus").classList.add("dirty");
-  }
-  function markSaved() {
-    dirty = false;
-    $("saveButton").disabled = true;
-    $("saveStatus").textContent = "All changes published";
-    $("saveStatus").classList.remove("dirty");
-  }
-  function requireClean() {
-    return !dirty || window.confirm("You have unpublished changes. Discard them?");
-  }
-  async function signIn(event) {
-    event.preventDefault();
-    $("authError").hidden = true;
-    $("loginButton").disabled = true;
-    try {
-      const email = $("loginEmail").value.trim();
-      const password = $("loginPassword").value;
-      const out = await client.auth.signInWithPassword({email:email,password:password});
-      if (out.error) throw out.error;
-      await openEditor(out.data.user);
-    } catch (error) {
-      $("authError").textContent = error.message || "Unable to sign in.";
-      $("authError").hidden = false;
-    } finally {
-      $("loginButton").disabled = false;
-    }
-  }
-  async function openEditor(user) {
-    if (!user) { showOnly("signInScreen"); return; }
-    const result = await client.from("cms_editors").select("user_id").eq("user_id",user.id).maybeSingle();
-    if (result.error || !result.data) {
-      await client.auth.signOut();
-      showOnly("signInScreen");
-      $("authError").textContent = "This account is not approved as a website editor. Add its Supabase Auth user ID to cms_editors.";
-      $("authError").hidden = false;
-      return;
-    }
-    editorEmail = user.email || "Website editor";
-    $("userEmail").textContent = editorEmail;
-    await loadContent();
-    showOnly("editorScreen");
-    navigate("visual");
-  }
-  async function loadContent() {
-    const result = await client.from("cms_content").select("payload,updated_at").eq("id","main").single();
-    if (result.error || !result.data || !result.data.payload || !result.data.payload.siteContent) {
-      throw new Error("CMS data not found. Run supabase/setup.sql to initialize the database.");
-    }
-    model = result.data.payload;
-    rowVersion = result.data.updated_at;
-    savedModel = JSON.stringify(model);
-    markSaved();
-  }
-  async function init() {
-    if (!configured()) { showOnly("setupScreen"); return; }
-    if (!window.supabase || typeof window.supabase.createClient !== "function") {
-      showOnly("setupScreen");
-      $("setupScreen").querySelector(".muted").textContent =
-        "The Supabase library could not load. Check your internet connection and reload this page.";
-      return;
-    }
-    try {
-      const c = window.DASHCAM_SUPABASE;
-      client = window.supabase.createClient(c.url, c.anonKey, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
-      const session = await client.auth.getSession();
-      if (session.error) throw session.error;
-      if (session.data.session) await openEditor(session.data.session.user);
-      else showOnly("signInScreen");
-    } catch (error) {
-      showOnly("signInScreen");
-      $("authError").textContent = error.message || "Unable to connect to Supabase.";
-      $("authError").hidden = false;
-    }
-  }
-  function navigate(next) {
-    if (!model || !SECTIONS[next]) return;
-    if (section === "visual" && next !== "visual" && window.DashcamVisual) window.DashcamVisual.unmount();
-    section = next;
-    document.body.classList.toggle("visual-mode", next === "visual");
-    document.querySelectorAll("[data-section]").forEach((el) => {
-      el.classList.toggle("active", el.dataset.section === next);
-    });
-    const [title,desc,eyebrow] = SECTIONS[next];
-    $("pageTitle").textContent = title;
-    $("pageDescription").textContent = desc;
-    $("pageEyebrow").textContent = eyebrow;
-    $("crumbSection").textContent = title;
-    $("searchWrap").hidden = next !== "text";
-    if (next !== "text") $("fieldSearch").value = "";
-    render();
-    if (next === "visual" && window.DashcamVisual) window.DashcamVisual.mount(window.DashcamVisualBridge);
-    window.scrollTo({top:0,behavior:"smooth"});
-  }
-  function render() {
-    const map = {
-      visual:() => window.DashcamVisual ? window.DashcamVisual.html() : "<p>Visual editor unavailable. Refresh this page.</p>",
-      overview:renderOverview,
-      text:renderText,
-      products:() => renderRecords("products"),
-      services:() => renderRecords("services"),
-      reviews:() => renderRecords("reviews"),
-      articles:() => renderRecords("articles"),
-      showcaseCars:renderShowcase,
-      media:renderMedia
-    };
-    $("workspaceContent").innerHTML = map[section]();
-  }
-  function renderOverview() {
-    const n = (key) => (model[key] || []).length;
-    const blocks = [
-      ["Editable text fields", Object.keys(model.siteContent || {}).length, "Headlines, buttons and details"],
-      ["Products", n("products"), "Editable prices and specs"],
-      ["Services", n("services"), "Homepage service cards"],
-      ["Customer reviews", n("reviews"), "Visible if published"]
-    ];
-    let html = '<div class="overview-hero"><div><div class="eyebrow">YOUR WEBSITE IS CONNECTED</div>' +
-      '<h2>Make changes with confidence.</h2><p>Edit website content here, select Publish, and your changes will appear on the live site on its next refresh. No coding and no spreadsheets required.</p></div>' +
-      '<button type="button" data-go="visual">Open visual editor →</button></div><div class="stat-grid">';
-    blocks.forEach((b) => {
-      html += '<div class="stat-card"><small>' + esc(b[0]) + '</small><strong>' +
-        esc(b[1]) + '</strong><span class="sub">' + esc(b[2]) + '</span></div>';
-    });
-    html += '</div>' + panel("Quick actions", "Jump right into the part of your website you want to change.",
-      '<div class="tips"><div class="tip"><strong>✎ &nbsp; Update a headline</strong><p>Change the hero heading, a button, or any other text on the site.</p><button data-go="text">Edit website text →</button></div>' +
-      '<div class="tip"><strong>▣ &nbsp; Replace an image</strong><p>Upload a new hero, installation, rideshare or Tesla image.</p><button data-go="media">Manage images →</button></div>' +
-      '<div class="tip"><strong>▤ &nbsp; Update product pricing</strong><p>Adjust your product lineup, prices, descriptions and photos.</p><button data-go="products">Manage products →</button></div>' +
-      '<div class="tip"><strong>☆ &nbsp; Manage reviews</strong><p>Edit existing reviews and hide any that should not appear publicly.</p><button data-go="reviews">Manage reviews →</button></div></div>') +
-      '<div class="note"><strong>Publishing:</strong> Use the red Publish changes button after editing. If you leave without publishing, your changes will be lost.' +
-      (rowVersion ? '<br>Last published in Supabase: ' + esc(new Date(rowVersion).toLocaleString()) : '') + '</div>';
-    return html;
-  }
-  function renderText() {
-    const source = model.siteContent || {};
-    const filter = $("fieldSearch").value.toLowerCase().trim();
-    const keys = Object.keys(source).filter((k) => !MEDIA.some((m) => m[0] === k));
-    const used = new Set();
-    let html = "";
-    GROUPS.forEach((group) => {
-      const selection = keys.filter((k) => !used.has(k) && group.match(k));
-      selection.forEach((k) => used.add(k));
-      const found = selection.filter((k) =>
-        !filter || (labelize(k) + " " + group.name + " " + String(source[k])).toLowerCase().includes(filter));
-      if (!found.length) return;
-      html += panel(group.name, found.length + " editable fields",
-        '<div class="fields-grid">' + found.map((key) =>
-          field(labelize(key), "siteContent." + key, source[key], {
-            long:isLong(key,source[key]),
-            hint:key
-          })).join("") + '</div>');
-    });
-    if (!html) html = '<div class="empty">No matching fields. Try another search.</div>';
-    return html;
-  }
-  function recordConfig(type) {
-    const map = {
-      products: {
-        fields:[
-          ["Product name","name"],["Brand","brand"],["Category","category"],["Product ID","id"],
-          ["Price","price","number"],["Previous price","oldPrice","number"],
-          ["Rating (0–5)","rating","number"],["Review count","reviews","number"],
-          ["Description","blurb","long"],["Image","image","image"],
-          ["Feature tags (comma-separated)","tags","csv"],["Badges (comma-separated)","badges","csv"],
-          ["Show in product tabs (top, best, new)","list","csv"]
-        ],
-        note:"Add, remove, and price your product catalog. Only published products appear publicly."
-      },
-      services: {
-        fields:[["Service name","title"],["Description","description","long"],["Button label","linkText"],["Button destination","linkUrl"]],
-        note:"These four cards correspond to the four service positions in the homepage."
-      },
-      reviews: {
-        fields:[["Customer name","name"],["Customer description","role"],["Rating (0–5)","rating","number"],["Review quote","quote","long"]],
-        note:"Publish genuine customer feedback only. These four records map to existing homepage review cards."
-      },
-      articles: {
-        fields:[["Article headline","title"],["Short summary","summary","long"],["Cover image","imagePath","image"],["Link label","linkText"],["Link destination","linkUrl"]],
-        note:"These three cards map to the existing homepage article positions. Links may point to new pages or external articles."
-      }
-    };
-    return map[type];
-  }
-  function renderRecords(type) {
-    const arr = model[type] || [];
-    const config = recordConfig(type);
-    let body = '<div class="record-list">';
-    arr.forEach((item, index) => {
-      const name = item.name || item.title || ("Item " + (index+1));
-      const path = type + "." + index + ".";
-      const published = item.published !== false;
-      body += '<div class="record"><div class="record-head"><div><h3>' + esc(name) +
-        '</h3><p>Item ' + (index+1) + ' of ' + arr.length + '</p></div><div class="record-actions">';
-      body += '<label class="toggle"><input type="checkbox" data-path="' + esc(path + "published") +
-        '" data-format="boolean" ' + (published?"checked":"") + '> Published</label>';
-      if (type === "products") {
-        body += '<button type="button" class="ghost-btn danger" data-delete="' + index + '">Delete</button>';
-      }
-      body += '</div></div><div class="fields-grid">';
-      config.fields.forEach((entry) => {
-        const [label,key,kind] = entry;
-        const v = item[key] == null ? "" : item[key];
-        body += field(label,path+key,Array.isArray(v)?v.join(", "):v,{
-          long:kind === "long",type:kind === "number"?"number":"text",
-          format:kind === "csv"?"csv":"string",image:kind === "image"
-        });
-      });
-      body += '</div></div>';
-    });
-    body += '</div>';
-    if (type === "products") {
-      body += '<div class="item-footer"><button class="ghost-btn" data-add-product>+ Add a product</button>' +
-        '<span class="muted">New items are included in the site after publishing.</span></div>';
-    }
-    if (arr.length === 0) body = '<div class="empty">No items yet.</div>' + body;
-    return panel(SECTIONS[type][0],config.note,body,
-      '<span class="tag">' + arr.length + ' records</span>');
-  }
-  function renderShowcase() {
-    return panel("Compatible vehicle brands", "One vehicle brand per line. The site renders these dynamically.",
-      '<div class="fields-grid"><div class="field span-2"><label>Vehicle brands (' + model.showcaseCars.length + ')</label>' +
-      '<textarea rows="16" class="field-control textarea" style="min-height:300px" data-path="showcaseCars" data-format="lines">' +
-      esc(model.showcaseCars.join("\n")) + '</textarea><span class="hint">Add, remove or reorder vehicle names. One brand per line.</span></div></div>');
-  }
-  function mediaCard(key,title,description) {
-    const value = model.siteContent[key] || "";
-    const safe = /^(https:\/\/|generated\/)/i.test(value) ? value : "";
-    return panel(title,description,'<div class="media-box"><img class="media-preview" src="' + esc(safe) +
-      '" alt="' + esc(title) + '" loading="lazy"><div>' +
-      '<div class="fields-grid">' + field("Image URL or repository path", "siteContent."+key,value,{
-        hint:"Uploaded images are stored in your Supabase site-media bucket.",
-        image:true
-      }) + '</div></div></div>');
-  }
-  function renderMedia() {
-    return '<div class="note" style="margin-bottom:20px"><strong>Easy image uploads:</strong> Choose a JPG, PNG, or WebP and we will upload it to Supabase Storage. Then click Publish changes to make it live. Uploaded images are publicly viewable, but only approved editors can upload.</div>' +
-      MEDIA.map((m) => mediaCard(m[0],m[1],m[2])).join("");
-  }
-  async function uploadImage(el) {
-    const f = el.files && el.files[0];
-    if (!f) return;
-    if (!["image/jpeg","image/png","image/webp"].includes(f.type)) {
-      notice("Please choose a PNG, JPG or WebP image.",true);el.value="";return;
-    }
-    if (f.size > 5*1024*1024) {
-      notice("Please choose an image smaller than 5 MB.",true);el.value="";return;
-    }
-    const path = el.dataset.upload;
-    const ext = { "image/jpeg":"jpg","image/png":"png","image/webp":"webp" }[f.type];
-    const objectName = "uploads/" + Date.now() + "-" + Math.random().toString(36).slice(2,9) + "." + ext;
-    el.disabled = true;
-    notice("Uploading image…");
-    try {
-      const uploaded = await client.storage.from(BUCKET).upload(objectName,f,{contentType:f.type,upsert:false});
-      if (uploaded.error) throw uploaded.error;
-      const url = client.storage.from(BUCKET).getPublicUrl(objectName).data.publicUrl;
-      set(path,url);
-      markDirty();
-      render();
-      notice("Image uploaded. Click Publish changes to update the live site.");
-    } catch (error) {
-      notice("Upload failed: " + error.message,true);
-      el.disabled = false;
-      el.value="";
-    }
-  }
-  function handleField(event) {
-    const el = event.target;
-    if (el.matches("[data-upload]")) {
-      if(event.type === "change") uploadImage(el);
-      return;
-    }
-    if (!el.matches("[data-path]")) return;
-    if (event.type === "input" && el.type === "checkbox") return;
-    let value = el.type === "checkbox" ? el.checked : el.value;
-    const kind = el.dataset.format;
-    if (kind === "number") {
-      value = value.trim() === "" ? null : Number(value);
-      if (value !== null && !Number.isFinite(value)) return;
-    } else if (kind === "csv") {
-      value = value.split(",").map((x)=>x.trim()).filter(Boolean);
-    } else if (kind === "lines") {
-      value = value.split(/\r?\n/).map((x)=>x.trim()).filter(Boolean);
-    }
-    set(el.dataset.path,value);
-    markDirty();
-  }
-  function addProduct() {
-    model.products.push({
-      id:"new-product-"+Date.now(),
-      name:"New dash camera",brand:"",category:"2-Channel",
-      price:0,oldPrice:null,rating:5,reviews:0,blurb:"",
-      tags:[],badges:[],list:["top"],image:"generated/product-1.png",published:true
-    });
-    markDirty();
-    render();
-    notice("New product added. Edit its details and publish.");
-  }
-  function removeProduct(index) {
-    const item = model.products[index];
-    if (!item || !window.confirm("Remove " + item.name + " from your product catalog?")) return;
-    model.products.splice(index,1);
-    markDirty();
-    render();
-    notice("Product removed from the draft.");
-  }
-  async function requestHtmlDeployment() {
-    const session = await client.auth.getSession();
-    if (session.error) throw session.error;
-    const token = session.data && session.data.session && session.data.session.access_token;
-    if (!token) throw new Error("Sign in again to request HTML publishing.");
-    const cfg = window.DASHCAM_SUPABASE;
-    const response = await fetch((cfg.url.endsWith("/") ? cfg.url.slice(0, -1) : cfg.url) + "/functions/v1/publish-html", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer " + token,
-        "apikey": cfg.anonKey,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ published_at: rowVersion })
-    });
-    let publication;
-    try { publication = await response.json(); }
-    catch (_) { throw new Error("Publishing service returned an invalid response."); }
-    if (!response.ok || !publication.ok) {
-      throw new Error(publication.error || "Unable to request HTML deployment.");
-    }
-    return publication;
-  }
-  async function syncHtmlNow() {
-    if (saving) return;
-    if (dirty) {
-      notice("Publish your unsaved edits before syncing the HTML.", true);
-      return;
-    }
-    const button = $("syncHtmlButton");
-    button.disabled = true;
-    button.textContent = "Requesting…";
-    try {
-      await requestHtmlDeployment();
-      $("saveStatus").textContent = "GitHub HTML deployment requested";
-      notice("GitHub accepted the HTML rebuild request. Check GitHub Actions for completion.");
-    } catch (error) {
-      $("saveStatus").textContent = "HTML synchronization needs attention";
-      notice("HTML sync failed: " + error.message, true);
-    } finally {
-      button.disabled = false;
-      button.textContent = "↻   Sync HTML now";
-    }
-  }
-  async function save() {
-    if (!dirty || saving) return;
-    if (!model || !model.siteContent || !Array.isArray(model.products)) {
-      notice("Your data is incomplete. Nothing was published.",true);return;
-    }
-    saving = true;
-    $("saveButton").disabled = true;
-    $("saveButton").textContent = "Publishing…";
-    try {
-      const result = await client.from("cms_content")
-        .update({payload:model})
-        .eq("id","main")
-        .eq("updated_at",rowVersion)
-        .select("updated_at")
-        .maybeSingle();
-      if (result.error) throw result.error;
-      if (!result.data) throw new Error("Another editor published a change. Reload the page before saving again.");
-      rowVersion = result.data.updated_at;
-      savedModel = JSON.stringify(model);
-      markSaved();
-      // Publishing the database is separate from deploying the static HTML.
-      // Request a build immediately through the authenticated Supabase Edge Function.
-      $("saveStatus").textContent = "Saved to Supabase · requesting HTML deployment…";
-      try {
-        await requestHtmlDeployment();
-        $("saveStatus").textContent = "Supabase saved · HTML deployment requested";
-        notice("Saved successfully. GitHub HTML deployment requested; check Actions for completion.");
-      } catch (publishError) {
-        $("saveStatus").textContent = "Supabase saved · HTML deployment needs attention";
-        notice("Content saved to Supabase, but HTML was NOT deployed: " + publishError.message, true);
-      }
-    } catch (error) {
-      markDirty();
-      notice("Publish failed: " + error.message,true);
-    } finally {
-      saving = false;
-      $("saveButton").textContent = "Publish changes ↗";
-    }
-  }
-  async function signOut() {
-    if (!requireClean()) return;
-    try { await client.auth.signOut(); } catch (_) {}
-    model = null;
-    dirty = false;
-    document.body.classList.remove("visual-mode");
-    if (window.DashcamVisual) window.DashcamVisual.unmount();
-    $("loginForm").reset();
-    $("authError").hidden = true;
-    showOnly("signInScreen");
-  }
-
-  window.DashcamVisualBridge = {
-    getModel: () => model,
-    get: (path) => get(path),
-    set: (path, value) => { set(path, value); markDirty(); },
-    markDirty: markDirty,
-    publish: save,
-    notify: notice,
-    navigate: navigate,
-    isDirty: () => dirty,
-    rollback: () => {
-      if (!savedModel) return;
-      model = JSON.parse(savedModel);
-      markSaved();
-    },
-    upload: async (file) => {
-      if (!file || !["image/jpeg","image/png","image/webp"].includes(file.type)) {
-        throw new Error("Choose a JPG, PNG or WebP image.");
-      }
-      if (file.size > 5 * 1024 * 1024) throw new Error("Image must be smaller than 5 MB.");
-      const ext = {"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[file.type];
-      const objectName = "uploads/" + Date.now() + "-" + Math.random().toString(36).slice(2,10) + "." + ext;
-      const response = await client.storage.from(BUCKET).upload(objectName,file,{
-        contentType:file.type,upsert:false
-      });
-      if (response.error) throw response.error;
-      return client.storage.from(BUCKET).getPublicUrl(objectName).data.publicUrl;
-    }
-  };
-
-  document.addEventListener("click", (event) => {
-    const go = event.target.closest("[data-go]");
-    if (go) navigate(go.dataset.go);
-    const tab = event.target.closest("[data-section]");
-    if (tab) navigate(tab.dataset.section);
-    const remove = event.target.closest("[data-delete]");
-    if (remove) removeProduct(Number(remove.dataset.delete));
-    if (event.target.closest("[data-add-product]")) addProduct();
-  });
-  document.addEventListener("input",handleField);
-  document.addEventListener("change",handleField);
-  $("loginForm").addEventListener("submit",signIn);
-  $("saveButton").addEventListener("click",save);
-  $("syncHtmlButton").addEventListener("click",syncHtmlNow);
-  $("signOutButton").addEventListener("click",signOut);
-  $("fieldSearch").addEventListener("input",() => {if(section==="text")render();});
-  window.addEventListener("beforeunload",(event) => {if(dirty){event.preventDefault();event.returnValue="";}});
-  init();
+/* Burnaby DashCam Pros — authenticated, all-page visual content studio. */
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const CFG=window.DASHCAM_SUPABASE||{};
+const ROOT='../';
+const MAX_UPLOAD=5*1024*1024;
+let client=null,manifest=[],payload=null,revision='',draft={},lastSaved='',dirty=false,selectedPage='index.html',selected=null,frameDoc=null,saving=false;
+const originals=new Map();
+function toast(message,error){let node=$('toast');node.textContent=message;node.classList.toggle('error',!!error);node.hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>node.hidden=true,7000);}
+function status(message){$('status').textContent=message;}
+function display(id,yes){$(id).hidden=!yes;}
+function record(page){if(!draft[page])draft[page]={text:{},images:{},links:{},placeholders:{},frames:{},meta:{}};
+ let r=draft[page];['text','images','links','placeholders','frames','meta'].forEach(k=>{if(!r[k]||typeof r[k]!=='object')r[k]={};});return r;}
+function markDirty(){dirty=true;$('publish').disabled=false;status('Unpublished changes');}
+function clean(){dirty=false;$('publish').disabled=true;status('All changes published');lastSaved=JSON.stringify(draft);}
+function initialData(){if(!payload)throw Error('Content record not loaded');draft=structuredClone(payload.pageOverrides||{});clean();}
+function safePage(page){return manifest.some(x=>x.path===page)?page:'index.html';}
+function navigate(page){if(!manifest.length)return;selectedPage=safePage(page);selected=null;frameDoc=null;
+ const item=manifest.find(x=>x.path===selectedPage);$('pageSelect').value=selectedPage;$('pageHeading').textContent=item.label;
+ $('openPage').href=ROOT+selectedPage;
+ document.querySelectorAll('#pageNavigation button').forEach(b=>b.classList.toggle('active',b.dataset.page===selectedPage));
+ $('preview').src=ROOT+selectedPage+'?visual-preview=1';
+ $('selectedTitle').textContent='Select an element';$('selectedHint').textContent='Click an item in the preview to edit it.';
+ $('editingPanel').innerHTML='<p class="muted">Choose any headline, paragraph, navigation link or image on this page. Your edits appear immediately in the preview.</p>';
+ const meta=record(selectedPage).meta;$('seoTitle').value=meta.title===undefined?item.title:meta.title;
+ $('seoDescription').value=meta.description===undefined?item.description:meta.description;
+}
+function addOption(select,record){const opt=document.createElement('option');opt.value=record.path;opt.textContent=record.label+' — '+record.path;select.appendChild(opt);}
+async function loadFromSupabase(){const r=await client.from('cms_content').select('payload,updated_at').eq('id','main').single();
+ if(r.error)throw r.error;if(!r.data||!r.data.payload)throw Error('The Supabase content row was not found.');
+ payload=r.data.payload;revision=r.data.updated_at;initialData();}
+async function openEditor(user){if(!user){display('loginScreen',true);display('studio',false);return;}
+ const membership=await client.from('cms_editors').select('user_id').eq('user_id',user.id).maybeSingle();
+ if(membership.error||!membership.data){await client.auth.signOut();throw Error('This account is not approved as a website editor.');}
+ await loadFromSupabase();display('loginScreen',false);display('studio',true);navigate(selectedPage);
+}
+async function signIn(event){event.preventDefault();$('loginButton').disabled=true;$('loginError').hidden=true;
+ try{const r=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(r.error)throw r.error;
+ await openEditor(r.data.user);}catch(error){$('loginError').textContent=error.message;$('loginError').hidden=false;}
+ finally{$('loginButton').disabled=false;}}
+function closest(el,attr){return el&&el.closest?el.closest('['+attr+']'):null;}
+function beginSelection(el){if(!frameDoc)return;
+ frameDoc.querySelectorAll('.cms-selected').forEach(e=>e.classList.remove('cms-selected'));
+ let image=closest(el,'data-cms-img'),text=closest(el,'data-cms-text'),link=closest(el,'data-cms-href'),placeholder=closest(el,'data-cms-placeholder'),frame=closest(el,'data-cms-frame');
+ if(image)selected={kind:'image',id:image.dataset.cmsImg,el:image};
+ else if(text)selected={kind:'text',id:text.dataset.cmsText,el:text,link:link||closest(text,'data-cms-href')};
+ else if(placeholder)selected={kind:'placeholder',id:placeholder.dataset.cmsPlaceholder,el:placeholder};
+ else if(frame)selected={kind:'frame',id:frame.dataset.cmsFrame,el:frame};
+ else if(link)selected={kind:'link',id:link.dataset.cmsHref,el:link};
+ else selected=null;
+ if(!selected){return;}
+ selected.el.classList.add('cms-selected');renderInspector();}
+function heading(title,hint){$('selectedTitle').textContent=title;$('selectedHint').textContent=hint;}
+function field(label,value,fn,multiline){const wrap=document.createElement('div');const caption=document.createElement('label');caption.textContent=label;
+ const input=document.createElement(multiline?'textarea':'input');if(multiline)input.rows=5;else input.type='text';input.value=value==null?'':String(value);
+ input.addEventListener('input',()=>fn(input.value));wrap.append(caption,input);return wrap;}
+function refreshSelection(){if(!frameDoc)return;const r=record(selectedPage);if(!r) return;
+ if(selected && selected.kind==='text'){const val=r.text[selected.id];if(typeof val==='string')selected.el.textContent=val;}
+}
+function store(kind,id,val){const r=record(selectedPage);r[kind][id]=val;markDirty();if(frameDoc&&frameDoc.defaultView.DashcamPageCMS)frameDoc.defaultView.DashcamPageCMS.apply(r);}
+function originalFor(kind,id,selector,attr){const key=selectedPage+'::'+kind+'::'+id;
+ if(originals.has(key))return originals.get(key);
+ const dom=frameDoc&&frameDoc.querySelector(selector);let v=dom?(attr?dom.getAttribute(attr):dom.textContent):'';
+ originals.set(key,v||'');return v||'';}
+function renderInspector(){let panel=$('editingPanel');panel.replaceChildren();if(!selected)return;
+ const s=selected,r=record(selectedPage);
+ if(s.kind==='text'){
+  heading('Edit website text','Editing '+selectedPage+' · Text '+s.id);
+  const initial=originalFor('text',s.id,'[data-cms-text="'+s.id+'"]');
+  const current=r.text[s.id]===undefined?initial:r.text[s.id];
+  const lead=(initial.match(/^\s*/)||[''])[0],tail=(initial.match(/\s*$/)||[''])[0];
+  panel.appendChild(field('Visible text',String(current).trim(),val=>store('text',s.id,lead+val+tail),true));
+  if(s.link){const lid=s.link.dataset.cmsHref;const url=r.links[lid]===undefined?s.link.getAttribute('href'):r.links[lid];
+   panel.appendChild(field('Link destination',url,val=>store('links',lid,val),false));}
+ }else if(s.kind==='image'){
+  heading('Edit image','Replace the selected photo and its alternative text.');
+  const v=r.images[s.id]||{};
+  const src=v.src===undefined?s.el.getAttribute('src'):v.src;
+  const alt=v.alt===undefined?s.el.getAttribute('alt')||'':v.alt;
+  panel.appendChild(field('Image URL or path',src,val=>store('images',s.id,{...r.images[s.id],src:val,alt:r.images[s.id]?.alt??alt}),false));
+  panel.appendChild(field('Image alt text',alt,val=>store('images',s.id,{...r.images[s.id],src:r.images[s.id]?.src??src,alt:val}),true));
+  const label=document.createElement('label');label.className='upload';label.textContent='Upload replacement image (JPG, PNG or WebP, max 5MB)';
+  const input=document.createElement('input');input.type='file';input.accept='image/png,image/jpeg,image/webp';
+  input.addEventListener('change',async()=>{const file=input.files&&input.files[0];if(!file)return;
+   try{input.disabled=true;toast('Uploading image…');const url=await uploadImage(file);store('images',s.id,{...r.images[s.id],src:url,alt:r.images[s.id]?.alt??alt});renderInspector();toast('Image uploaded. Publish changes to update the website.');}
+   catch(e){toast('Image upload failed: '+e.message,true);input.disabled=false;}});label.append(input);panel.append(label);
+ }else if(s.kind==='link'){
+  heading('Edit link','Update the destination without changing layout.');
+  panel.appendChild(field('Link URL',r.links[s.id]===undefined?s.el.getAttribute('href'):r.links[s.id],val=>store('links',s.id,val),false));
+ }else if(s.kind==='placeholder'){
+  heading('Edit form placeholder','Text displayed in this input before someone types.');
+  panel.appendChild(field('Placeholder text',r.placeholders[s.id]===undefined?s.el.placeholder:r.placeholders[s.id],val=>store('placeholders',s.id,val),false));
+ }else if(s.kind==='frame'){
+  heading('Edit embedded map','Only HTTPS frame URLs are permitted.');
+  panel.appendChild(field('Embed URL',r.frames[s.id]===undefined?s.el.src:r.frames[s.id],val=>store('frames',s.id,val),true));
+ }
+}
+function onPreviewReady(){try{frameDoc=$('preview').contentDocument;if(!frameDoc||!frameDoc.body)return;
+ const doc=frameDoc;const style=doc.createElement('style');style.textContent='[data-cms-text],[data-cms-img],[data-cms-href],[data-cms-placeholder],[data-cms-frame]{cursor:pointer!important}[data-cms-text]:hover,[data-cms-img]:hover,[data-cms-href]:hover,[data-cms-placeholder]:hover,[data-cms-frame]:hover{outline:2px dashed #ed4050!important;outline-offset:3px!important}.cms-selected{outline:3px solid #e8293b!important;outline-offset:4px!important;box-shadow:0 0 0 5px #ed405026!important}';
+ doc.head.appendChild(style);
+ doc.addEventListener('click',ev=>{ev.preventDefault();ev.stopPropagation();beginSelection(ev.target);},true);
+ doc.addEventListener('submit',ev=>ev.preventDefault(),true);
+ const current=record(selectedPage);const bridge=doc.defaultView.DashcamPageCMS;if(bridge)bridge.apply(current);
+ const row=manifest.find(x=>x.path===selectedPage);
+ $('seoTitle').value=current.meta.title===undefined?row.title:current.meta.title;
+ $('seoDescription').value=current.meta.description===undefined?row.description:current.meta.description;
+ }catch(e){toast('The preview could not load from the website origin: '+e.message,true);}}
+async function uploadImage(file){if(!['image/png','image/jpeg','image/webp'].includes(file.type))throw Error('Choose a JPG, PNG or WebP image.');
+ if(file.size>MAX_UPLOAD)throw Error('File must be below 5 MB.');
+ const ext={'image/png':'png','image/jpeg':'jpg','image/webp':'webp'}[file.type];
+ const path='uploads/'+Date.now()+'-'+Math.random().toString(36).slice(2,11)+'.'+ext;
+ const r=await client.storage.from('site-media').upload(path,file,{contentType:file.type,upsert:false});if(r.error)throw r.error;
+ return client.storage.from('site-media').getPublicUrl(path).data.publicUrl;}
+async function requestPublish(){const s=await client.auth.getSession();if(s.error)throw s.error;
+ const token=s.data?.session?.access_token;if(!token)throw Error('Sign in again.');
+ const response=await fetch(CFG.url.replace(/\/$/,'')+'/functions/v1/publish-html',{method:'POST',headers:{Authorization:'Bearer '+token,apikey:CFG.anonKey,'Content-Type':'application/json'},body:JSON.stringify({published_at:revision})});
+ const data=await response.json().catch(()=>({}));if(!response.ok||!data.ok)throw Error(data.error||('HTTP '+response.status));return data;}
+async function publish(){if(!dirty||saving)return;
+ saving=true;$('publish').disabled=true;status('Saving content to Supabase…');
+ try{const patch={...payload,pageOverrides:draft};const result=await client.from('cms_content').update({payload:patch}).eq('id','main').eq('updated_at',revision).select('updated_at').maybeSingle();
+  if(result.error)throw result.error;if(!result.data)throw Error('Another editor saved changes. Reload the dashboard to avoid overwriting them.');
+  payload=patch;revision=result.data.updated_at;clean();status('Saved · requesting static HTML deployment…');
+  try{await requestPublish();status('Saved · GitHub HTML deployment requested');toast('Supabase saved and GitHub accepted the HTML deployment request.');}
+  catch(e){status('Saved · HTML publishing needs attention');toast('Saved to Supabase, but HTML was NOT deployed: '+e.message,true);}
+ }catch(e){status('Save failed: '+e.message);toast('Publish failed: '+e.message,true);$('publish').disabled=false;}
+ finally{saving=false;}}
+async function sync(){if(dirty)return toast('Publish unsaved edits before requesting HTML sync.',true);
+ $('syncHtml').disabled=true;status('Requesting HTML rebuild…');
+ try{await requestPublish();status('GitHub HTML deployment requested');toast('GitHub HTML deployment requested. Check Actions for completion.');}
+ catch(e){status('HTML deployment request failed');toast(e.message,true);}
+ finally{$('syncHtml').disabled=false;}}
+async function signOut(){if(dirty&&!confirm('Discard unpublished changes and sign out?'))return;
+ await client.auth.signOut();payload=null;draft={};display('studio',false);display('loginScreen',true);$('password').value='';}
+async function init(){try{
+ if(!window.supabase||!CFG.url||!CFG.anonKey)throw Error('Supabase client configuration was not loaded.');
+ client=window.supabase.createClient(CFG.url,CFG.anonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ const rs=await fetch(ROOT+'assets/js/pages-manifest.json',{cache:'no-store'});if(!rs.ok)throw Error('Could not load the pages manifest.');manifest=await rs.json();if(!Array.isArray(manifest)||manifest.length<2)throw Error('No editable pages found.');
+ manifest.forEach(x=>{addOption($('pageSelect'),x);const b=document.createElement('button');b.type='button';b.dataset.page=x.path;b.textContent=x.label;b.addEventListener('click',()=>navigate(x.path));$('pageNavigation').appendChild(b);});
+ const session=await client.auth.getSession();if(session.error)throw session.error;
+ if(session.data.session)await openEditor(session.data.session.user);else{display('loginScreen',true);display('studio',false);}
+ }catch(e){display('loginScreen',true);display('studio',false);$('loginError').textContent=e.message;$('loginError').hidden=false;}}
+$('loginForm').addEventListener('submit',signIn);$('signOut').addEventListener('click',signOut);
+$('pageSelect').addEventListener('change',e=>navigate(e.target.value));$('preview').addEventListener('load',onPreviewReady);
+$('publish').addEventListener('click',publish);$('publishInspector').addEventListener('click',publish);
+$('syncHtml').addEventListener('click',sync);
+$('discardPage').addEventListener('click',()=>{if(!confirm('Discard unpublished edits to this page?'))return;
+ const prev=JSON.parse(lastSaved||'{}');if(Object.prototype.hasOwnProperty.call(prev,selectedPage))draft[selectedPage]=prev[selectedPage];else delete draft[selectedPage];
+ dirty=JSON.stringify(draft)!==(lastSaved||'{}');$('publish').disabled=!dirty;status(dirty?'Unpublished changes':'All changes saved');navigate(selectedPage);});
+document.querySelectorAll('[data-device]').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('[data-device]').forEach(x=>x.classList.toggle('active',x===b));$('viewport').dataset.size=b.dataset.device;
+}));
+for(const id of ['seoTitle','seoDescription'])$(id).addEventListener('input',e=>{
+ if(!payload)return;const field=id==='seoTitle'?'title':'description';record(selectedPage).meta[field]=e.target.value;markDirty();
+ if(frameDoc&&frameDoc.defaultView.DashcamPageCMS)frameDoc.defaultView.DashcamPageCMS.apply(record(selectedPage));});
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
+init();
 })();

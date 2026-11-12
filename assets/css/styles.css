@@ -1,0 +1,170 @@
+/* ===================================================================
+   Burnaby DashCam Pros — shared stylesheet
+   Loaded on every page alongside the Tailwind Play CDN.
+   Holds only what Tailwind can't easily express inline:
+   fonts, the before/after slider, the mobile drawer, and a few
+   small utilities/animations.
+   =================================================================== */
+
+:root {
+  --bdp-red: #dc2626;
+  --bdp-red-dark: #b91c1c;
+  --bdp-ink: #0a0a0a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background: #fff;
+  color: var(--bdp-ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.font-mono { font-family: 'Geist Mono', ui-monospace, monospace; }
+
+/* Lucide icons inherit stroke-width from CSS */
+[data-lucide] { stroke-width: 2; }
+
+/* ---- Mobile nav drawer -------------------------------------------- */
+.drawer-overlay {
+  transition: opacity .3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.drawer-panel {
+  transition: transform .3s cubic-bezier(.32,.72,0,1);
+  transform: translateX(100%);
+}
+.drawer-open .drawer-overlay { opacity: 1; pointer-events: auto; }
+.drawer-open .drawer-panel { transform: translateX(0); }
+body.drawer-open { overflow: hidden; }
+
+/* ---- Before / After image comparison slider -----------------------
+   Layout: the "after" image is the full-width base layer; the "before"
+   image sits on top, clipped to the left of the handle via clip-path.
+   Left of handle = Before, right of handle = After. Drag to scrub.
+   Both images stay full-size so there is no distortion at any position.
+*/
+.ba-slider {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  touch-action: pan-y;
+  background: #111;
+  aspect-ratio: 1344 / 768;
+}
+.ba-slider img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.ba-before-img { clip-path: inset(0 50% 0 0); } /* default reveal: left half = before */
+.ba-label {
+  position: absolute;
+  top: .75rem;
+  padding: .28rem .65rem;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border-radius: .375rem;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  z-index: 3;
+}
+.ba-label-before { left: .75rem;  background: rgba(10,10,10,.62); color: #fff; }
+.ba-label-after  { right: .75rem; background: rgba(220,38,38,.92); color: #fff; }
+.ba-handle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  bottom: 0;
+  width: 3px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.25), 0 6px 18px rgba(0,0,0,.35);
+  transform: translateX(-50%);
+  cursor: ew-resize;
+  z-index: 2;
+}
+.ba-handle-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 3px solid var(--bdp-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 6px 18px rgba(0,0,0,.35);
+  color: var(--bdp-red);
+}
+.ba-handle-knob svg { width: 22px; height: 22px; }
+
+/* ---- Small animation utilities ------------------------------------ */
+@keyframes bdppin { 75%,100% { transform: scale(2); opacity: 0; } }
+.animate-ping { animation: bdppin 1s cubic-bezier(0,0,.2,1) infinite; }
+@keyframes bdpspin { to { transform: rotate(360deg); } }
+.animate-spin { animation: bdpspin 1s linear infinite; }
+
+@keyframes bdpfadeup {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: bdpfadeup .6s ease both; }
+
+/* Reveal-on-scroll helper. JS toggles .is-visible */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ---- Gradient text accent ----------------------------------------- */
+.text-gradient-red {
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 60%, #991b1b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- Subtle dotted grid backdrop used in hero / CTA ---------------- */
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(255,255,255,.10) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ---- Card hover lift ----------------------------------------------- */
+.card-lift { transition: transform .25s ease, box-shadow .25s ease; }
+.card-lift:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -18px rgba(0,0,0,.35); }
+
+/* ---- Active nav link underline ------------------------------------- */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 2px;
+  background: var(--bdp-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after { transform: scaleX(1); }
+
+/* ---- Print friendliness (in case anyone prints a case study) ------ */
+@media print {
+  header, footer, .no-print { display: none !important; }
+  body { color: #000; background: #fff; }
+}
