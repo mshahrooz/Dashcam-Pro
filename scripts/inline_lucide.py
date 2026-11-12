@@ -22,6 +22,9 @@ def svg_for(icon: str, css_class: str, style: str | None) -> str:
                    PACKAGE / 'icons' / 'svg' / f'{icon}.svg']
         options += list(PACKAGE.glob(f'**/{icon}.svg'))
         path = next((p for p in options if p.is_file()), None)
+        # The original template uses the non-standard 'sd-card' alias.
+        if path is None and icon == 'sd-card':
+            path = PACKAGE / 'icons' / 'hard-drive.svg'
         if path is None:
             raise ValueError(f'Missing Lucide icon asset: {icon}')
         source = path.read_text(encoding='utf-8').strip()
