@@ -34,9 +34,18 @@ jobs:
                   image.save(dest, 'WEBP', quality=88, method=6)
               print(path, '=>', dest, path.stat().st_size, '=>', dest.stat().st_size)
           PY
+      - name: Self-host lightweight variable Geist fonts
+        run: |
+          npm install --no-save --no-audit --no-fund @fontsource-variable/geist@5.2.6 @fontsource-variable/geist-mono@5.2.6
+          mkdir -p assets/fonts
+          find node_modules/@fontsource-variable/geist/files -name '*latin-wght-normal.woff2' -print
+          find node_modules/@fontsource-variable/geist-mono/files -name '*latin-wght-normal.woff2' -print
+          cp node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2 assets/fonts/geist-latin.woff2
+          cp node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2 assets/fonts/geist-mono-latin.woff2
+          wc -c assets/fonts/*.woff2
       - name: Commit compiled assets
         run: |
-          git add assets/css/tailwind.min.css generated/*.webp
+          git add assets/css/tailwind.min.css generated/*.webp assets/fonts/*.woff2
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'Build minified CSS and compact WebP imagery [skip ci]'
