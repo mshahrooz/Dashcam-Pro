@@ -25,6 +25,10 @@ def svg_for(icon: str, css_class: str, style: str | None) -> str:
         if path is None:
             raise ValueError(f'Missing Lucide icon asset: {icon}')
         source = path.read_text(encoding='utf-8').strip()
+        # Lucide static assets may begin with an XML declaration or comments.
+        start = source.find('<svg')
+        if start != -1:
+            source = source[start:]
         if not source.startswith('<svg'):
             raise ValueError(f'Invalid SVG icon: {icon}')
         CACHE[icon] = source
