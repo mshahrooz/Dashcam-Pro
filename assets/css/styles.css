@@ -230,3 +230,110 @@ body.drawer-open { overflow: hidden; }
     padding-bottom: 4rem;
   }
 }
+
+
+/* Mobile-only horizontal sliders for homepage process, reviews and case studies.
+   CSS scroll snap provides native finger swiping even when JavaScript is unavailable. */
+.bdp-mobile-carousel-nav {
+  display: none;
+}
+@media (max-width: 767px) {
+  .bdp-mobile-carousel-track {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch;
+    gap: 1rem !important;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 0;
+    scrollbar-width: none;
+  }
+  .bdp-mobile-carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+  .bdp-mobile-carousel-track > * {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  .bdp-mobile-carousel-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+  .bdp-carousel-arrow {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d4d4d8;
+    border-radius: 999px;
+    background: #fff;
+    color: #18181b;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color .2s, background-color .2s, opacity .2s;
+  }
+  .bdp-carousel-arrow:not(:disabled):active {
+    background: #f4f4f5;
+  }
+  .bdp-carousel-arrow:disabled {
+    opacity: .32;
+    cursor: default;
+  }
+  .bdp-carousel-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .2rem;
+  }
+  .bdp-carousel-dot {
+    display: inline-flex;
+    width: 25px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .bdp-carousel-dot::after {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 99px;
+    background: #d4d4d8;
+    transition: width .2s ease, background-color .2s ease;
+  }
+  .bdp-carousel-dot[aria-current="true"]::after {
+    width: 18px;
+    background: #dc2626;
+  }
+  .bdp-carousel-arrow:focus-visible,
+  .bdp-carousel-dot:focus-visible,
+  .bdp-mobile-carousel-track:focus-visible {
+    outline: 2px solid #dc2626;
+    outline-offset: 3px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bdp-mobile-carousel-track {
+    scroll-behavior: auto !important;
+  }
+  .bdp-carousel-dot::after, .bdp-carousel-arrow {
+    transition: none !important;
+  }
+}
