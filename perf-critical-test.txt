@@ -1,0 +1,12 @@
+SCORES {'performance': 82, 'accessibility': 100, 'best-practices': 100, 'seo': 100}
+first-contentful-paint 1.4 s 1441.041
+largest-contentful-paint 2.6 s 2629.1495000000004
+speed-index 1.6 s 1584.9542058543882
+total-blocking-time 550 ms 554.5000000000002
+cumulative-layout-shift 0 0
+interactive 2.8 s 2823.8348
+LCP PHASES [{'phase': 'TTFB', 'timing': 451.726, 'percent': '17%'}, {'phase': 'Load Delay', 'timing': 501.0438633022618, 'percent': '19%'}, {'phase': 'Load Time', 'timing': 66.47605180371511, 'percent': '3%'}, {'phase': 'Render Delay', 'timing': 1609.9035848940234, 'percent': '61%'}]
+AUDIT render-blocking-resources 1 None
+AUDIT link-text 1 None
+AUDIT font-display-insight 1 None
+AUDIT uses-responsive-images 1 
