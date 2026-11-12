@@ -1,12 +1,9 @@
-name: Publish Supabase edits as source HTML
+name: Publish multipage Supabase CMS as static HTML
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: '*/5 * * * *'
 
 permissions:
   contents: write
@@ -19,48 +16,47 @@ concurrency:
 
 jobs:
   deploy:
-    environment: github-pages
     runs-on: ubuntu-24.04
+    environment: github-pages
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Check scheduled changes
-        id: cms
-        if: github.event_name == 'schedule'
-        run: node scripts/check-cms.cjs
-      - name: Install browser renderer
-        if: github.event_name != 'schedule' || steps.cms.outputs.changed == 'true'
-        run: npm install --no-save --ignore-scripts playwright@1.56.1
-      - name: Install compatible Chromium
-        if: github.event_name != 'schedule' || steps.cms.outputs.changed == 'true'
-        run: npx playwright install --with-deps chromium
-      - name: Build static HTML using published CMS
-        if: github.event_name != 'schedule' || steps.cms.outputs.changed == 'true'
-        run: node scripts/build-seo.cjs
-      - name: Synchronize repository HTML with published content
-        if: github.event_name != 'schedule' || steps.cms.outputs.changed == 'true'
+      - name: Import new multipage website (first deployment only)
         run: |
-          cp _site/index.html index.html
-          cp _site/cms-data.json cms-data.json
-          git add index.html cms-data.json
+          if test -f cms-site-bootstrap.tar.xz; then
+            tar -xJf cms-site-bootstrap.tar.xz -C .
+            echo 'Imported the uploaded fourteen-page site and visual editor.'
+          fi
+          test -f site-templates/index.html
+          test -f scripts/build_pages.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install lightweight HTML parser
+        run: python -m pip install --disable-pip-version-check beautifulsoup4==4.12.3
+      - name: Render all pages with the current published Supabase content
+        run: python scripts/build_pages.py
+      - name: Commit updated HTML source to GitHub
+        run: |
+          cp _site/cms-pages.json cms-pages.json
+          while IFS= read -r path; do
+            cp "_site/$path" "$path"
+          done < <(python -c 'import json;print("\n".join(p["path"] for p in json.load(open("assets/js/pages-manifest.json"))))')
+          rm -f cms-site-bootstrap.tar.xz
+          git rm -f --ignore-unmatch site-template.html scripts/build-seo.cjs scripts/check-cms.cjs admin/visual.js cms-data.json || true
+          git add -A
           if ! git diff --cached --quiet; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: publish Supabase content into HTML [skip ci]"
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'chore: publish all multipage content into HTML [skip ci]'
             git push origin HEAD:main
           else
-            echo "HTML already synchronized."
+            echo 'Every HTML page already matches the published CMS.'
           fi
       - uses: actions/configure-pages@v5
-        if: github.event_name != 'schedule' || steps.cms.outputs.changed == 'true'
       - uses: actions/upload-pages-artifact@v4
-        if: github.event_name != 'schedule' || steps.cms.outputs.changed == 'true'
         with:
           path: ./_site
       - uses: actions/deploy-pages@v4
-        if: github.event_name != 'schedule' || steps.cms.outputs.changed == 'true'
