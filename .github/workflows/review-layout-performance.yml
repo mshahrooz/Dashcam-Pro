@@ -1,0 +1,100 @@
+name: Mobile visual and repeat-performance verification
+on:
+  push:
+    branches: [perf/optimize-mobile-pagespeed]
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium driver and audit CLI
+        run: npm install --no-save --no-package-lock --no-audit --no-fund puppeteer-core@24 lighthouse@12
+      - name: Run original and optimized servers
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin main
+          git worktree add --detach /tmp/dashcam-original FETCH_HEAD
+          python3 -m http.server 9765 --bind 127.0.0.1 --directory . >/tmp/after-server.log 2>&1 &
+          python3 -m http.server 9766 --bind 127.0.0.1 --directory /tmp/dashcam-original >/tmp/before-server.log 2>&1 &
+          sleep 2
+      - name: Capture comparable viewport screenshots and mobile interactions
+        shell: bash
+        run: |
+          mkdir -p audit-review
+          node - <<'JS' > audit-review/visual-results.txt 2>&1
+          const puppeteer = require('puppeteer-core');
+          const { execFileSync } = require('node:child_process');
+          (async () => {
+            const executablePath = execFileSync('which',['google-chrome'],{encoding:'utf8'}).trim();
+            const browser = await puppeteer.launch({headless:true,executablePath,args:['--no-sandbox','--disable-dev-shm-usage']});
+            const results={};
+            for (const [label,port] of [['original',9766],['optimized',9765]]) {
+              for (const width of [390,1440]) {
+                const page = await browser.newPage();
+                await page.setViewport({width,height:844,deviceScaleFactor:1,isMobile:width===390,hasTouch:width===390});
+                await page.goto('http://127.0.0.1:'+port+'/index.html',{waitUntil:'networkidle2',timeout:50000});
+                await page.screenshot({path:'audit-review/'+label+'-'+width+'.png'});
+                const metrics=await page.evaluate(()=>{
+                  const get=(q)=>{const el=document.querySelector(q);if(!el)return null;const r=el.getBoundingClientRect();const css=getComputedStyle(el);return {x:r.x,y:r.y,w:r.width,h:r.height,font:css.fontFamily,fontSize:css.fontSize,display:css.display};};
+                  return {heading:get('#home h1'),hero:get('#home'),heroImage:get('#home img'),header:get('header'),process:get('[data-mobile-carousel="process"]'),processCard:get('[data-mobile-carousel="process"] > :first-child'),reviews:get('[data-mobile-carousel="reviews"]'),cases:get('[data-mobile-carousel="cases"]'),iconCount:document.querySelectorAll('main svg').length,bodyWidth:document.body.scrollWidth,viewportWidth:innerWidth,carouselNavs:document.querySelectorAll('.bdp-mobile-carousel-nav').length};
+                });
+                results[label+'-'+width]=metrics;
+                console.log('VISUAL',label,width,JSON.stringify(metrics));
+                if(label==='optimized' && width===390){
+                  const swipe = await page.evaluate(async()=>{
+                    const track=document.querySelector('[data-mobile-carousel="process"]');
+                    const next=track.nextElementSibling.querySelector('button:last-child');
+                    const before=track.scrollLeft;
+                    next.click();
+                    await new Promise(r=>setTimeout(r,500));
+                    return {before,after:track.scrollLeft,count:track.children.length};
+                  });
+                  console.log('SWIPE_CONTROL',JSON.stringify(swipe));
+                }
+                await page.close();
+              }
+            }
+            for(const width of [390,1440]){
+              const b=results['original-'+width], a=results['optimized-'+width];
+              for(const key of ['heading','hero','header','processCard']){
+                if(!b[key]||!a[key])continue;
+                console.log('DIFF',width,key,'x',Math.round(a[key].x-b[key].x),'w',Math.round(a[key].w-b[key].w),'h',Math.round(a[key].h-b[key].h));
+              }
+            }
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exitCode=1;});
+          JS
+          cat audit-review/visual-results.txt
+      - name: Repeat optimized mobile Lighthouse tests three times
+        shell: bash
+        run: |
+          set -u
+          for i in 1 2 3; do
+            npx lighthouse http://127.0.0.1:9765/index.html --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --form-factor=mobile --screenEmulation.mobile=true --screenEmulation.width=390 --screenEmulation.height=844 --screenEmulation.deviceScaleFactor=2 --throttling-method=simulate --only-categories=performance,accessibility,best-practices,seo --output=json --output-path=/tmp/audit-${i}.json --quiet || true
+          done
+          python3 - <<'PY' > audit-review/repeat-scores.txt
+          import json, pathlib
+          for i in [1,2,3]:
+              f=pathlib.Path(f'/tmp/audit-{i}.json')
+              if not f.is_file(): print(i,'FAILED');continue
+              d=json.loads(f.read_text())
+              print('RUN',i,'SCORES',{k:round(v.get('score',0)*100) for k,v in d['categories'].items()})
+              for a in ['first-contentful-paint','largest-contentful-paint','total-blocking-time','cumulative-layout-shift']:
+                  print(' ',a,d['audits'][a].get('displayValue'))
+          PY
+          cat audit-review/repeat-scores.txt
+      - name: Commit test artifacts on feature branch
+        if: always()
+        shell: bash
+        run: |
+          git add audit-review || true
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Temporary visual and repeated Lighthouse test artifacts [skip ci]' || true
+          git push origin HEAD:perf/optimize-mobile-pagespeed || true
