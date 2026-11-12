@@ -172,11 +172,16 @@ body.drawer-open { overflow: hidden; }
 /* Video playback script pauses muted motion for reduced-motion visitors,
    while preserving an accessible manual play control. */
 
-/* Display the still-image fallback only until the video is really playing. */
-[data-video-shell] video[data-background-video] {
+/* Only the consultation hero fades in over its optional fallback image.
+   The homepage is a real video player; keep it visible even when paused. */
+[data-video-shell]:not(.bdp-native-video-player) video[data-background-video] {
   opacity: 0;
   transition: opacity 250ms ease;
 }
-[data-video-shell].is-video-playing video[data-background-video] {
+[data-video-shell]:not(.bdp-native-video-player).is-video-playing video[data-background-video] {
   opacity: 1;
+}
+.bdp-native-video-player video {
+  display: block;
+  background: #09090b;
 }
