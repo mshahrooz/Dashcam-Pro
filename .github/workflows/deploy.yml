@@ -46,6 +46,9 @@ jobs:
           done < <(python -c 'import json;print("\n".join(p["path"] for p in json.load(open("assets/js/pages-manifest.json"))))')
           rm -f cms-site-bootstrap.tar.xz
           git rm -f --ignore-unmatch site-template.html scripts/build-seo.cjs scripts/check-cms.cjs admin/visual.js cms-data.json || true
+          # Keep temporary build artifacts out of repository history.
+          printf "_site/\n" > .gitignore
+          git rm -r --cached --ignore-unmatch -- _site >/dev/null || true
           git add -A
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
