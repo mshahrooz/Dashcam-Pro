@@ -8,12 +8,24 @@
   var allowedHref = /^(?:https?:\/\/|mailto:|tel:|\/|#|\.\.?\/|[a-z0-9][a-z0-9/._#?=&%-]*$)/i;
   function text(id, value) {
     var el = document.querySelector('[data-cms-text="' + id + '"]');
-    if (el && typeof value === 'string') el.textContent = value;
+    if (el && typeof value === 'string') {
+      // Do not revive the obsolete service heading from an older saved CMS draft.
+      var nextText = page === 'services.html' && id === 't0052' && value.trim() === 'Six ways we protect your drive'
+        ? 'Four ways we protect your drive' : value;
+      el.textContent = nextText;
+    }
   }
   function image(id, record) {
     var el = document.querySelector('[data-cms-img="' + id + '"]');
     if (!el || !record || typeof record !== 'object') return;
-    if (typeof record.src === 'string' && allowedImage.test(record.src)) el.setAttribute('src', record.src);
+    if (typeof record.src === 'string' && allowedImage.test(record.src)) {
+      var nextSrc = record.src;
+      // Older CMS drafts may still point at mismatched, superseded after-images.
+      if (el.classList.contains('ba-after-img')) {
+        nextSrc = nextSrc.replace(/(assets\/images\/before-after\/(?:sedan|tesla|rideshare)-after)\.png(?=$|[?#])/i, '$1.svg');
+      }
+      el.setAttribute('src', nextSrc);
+    }
     if (typeof record.alt === 'string') el.setAttribute('alt', record.alt);
   }
   function href(id, value) {

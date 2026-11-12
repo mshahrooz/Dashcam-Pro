@@ -59,7 +59,9 @@ def apply(soup,record):
             if not isinstance(val,str) or not re.fullmatch(r'[tlfp]\d{3,4}',key):continue
             element=soup.find(attrs={attr:key})
             if not element:continue
-            if kind=='text':element.clear();element.append(val)
+            if kind=='text':
+                if element.get_text(strip=True)=='Four ways we protect your drive' and val.strip()=='Six ways we protect your drive':continue
+                element.clear();element.append(val)
             elif kind=='links' and valid_href(val):element['href']=val
             elif kind=='placeholders':element['placeholder']=val
             elif kind=='frames' and re.match(r'^https://',val,re.I):element['src']=val
@@ -69,7 +71,12 @@ def apply(soup,record):
             if not isinstance(val,dict) or not re.fullmatch(r'i\d{3,4}',key):continue
             element=soup.find(attrs={'data-cms-img':key})
             if not element:continue
-            if valid_image(val.get('src')):element['src']=val['src']
+            if valid_image(val.get('src')):
+                src=val['src']
+                # Upgrade legacy mismatched image URLs in saved CMS overrides.
+                if 'ba-after-img' in element.get('class',[]):
+                    src=re.sub(r'(assets/images/before-after/(?:sedan|tesla|rideshare)-after)\.png(?=$|[?#])',r'\1.svg',src,flags=re.I)
+                element['src']=src
             if isinstance(val.get('alt'),str):element['alt']=val['alt']
     meta=record.get('meta',{})
     if isinstance(meta,dict):
