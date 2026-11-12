@@ -105,7 +105,14 @@ def build():
         # The public renderer needs the browser-safe Supabase config to show
         # recent edits before the static GitHub Pages deployment finishes.
         # Insert it before cms-live.js, with the correct relative URL on subpages.
-        renderer=soup.find('script',src=re.compile(r'cms-live\\.js        if page == '404.html':
+        renderer=next((node for node in soup.find_all('script') if str(node.get('src','')).endswith('cms-live.js')),None)
+        already=next((node for node in soup.find_all('script') if str(node.get('src','')).endswith('supabase-config.js')),None)
+        if renderer and not already:
+            prefix='../' * (len(pathlib.PurePosixPath(page).parts)-1)
+            config_script=soup.new_tag('script',src=prefix+'supabase-config.js')
+            config_script['defer']=''
+            renderer.insert_before(config_script)
+        if page == '404.html':
             robots=soup.find('meta',attrs={'name':'robots'})
             if not robots:
                 robots=soup.new_tag('meta');robots['name']='robots';soup.head.append(robots)
