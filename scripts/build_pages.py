@@ -77,6 +77,9 @@ def apply(soup,record):
                 if 'ba-after-img' in element.get('class',[]):
                     src=re.sub(r'(assets/images/before-after/(?:sedan|tesla|rideshare)-after)\.png(?=$|[?#])',r'\1.svg',src,flags=re.I)
                 element['src']=src
+                # Avoid serving the original image variants after a CMS override.
+                element.attrs.pop('srcset',None)
+                element.attrs.pop('sizes',None)
             if isinstance(val.get('alt'),str):element['alt']=val['alt']
     meta=record.get('meta',{})
     if isinstance(meta,dict):

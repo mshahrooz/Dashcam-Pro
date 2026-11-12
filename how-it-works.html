@@ -14,20 +14,8 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&amp;family=Geist+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-            mono: ['"Geist Mono"', 'ui-monospace', 'monospace'],
-          },
-        },
-      },
-    };
-  </script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link href="assets/css/tailwind.min.css" rel="stylesheet"/>
+
 <link href="./assets/css/styles.css" rel="stylesheet"/>
 <script defer="" src="supabase-config.js"></script><script defer="True" src="./assets/js/cms-live.js"></script><link href="https://mshahrooz.github.io/Dashcam-Pro/how-it-works.html" rel="canonical"/><meta content="https://mshahrooz.github.io/Dashcam-Pro/how-it-works.html" property="og:url"/></head>
 <body class="font-sans antialiased bg-white text-zinc-900">
@@ -38,34 +26,196 @@
 <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 text-xs sm:px-6 lg:px-8">
 <div class="flex items-center gap-5">
 <a class="flex items-center gap-1.5 transition hover:text-white" data-cms-href="l001" href="tel:+16045550199">
-<i class="size-3.5 text-red-500" data-lucide="phone"></i><span><span data-cms-text="t0002">(604) 555-0199</span></span>
+<svg
+  class="lucide lucide-phone size-3.5 text-red-500"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+</svg><span><span data-cms-text="t0002">(604) 555-0199</span></span>
 </a>
 <a class="flex items-center gap-1.5 transition hover:text-white" data-cms-href="l002" href="mailto:info@burnabydashcampros.ca">
-<i class="size-3.5 text-red-500" data-lucide="mail"></i><span><span data-cms-text="t0003">info@burnabydashcampros.ca</span></span>
+<svg
+  class="lucide lucide-mail size-3.5 text-red-500"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <rect width="20" height="16" x="2" y="4" rx="2" />
+  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+</svg><span><span data-cms-text="t0003">info@burnabydashcampros.ca</span></span>
 </a>
 <span class="flex items-center gap-1.5">
-<i class="size-3.5 text-red-500" data-lucide="clock"></i><span><span data-cms-text="t0004">Mon–Sat: 9:00 AM – 6:00 PM</span></span>
+<svg
+  class="lucide lucide-clock size-3.5 text-red-500"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <circle cx="12" cy="12" r="10" />
+  <polyline points="12 6 12 12 16 14" />
+</svg><span><span data-cms-text="t0004">Mon–Sat: 9:00 AM – 6:00 PM</span></span>
 </span>
 </div>
 <div class="flex items-center gap-4">
 <span class="flex items-center gap-1.5">
-<i class="size-3.5 text-red-500" data-lucide="map-pin"></i><span><span data-cms-text="t0005">4501 Kingsway, Burnaby, BC</span></span>
+<svg
+  class="lucide lucide-map-pin size-3.5 text-red-500"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+  <circle cx="12" cy="10" r="3" />
+</svg><span><span data-cms-text="t0005">4501 Kingsway, Burnaby, BC</span></span>
 </span>
 <span class="h-3 w-px bg-white/15"></span>
 <span class="flex items-center gap-1.5">
 <span aria-label="Five stars" class="inline-flex" role="img">
-<i class="size-3.5 fill-amber-400 text-amber-400" data-lucide="star" style="fill:currentColor"></i>
-<i class="size-3.5 fill-amber-400 text-amber-400" data-lucide="star" style="fill:currentColor"></i>
-<i class="size-3.5 fill-amber-400 text-amber-400" data-lucide="star" style="fill:currentColor"></i>
-<i class="size-3.5 fill-amber-400 text-amber-400" data-lucide="star" style="fill:currentColor"></i>
-<i class="size-3.5 fill-amber-400 text-amber-400" data-lucide="star" style="fill:currentColor"></i>
+<svg
+  class="lucide lucide-star size-3.5 fill-amber-400 text-amber-400"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false" style="fill:currentColor">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+</svg>
+<svg
+  class="lucide lucide-star size-3.5 fill-amber-400 text-amber-400"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false" style="fill:currentColor">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+</svg>
+<svg
+  class="lucide lucide-star size-3.5 fill-amber-400 text-amber-400"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false" style="fill:currentColor">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+</svg>
+<svg
+  class="lucide lucide-star size-3.5 fill-amber-400 text-amber-400"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false" style="fill:currentColor">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+</svg>
+<svg
+  class="lucide lucide-star size-3.5 fill-amber-400 text-amber-400"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false" style="fill:currentColor">
+  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+</svg>
 </span>
 </span>
 <span class="h-3 w-px bg-white/15"></span>
 <div class="flex items-center gap-2.5 text-zinc-400">
-<a aria-label="Facebook" class="transition hover:text-white" data-cms-href="l003" href="#"><i class="size-3.5" data-lucide="facebook"></i></a>
-<a aria-label="Instagram" class="transition hover:text-white" data-cms-href="l004" href="#"><i class="size-3.5" data-lucide="instagram"></i></a>
-<a aria-label="Youtube" class="transition hover:text-white" data-cms-href="l005" href="#"><i class="size-3.5" data-lucide="youtube"></i></a>
+<a aria-label="Facebook" class="transition hover:text-white" data-cms-href="l003" href="#"><svg
+  class="lucide lucide-facebook size-3.5"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+</svg></a>
+<a aria-label="Instagram" class="transition hover:text-white" data-cms-href="l004" href="#"><svg
+  class="lucide lucide-instagram size-3.5"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+</svg></a>
+<a aria-label="Youtube" class="transition hover:text-white" data-cms-href="l005" href="#"><svg
+  class="lucide lucide-youtube size-3.5"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+  <path d="m10 15 5-3-5-3z" />
+</svg></a>
 </div>
 </div>
 </div>
@@ -75,7 +225,21 @@
 <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
 <a class="group flex items-center gap-2.5" data-cms-href="l006" href="./index.html">
 <span class="flex size-10 items-center justify-center rounded-lg bg-red-600 shadow-lg shadow-red-600/30 transition group-hover:bg-red-700">
-<i class="size-5 text-white" data-lucide="camera"></i>
+<svg
+  class="lucide lucide-camera size-5 text-white"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+  <circle cx="12" cy="13" r="3" />
+</svg>
 </span>
 <span class="flex flex-col leading-none">
 <span class="text-base font-extrabold tracking-tight text-zinc-900"><span data-cms-text="t0009">BURNABY </span><span class="text-red-600"><span data-cms-text="t0010">DASHCAM</span></span><span data-cms-text="t0011"> PROS</span></span>
@@ -86,7 +250,20 @@
 <a class="nav-link font-medium text-sm transition hover:text-red-600 text-zinc-700" data-cms-href="l007" href="./index.html"><span data-cms-text="t0013">Home</span></a>
 <div class="relative group">
 <a class="nav-link font-medium text-sm transition hover:text-red-600 text-zinc-700 inline-flex items-center gap-1" data-cms-href="l008" href="./services.html"><span data-cms-text="t0014">Services
-              </span><i class="size-3.5 transition group-hover:rotate-180" data-lucide="chevron-down"></i>
+              </span><svg
+  class="lucide lucide-chevron-down size-3.5 transition group-hover:rotate-180"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="m6 9 6 6 6-6" />
+</svg>
 </a>
 <div class="invisible absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 translate-y-1 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
 <div class="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl ring-1 ring-zinc-900/5">
@@ -102,14 +279,59 @@
 </nav>
 <div class="hidden items-center gap-3 lg:flex">
 <a class="flex items-center gap-1.5 text-sm font-semibold text-zinc-800 hover:text-red-600" data-cms-href="l017" href="tel:+16045550199">
-<i class="size-4 text-red-600" data-lucide="phone"></i><span data-cms-text="t0023">(604) 555-0199
+<svg
+  class="lucide lucide-phone size-4 text-red-600"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+</svg><span data-cms-text="t0023">(604) 555-0199
           </span></a>
 <a class="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-red-600/30 transition hover:bg-red-700" data-cms-href="l018" href="./contact.html">
-<i class="size-4" data-lucide="calendar-check"></i><span data-cms-text="t0024"> Book Installation
+<svg
+  class="lucide lucide-calendar-check size-4"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M8 2v4" />
+  <path d="M16 2v4" />
+  <rect width="18" height="18" x="3" y="4" rx="2" />
+  <path d="M3 10h18" />
+  <path d="m9 16 2 2 4-4" />
+</svg><span data-cms-text="t0024"> Book Installation
           </span></a>
 </div>
 <button aria-label="Open menu" class="inline-flex size-10 items-center justify-center rounded-lg border border-zinc-200 text-zinc-700 lg:hidden" id="nav-trigger">
-<i class="size-5" data-lucide="menu"></i>
+<svg
+  class="lucide lucide-menu size-5"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <line x1="4" x2="20" y1="12" y2="12" />
+  <line x1="4" x2="20" y1="6" y2="6" />
+  <line x1="4" x2="20" y1="18" y2="18" />
+</svg>
 </button>
 </div>
 </div>
@@ -119,7 +341,21 @@
 <div class="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
 <span class="text-sm font-bold uppercase tracking-wide text-zinc-900"><span data-cms-text="t0026">Menu</span></span>
 <button aria-label="Close menu" class="inline-flex size-9 items-center justify-center rounded-lg border border-zinc-200 text-zinc-700" id="nav-close">
-<i class="size-5" data-lucide="x"></i>
+<svg
+  class="lucide lucide-x size-5"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M18 6 6 18" />
+  <path d="m6 6 12 12" />
+</svg>
 </button>
 </div>
 <nav class="flex flex-col px-5 py-3">
@@ -133,13 +369,85 @@
 <a class="block py-2.5 text-base font-medium text-zinc-800 hover:text-red-600" data-cms-href="l026" href="./past-work.html"><span data-cms-text="t0034">Past Work</span></a>
 <a class="block py-2.5 text-base font-medium text-zinc-800 hover:text-red-600" data-cms-href="l027" href="./about.html"><span data-cms-text="t0035">About</span></a>
 <a class="mt-3 inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-red-600/30" data-cms-href="l028" href="./contact.html">
-<i class="size-4" data-lucide="calendar-check"></i><span data-cms-text="t0036"> Book Installation
+<svg
+  class="lucide lucide-calendar-check size-4"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M8 2v4" />
+  <path d="M16 2v4" />
+  <rect width="18" height="18" x="3" y="4" rx="2" />
+  <path d="M3 10h18" />
+  <path d="m9 16 2 2 4-4" />
+</svg><span data-cms-text="t0036"> Book Installation
         </span></a>
 <div class="mt-5 space-y-1.5 border-t border-zinc-100 pt-4 text-sm text-zinc-600">
-<a class="flex items-center gap-2 hover:text-red-600" data-cms-href="l029" href="tel:+16045550199"><i class="size-4 text-red-600" data-lucide="phone"></i><span data-cms-text="t0037">(604) 555-0199</span></a>
-<a class="flex items-center gap-2 hover:text-red-600" data-cms-href="l030" href="mailto:info@burnabydashcampros.ca"><i class="size-4 text-red-600" data-lucide="mail"></i><span data-cms-text="t0038">info@burnabydashcampros.ca</span></a>
-<p class="flex items-center gap-2"><i class="size-4 text-red-600" data-lucide="clock"></i><span data-cms-text="t0039">Mon–Sat: 9:00 AM – 6:00 PM</span></p>
-<p class="flex items-center gap-2"><i class="size-4 text-red-600" data-lucide="map-pin"></i><span data-cms-text="t0040">4501 Kingsway, Burnaby, BC</span></p>
+<a class="flex items-center gap-2 hover:text-red-600" data-cms-href="l029" href="tel:+16045550199"><svg
+  class="lucide lucide-phone size-4 text-red-600"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+</svg><span data-cms-text="t0037">(604) 555-0199</span></a>
+<a class="flex items-center gap-2 hover:text-red-600" data-cms-href="l030" href="mailto:info@burnabydashcampros.ca"><svg
+  class="lucide lucide-mail size-4 text-red-600"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <rect width="20" height="16" x="2" y="4" rx="2" />
+  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+</svg><span data-cms-text="t0038">info@burnabydashcampros.ca</span></a>
+<p class="flex items-center gap-2"><svg
+  class="lucide lucide-clock size-4 text-red-600"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <circle cx="12" cy="12" r="10" />
+  <polyline points="12 6 12 12 16 14" />
+</svg><span data-cms-text="t0039">Mon–Sat: 9:00 AM – 6:00 PM</span></p>
+<p class="flex items-center gap-2"><svg
+  class="lucide lucide-map-pin size-4 text-red-600"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+  <circle cx="12" cy="10" r="3" />
+</svg><span data-cms-text="t0040">4501 Kingsway, Burnaby, BC</span></p>
 </div>
 </nav>
 </div>
@@ -147,7 +455,20 @@
 <main class="flex-1">
 <nav aria-label="Breadcrumb" class="border-b border-zinc-100 bg-zinc-50">
 <div class="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3 text-xs sm:px-6 lg:px-8">
-<a class="text-zinc-500 transition hover:text-red-600" data-cms-href="l031" href="./index.html"><span data-cms-text="t0041">Home</span></a><i class="size-4 text-zinc-300" data-lucide="chevron-right"></i><span class="text-zinc-500"><span data-cms-text="t0042">How It Works</span></span>
+<a class="text-zinc-500 transition hover:text-red-600" data-cms-href="l031" href="./index.html"><span data-cms-text="t0041">Home</span></a><svg
+  class="lucide lucide-chevron-right size-4 text-zinc-300"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="m9 18 6-6-6-6" />
+</svg><span class="text-zinc-500"><span data-cms-text="t0042">How It Works</span></span>
 </div>
 </nav>
 <section class="relative overflow-hidden bg-zinc-950 text-white">
@@ -160,11 +481,25 @@
 </div>
 <div class="relative">
 <div class="overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
-<img alt="Dash cam installation process in Burnaby" class="aspect-[4/3] w-full object-cover" data-cms-img="i001" loading="lazy" src="./generated/install.png"/>
+<img alt="Dash cam installation process in Burnaby" class="aspect-[4/3] w-full object-cover" data-cms-img="i001" loading="lazy" src="./generated/install.webp" srcset="./generated/install-480.webp 480w, ./generated/install-768.webp 768w, ./generated/install.webp 1344w" sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) 46vw, 360px">
 </div>
 <div class="absolute -bottom-5 -left-5 hidden rounded-xl border border-zinc-200 bg-white p-4 text-zinc-900 shadow-xl sm:block">
 <div class="flex items-center gap-2">
-<span class="flex size-9 items-center justify-center rounded-lg bg-red-50 text-red-600"><i class="size-5" data-lucide="shield-check"></i></span>
+<span class="flex size-9 items-center justify-center rounded-lg bg-red-50 text-red-600"><svg
+  class="lucide lucide-shield-check size-5"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+  <path d="m9 12 2 2 4-4" />
+</svg></span>
 <div>
 <p class="text-sm font-bold"><span data-cms-text="t0046">Lifetime warranty</span></p>
 <p class="text-xs text-zinc-500"><span data-cms-text="t0047">on workmanship</span></p>
@@ -186,7 +521,24 @@
 <div class="reveal grid gap-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-7 sm:grid-cols-[auto_1fr] sm:items-center">
 <div class="flex items-center gap-4">
 <span class="flex size-14 items-center justify-center rounded-full bg-red-600 text-xl font-extrabold text-white shadow-lg shadow-red-600/30"><span data-cms-text="t0052">1</span></span>
-<span class="flex size-14 items-center justify-center rounded-2xl bg-white text-red-600 shadow-md"><i class="size-7" data-lucide="calendar-check"></i></span>
+<span class="flex size-14 items-center justify-center rounded-2xl bg-white text-red-600 shadow-md"><svg
+  class="lucide lucide-calendar-check size-7"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M8 2v4" />
+  <path d="M16 2v4" />
+  <rect width="18" height="18" x="3" y="4" rx="2" />
+  <path d="M3 10h18" />
+  <path d="m9 16 2 2 4-4" />
+</svg></span>
 </div>
 <div>
 <h3 class="text-lg font-bold text-zinc-900"><span data-cms-text="t0053">Book online</span></h3>
@@ -195,7 +547,23 @@
 </div><div class="reveal grid gap-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-7 sm:grid-cols-[auto_1fr] sm:items-center">
 <div class="flex items-center gap-4">
 <span class="flex size-14 items-center justify-center rounded-full bg-red-600 text-xl font-extrabold text-white shadow-lg shadow-red-600/30"><span data-cms-text="t0055">2</span></span>
-<span class="flex size-14 items-center justify-center rounded-2xl bg-white text-red-600 shadow-md"><i class="size-7" data-lucide="settings-2"></i></span>
+<span class="flex size-14 items-center justify-center rounded-2xl bg-white text-red-600 shadow-md"><svg
+  class="lucide lucide-settings-2 size-7"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M20 7h-9" />
+  <path d="M14 17H5" />
+  <circle cx="17" cy="17" r="3" />
+  <circle cx="7" cy="7" r="3" />
+</svg></span>
 </div>
 <div>
 <h3 class="text-lg font-bold text-zinc-900"><span data-cms-text="t0056">Choose your system</span></h3>
@@ -204,7 +572,20 @@
 </div><div class="reveal grid gap-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-7 sm:grid-cols-[auto_1fr] sm:items-center">
 <div class="flex items-center gap-4">
 <span class="flex size-14 items-center justify-center rounded-full bg-red-600 text-xl font-extrabold text-white shadow-lg shadow-red-600/30"><span data-cms-text="t0058">3</span></span>
-<span class="flex size-14 items-center justify-center rounded-2xl bg-white text-red-600 shadow-md"><i class="size-7" data-lucide="wrench"></i></span>
+<span class="flex size-14 items-center justify-center rounded-2xl bg-white text-red-600 shadow-md"><svg
+  class="lucide lucide-wrench size-7"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+</svg></span>
 </div>
 <div>
 <h3 class="text-lg font-bold text-zinc-900"><span data-cms-text="t0059">Professional install</span></h3>
@@ -213,7 +594,21 @@
 </div><div class="reveal grid gap-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-7 sm:grid-cols-[auto_1fr] sm:items-center">
 <div class="flex items-center gap-4">
 <span class="flex size-14 items-center justify-center rounded-full bg-red-600 text-xl font-extrabold text-white shadow-lg shadow-red-600/30"><span data-cms-text="t0061">4</span></span>
-<span class="flex size-14 items-center justify-center rounded-2xl bg-white text-red-600 shadow-md"><i class="size-7" data-lucide="smartphone"></i></span>
+<span class="flex size-14 items-center justify-center rounded-2xl bg-white text-red-600 shadow-md"><svg
+  class="lucide lucide-smartphone size-7"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+  <path d="M12 18h.01" />
+</svg></span>
 </div>
 <div>
 <h3 class="text-lg font-bold text-zinc-900"><span data-cms-text="t0062">App setup &amp; walk-through</span></h3>
@@ -222,7 +617,21 @@
 </div><div class="reveal grid gap-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-7 sm:grid-cols-[auto_1fr] sm:items-center">
 <div class="flex items-center gap-4">
 <span class="flex size-14 items-center justify-center rounded-full bg-red-600 text-xl font-extrabold text-white shadow-lg shadow-red-600/30"><span data-cms-text="t0064">5</span></span>
-<span class="flex size-14 items-center justify-center rounded-2xl bg-white text-red-600 shadow-md"><i class="size-7" data-lucide="shield-check"></i></span>
+<span class="flex size-14 items-center justify-center rounded-2xl bg-white text-red-600 shadow-md"><svg
+  class="lucide lucide-shield-check size-7"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+  <path d="m9 12 2 2 4-4" />
+</svg></span>
 </div>
 <div>
 <h3 class="text-lg font-bold text-zinc-900"><span data-cms-text="t0065">Drive protected</span></h3>
@@ -242,14 +651,72 @@
 <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl"><span data-cms-text="t0069">What to expect at your appointment</span></h2>
 </div>
 <div class="mt-6 space-y-4">
-<div class="flex gap-3"><i class="mt-0.5 size-5 shrink-0 text-red-600" data-lucide="clock"></i><div><p class="font-semibold text-zinc-900"><span data-cms-text="t0070">Plan for 1–3 hours</span></p><p class="text-sm text-zinc-600"><span data-cms-text="t0071">Depending on channels and parking-mode battery. You're welcome to wait in our lounge or grab lunch nearby — we'll text you 15 min before we're done.</span></p></div></div>
-<div class="flex gap-3"><i class="mt-0.5 size-5 shrink-0 text-red-600" data-lucide="car"></i><div><p class="font-semibold text-zinc-900"><span data-cms-text="t0072">Bring your car (or we come to you)</span></p><p class="text-sm text-zinc-600"><span data-cms-text="t0073">In-shop installs happen at our Kingsway location. Mobile service is available across Metro Vancouver for an extra call-out fee.</span></p></div></div>
-<div class="flex gap-3"><i class="mt-0.5 size-5 shrink-0 text-red-600" data-lucide="smartphone"></i><div><p class="font-semibold text-zinc-900"><span data-cms-text="t0074">Have your phone ready</span></p><p class="text-sm text-zinc-600"><span data-cms-text="t0075">We pair the cam to your phone and set up cloud backup at the end — bring the phone you'll use day-to-day.</span></p></div></div>
-<div class="flex gap-3"><i class="mt-0.5 size-5 shrink-0 text-red-600" data-lucide="credit-card"></i><div><p class="font-semibold text-zinc-900"><span data-cms-text="t0076">Pay after the install</span></p><p class="text-sm text-zinc-600"><span data-cms-text="t0077">No deposit to book. You pay when the work is done and you've seen it working. Cards, debit and cash all accepted.</span></p></div></div>
+<div class="flex gap-3"><svg
+  class="lucide lucide-clock mt-0.5 size-5 shrink-0 text-red-600"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <circle cx="12" cy="12" r="10" />
+  <polyline points="12 6 12 12 16 14" />
+</svg><div><p class="font-semibold text-zinc-900"><span data-cms-text="t0070">Plan for 1–3 hours</span></p><p class="text-sm text-zinc-600"><span data-cms-text="t0071">Depending on channels and parking-mode battery. You're welcome to wait in our lounge or grab lunch nearby — we'll text you 15 min before we're done.</span></p></div></div>
+<div class="flex gap-3"><svg
+  class="lucide lucide-car mt-0.5 size-5 shrink-0 text-red-600"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+  <circle cx="7" cy="17" r="2" />
+  <path d="M9 17h6" />
+  <circle cx="17" cy="17" r="2" />
+</svg><div><p class="font-semibold text-zinc-900"><span data-cms-text="t0072">Bring your car (or we come to you)</span></p><p class="text-sm text-zinc-600"><span data-cms-text="t0073">In-shop installs happen at our Kingsway location. Mobile service is available across Metro Vancouver for an extra call-out fee.</span></p></div></div>
+<div class="flex gap-3"><svg
+  class="lucide lucide-smartphone mt-0.5 size-5 shrink-0 text-red-600"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+  <path d="M12 18h.01" />
+</svg><div><p class="font-semibold text-zinc-900"><span data-cms-text="t0074">Have your phone ready</span></p><p class="text-sm text-zinc-600"><span data-cms-text="t0075">We pair the cam to your phone and set up cloud backup at the end — bring the phone you'll use day-to-day.</span></p></div></div>
+<div class="flex gap-3"><svg
+  class="lucide lucide-credit-card mt-0.5 size-5 shrink-0 text-red-600"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <rect width="20" height="14" x="2" y="5" rx="2" />
+  <line x1="2" x2="22" y1="10" y2="10" />
+</svg><div><p class="font-semibold text-zinc-900"><span data-cms-text="t0076">Pay after the install</span></p><p class="text-sm text-zinc-600"><span data-cms-text="t0077">No deposit to book. You pay when the work is done and you've seen it working. Cards, debit and cash all accepted.</span></p></div></div>
 </div>
 </div>
 <div class="relative">
-<div class="overflow-hidden rounded-2xl shadow-xl"><img alt="Dual-channel dash camera equipment ready for installation" class="aspect-[4/3] w-full object-cover" data-cms-img="i002" loading="lazy" src="./generated/product-2.png"/></div>
+<div class="overflow-hidden rounded-2xl shadow-xl"><img alt="Dual-channel dash camera equipment ready for installation" class="aspect-[4/3] w-full object-cover" data-cms-img="i002" loading="lazy" src="./generated/product-2.webp" srcset="./generated/product-2-480.webp 480w, ./generated/product-2-768.webp 768w, ./generated/product-2.webp 1024w" sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) 46vw, 360px"></div>
 </div>
 </div>
 </div>
@@ -258,10 +725,41 @@
 <section class="bg-white py-16 sm:py-20">
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 <div class="reveal rounded-3xl bg-zinc-950 bg-dot-grid p-8 text-center text-white sm:p-12">
-<span class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-red-600 text-white shadow-lg shadow-red-600/30"><i class="size-7" data-lucide="shield-check"></i></span>
+<span class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-red-600 text-white shadow-lg shadow-red-600/30"><svg
+  class="lucide lucide-shield-check size-7"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+  <path d="m9 12 2 2 4-4" />
+</svg></span>
 <h2 class="mt-5 text-2xl font-extrabold sm:text-3xl"><span data-cms-text="t0079">Lifetime workmanship warranty</span></h2>
 <p class="mx-auto mt-3 max-w-2xl text-zinc-300"><span data-cms-text="t0080">If anything we installed fails — a loose connection, a damaged cable, a mounting issue — we fix it free, for as long as you own the car. No time limit, no fine print on labour. Hardware is covered by the manufacturer's warranty.</span></p>
-<a class="mt-7 inline-flex items-center gap-2 rounded-xl bg-red-600 px-6 py-3.5 text-sm font-semibold text-white shadow-xl shadow-red-600/30 transition hover:bg-red-700" data-cms-href="l032" href="./contact.html"><i class="size-4" data-lucide="calendar-check"></i><span data-cms-text="t0081"> Book your install</span></a>
+<a class="mt-7 inline-flex items-center gap-2 rounded-xl bg-red-600 px-6 py-3.5 text-sm font-semibold text-white shadow-xl shadow-red-600/30 transition hover:bg-red-700" data-cms-href="l032" href="./contact.html"><svg
+  class="lucide lucide-calendar-check size-4"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M8 2v4" />
+  <path d="M16 2v4" />
+  <rect width="18" height="18" x="3" y="4" rx="2" />
+  <path d="M3 10h18" />
+  <path d="m9 16 2 2 4-4" />
+</svg><span data-cms-text="t0081"> Book your install</span></a>
 </div>
 </div>
 </section>
@@ -275,10 +773,41 @@
 <p class="reveal mx-auto mt-5 max-w-2xl text-base text-zinc-400 sm:text-lg"><span data-cms-text="t0084">Same-day appointments available across Burnaby and Metro Vancouver. Lifetime workmanship warranty on every install.</span></p>
 <div class="reveal mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
 <a class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-6 py-3.5 text-base font-semibold text-white shadow-xl shadow-red-600/30 transition hover:bg-red-700 sm:w-auto" data-cms-href="l033" href="./contact.html">
-<i class="size-5" data-lucide="calendar-check"></i><span data-cms-text="t0085"> Book Installation
+<svg
+  class="lucide lucide-calendar-check size-5"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M8 2v4" />
+  <path d="M16 2v4" />
+  <rect width="18" height="18" x="3" y="4" rx="2" />
+  <path d="M3 10h18" />
+  <path d="m9 16 2 2 4-4" />
+</svg><span data-cms-text="t0085"> Book Installation
         </span></a>
 <a class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 text-base font-semibold text-white transition hover:bg-white/10 sm:w-auto" data-cms-href="l034" href="./services.html">
-<i class="size-5" data-lucide="arrow-right"></i><span data-cms-text="t0086"> See services
+<svg
+  class="lucide lucide-arrow-right size-5"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M5 12h14" />
+  <path d="m12 5 7 7-7 7" />
+</svg><span data-cms-text="t0086"> See services
         </span></a>
 </div>
 </div>
@@ -290,15 +819,71 @@
 <div class="lg:col-span-1">
 <div class="flex items-center gap-2.5">
 <span class="flex size-10 items-center justify-center rounded-lg bg-red-600">
-<i class="size-5 text-white" data-lucide="camera"></i>
+<svg
+  class="lucide lucide-camera size-5 text-white"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+  <circle cx="12" cy="13" r="3" />
+</svg>
 </span>
 <span class="text-base font-extrabold tracking-tight text-white"><span data-cms-text="t0087">BURNABY </span><span class="text-red-500"><span data-cms-text="t0088">DASHCAM</span></span></span>
 </div>
 <p class="mt-4 text-sm leading-relaxed text-zinc-400"><span data-cms-text="t0089">Burnaby's dash cam specialists. Premium multi-channel systems from BlackVue, VIOFO, Thinkware &amp; Vantrue, expertly hardwired with clean, hidden wiring and true parking-mode protection.</span></p>
 <div class="mt-5 flex gap-3">
-<a aria-label="Facebook" class="flex size-9 items-center justify-center rounded-lg bg-white/5 text-zinc-300 transition hover:bg-red-600 hover:text-white" data-cms-href="l035" href="#"><i class="size-4" data-lucide="facebook"></i></a>
-<a aria-label="Instagram" class="flex size-9 items-center justify-center rounded-lg bg-white/5 text-zinc-300 transition hover:bg-red-600 hover:text-white" data-cms-href="l036" href="#"><i class="size-4" data-lucide="instagram"></i></a>
-<a aria-label="Youtube" class="flex size-9 items-center justify-center rounded-lg bg-white/5 text-zinc-300 transition hover:bg-red-600 hover:text-white" data-cms-href="l037" href="#"><i class="size-4" data-lucide="youtube"></i></a>
+<a aria-label="Facebook" class="flex size-9 items-center justify-center rounded-lg bg-white/5 text-zinc-300 transition hover:bg-red-600 hover:text-white" data-cms-href="l035" href="#"><svg
+  class="lucide lucide-facebook size-4"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+</svg></a>
+<a aria-label="Instagram" class="flex size-9 items-center justify-center rounded-lg bg-white/5 text-zinc-300 transition hover:bg-red-600 hover:text-white" data-cms-href="l036" href="#"><svg
+  class="lucide lucide-instagram size-4"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+</svg></a>
+<a aria-label="Youtube" class="flex size-9 items-center justify-center rounded-lg bg-white/5 text-zinc-300 transition hover:bg-red-600 hover:text-white" data-cms-href="l037" href="#"><svg
+  class="lucide lucide-youtube size-4"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+  <path d="m10 15 5-3-5-3z" />
+</svg></a>
 </div>
 </div>
 <div>
@@ -323,16 +908,85 @@
 <div>
 <h3 class="text-sm font-semibold uppercase tracking-wider text-white"><span data-cms-text="t0101">Get In Touch</span></h3>
 <ul class="mt-4 space-y-2.5 text-sm">
-<li class="flex items-start gap-2.5"><i class="mt-0.5 size-4 shrink-0 text-red-500" data-lucide="map-pin"></i><span class="text-zinc-400"><span data-cms-text="t0102">4501 Kingsway, Burnaby, BC</span></span></li>
-<li class="flex items-center gap-2.5"><i class="size-4 shrink-0 text-red-500" data-lucide="phone"></i><a class="text-zinc-400 transition hover:text-red-500" data-cms-href="l047" href="tel:+16045550199"><span data-cms-text="t0103">(604) 555-0199</span></a></li>
-<li class="flex items-center gap-2.5"><i class="size-4 shrink-0 text-red-500" data-lucide="mail"></i><a class="text-zinc-400 transition hover:text-red-500" data-cms-href="l048" href="mailto:info@burnabydashcampros.ca"><span data-cms-text="t0104">info@burnabydashcampros.ca</span></a></li>
-<li class="flex items-start gap-2.5"><i class="mt-0.5 size-4 shrink-0 text-red-500" data-lucide="clock"></i><span class="text-zinc-400"><span data-cms-text="t0105">Mon–Sat: 9:00 AM – 6:00 PM</span></span></li>
+<li class="flex items-start gap-2.5"><svg
+  class="lucide lucide-map-pin mt-0.5 size-4 shrink-0 text-red-500"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+  <circle cx="12" cy="10" r="3" />
+</svg><span class="text-zinc-400"><span data-cms-text="t0102">4501 Kingsway, Burnaby, BC</span></span></li>
+<li class="flex items-center gap-2.5"><svg
+  class="lucide lucide-phone size-4 shrink-0 text-red-500"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+</svg><a class="text-zinc-400 transition hover:text-red-500" data-cms-href="l047" href="tel:+16045550199"><span data-cms-text="t0103">(604) 555-0199</span></a></li>
+<li class="flex items-center gap-2.5"><svg
+  class="lucide lucide-mail size-4 shrink-0 text-red-500"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <rect width="20" height="16" x="2" y="4" rx="2" />
+  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+</svg><a class="text-zinc-400 transition hover:text-red-500" data-cms-href="l048" href="mailto:info@burnabydashcampros.ca"><span data-cms-text="t0104">info@burnabydashcampros.ca</span></a></li>
+<li class="flex items-start gap-2.5"><svg
+  class="lucide lucide-clock mt-0.5 size-4 shrink-0 text-red-500"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <circle cx="12" cy="12" r="10" />
+  <polyline points="12 6 12 12 16 14" />
+</svg><span class="text-zinc-400"><span data-cms-text="t0105">Mon–Sat: 9:00 AM – 6:00 PM</span></span></li>
 </ul>
 <form class="mt-5" data-form="newsletter">
 <label class="text-xs font-medium uppercase tracking-wider text-zinc-500"><span data-cms-text="t0106">Newsletter</span></label>
 <div class="mt-2 flex gap-2">
 <input class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-zinc-500 focus:border-red-500 focus:outline-none" data-cms-placeholder="p001" placeholder="you@email.com" required="" type="email"/>
-<button aria-label="Subscribe" class="rounded-lg bg-red-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-red-700" type="submit"><i class="size-4" data-lucide="send"></i></button>
+<button aria-label="Subscribe" class="rounded-lg bg-red-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-red-700" type="submit"><svg
+  class="lucide lucide-send size-4"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+ aria-hidden="true" focusable="false">
+  <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
+  <path d="m21.854 2.147-10.94 10.939" />
+</svg></button>
 </div>
 <p class="hidden mt-2 text-xs font-medium text-green-400" data-form-ok=""><span data-cms-text="t0107">Thanks! You're on the list.</span></p>
 </form>

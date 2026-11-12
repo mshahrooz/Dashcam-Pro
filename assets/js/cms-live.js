@@ -25,6 +25,9 @@
         nextSrc = nextSrc.replace(/(assets\/images\/before-after\/(?:sedan|tesla|rideshare)-after)\.png(?=$|[?#])/i, '$1.svg');
       }
       el.setAttribute('src', nextSrc);
+      // CMS-edited images must not retain srcsets pointing at the old image.
+      el.removeAttribute('srcset');
+      el.removeAttribute('sizes');
     }
     if (typeof record.alt === 'string') el.setAttribute('alt', record.alt);
   }
