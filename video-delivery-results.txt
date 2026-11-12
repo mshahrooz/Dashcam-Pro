@@ -1,0 +1,31 @@
+
+URL: https://mshahrooz.github.io/Dashcam-Pro/generated/dashcam-driving.mp4
+HTTP 206 final https://mshahrooz.github.io/Dashcam-Pro/generated/dashcam-driving.mp4 Content-Type video/mp4 Content-Length 2048 Content-Range bytes 0-2047/3452749
+BODY BYTES 2048 first_bytes b'\x00\x00\x00 ftypisom\x00\x00\x02\x00isomiso2'
+
+URL: https://mshahrooz.github.io/Dashcam-Pro/contact.html
+HTTP 200 final https://mshahrooz.github.io/Dashcam-Pro/contact.html Content-Type text/html; charset=utf-8 Content-Length 28701 Content-Range None
+BODY BYTES 28701 first_bytes b'<!DOCTYPE html>\n<html da'
+HAS MP4 PATH True HAS VIDEO ELEMENT True
+VIDEO HTML iority="high" loading="eager" src="./generated/hero-premium.jpg"/>
+<video aria-hidden="true" autoplay="" class="bdp-decorative-video absolute inset-0 h-full w-full object-cover object-center" loop="" muted="" playsinline="" poster="./generated/hero-premium.jpg" preload="metadata" tabindex="-1"><source src="./generated/dashcam-driving.mp4" type="video/mp4"/></video>
+<div aria-hidden="true" class="absolute inset-0 bg-gradient-to-r from-zinc-950/95 via-zinc-950/80 to-zinc-950/40"></div>
+<div class="relative 
+
+URL: https://mshahrooz.github.io/Dashcam-Pro/index.html
+HTTP 200 final https://mshahrooz.github.io/Dashcam-Pro/index.html Content-Type text/html; charset=utf-8 Content-Length 60318 Content-Range None
+BODY BYTES 60318 first_bytes b'<!DOCTYPE html>\n<html da'
+HAS MP4 PATH True HAS VIDEO ELEMENT True
+VIDEO HTML bject-cover" data-cms-img="i006" loading="lazy" src="./generated/hero-premium.jpg"/>
+<video aria-hidden="true" autoplay="" class="bdp-decorative-video absolute inset-0 h-full w-full object-cover" loop="" muted="" playsinline="" poster="./generated/hero-premium.jpg" preload="none" tabindex="-1"><source src="./generated/dashcam-driving.mp4" type="video/mp4"/></video>
+</div>
+</div>
+<div class="absolute -bottom-6 -right-6 hidden rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl sm:block">
+<p class="t
+
+URL: https://mshahrooz.github.io/Dashcam-Pro/assets/css/styles.css
+HTTP 200 final https://mshahrooz.github.io/Dashcam-Pro/assets/css/styles.css Content-Type text/css; charset=utf-8 Content-Length 5342 Content-Range None
+BODY BYTES 5342 first_bytes b'/* ====================='
+
+LOCAL MEDIA True
+LOCAL SIZE 3452749
