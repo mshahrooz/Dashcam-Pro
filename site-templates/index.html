@@ -14,22 +14,10 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&amp;family=Geist+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-            mono: ['"Geist Mono"', 'ui-monospace', 'monospace'],
-          },
-        },
-      },
-    };
-  </script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link href="assets/css/tailwind.min.css" rel="stylesheet"/>
+
 <link href="./assets/css/styles.css" rel="stylesheet"/>
-<script defer="True" src="./assets/js/cms-live.js"></script><link href="https://mshahrooz.github.io/Dashcam-Pro/" rel="canonical"/></head>
+<script defer="True" src="./assets/js/cms-live.js"></script><link href="https://mshahrooz.github.io/Dashcam-Pro/" rel="canonical"/><link rel="preload" as="image" href="./generated/hero-premium.jpg" fetchpriority="high"/></head>
 <body class="font-sans antialiased bg-white text-zinc-900">
 <div class="flex min-h-screen flex-col">
 <header class="sticky top-0 z-50 w-full" id="top">
@@ -149,7 +137,7 @@
 <span data-cms-text="t0041"> HERO (exact replica of the attached reference design) </span>
 <section class="relative overflow-hidden bg-zinc-950" id="home">
 <div class="absolute inset-0 bdp-home-hero-image">
-<img alt="Professional dash camera mounted inside a modern vehicle at dusk" class="h-full w-full object-cover" data-cms-img="i001" loading="eager" src="./generated/hero-premium.jpg"/>
+<img fetchpriority="high" decoding="async" width="1400" height="788" alt="Professional dash camera mounted inside a modern vehicle at dusk" class="h-full w-full object-cover" data-cms-img="i001" loading="eager" src="./generated/hero-premium.jpg"/>
 </div>
 <div class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28 bdp-home-hero-copy">
 <div class="grid items-center gap-12 lg:grid-cols-12">
@@ -219,7 +207,7 @@
 <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 <article class="card-lift group reveal flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white">
 <div class="relative overflow-hidden">
-<img alt="Dash Cam Installation" class="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-105" data-cms-img="i002" loading="lazy" src="./generated/install.png"/>
+<img alt="Dash Cam Installation" class="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-105" data-cms-img="i002" loading="lazy" src="./generated/install.webp"/>
 <span class="absolute left-3 top-3 flex size-9 items-center justify-center rounded-lg bg-white/95 text-red-600 shadow-md"><i class="size-5" data-lucide="wrench"></i></span>
 </div>
 <div class="flex flex-1 flex-col p-5">
@@ -232,7 +220,7 @@
 </div>
 </article><article class="card-lift group reveal flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white">
 <div class="relative overflow-hidden">
-<img alt="Rideshare &amp; Fleet Setup" class="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-105" data-cms-img="i003" loading="lazy" src="./generated/rideshare.png"/>
+<img alt="Rideshare &amp; Fleet Setup" class="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-105" data-cms-img="i003" loading="lazy" src="./generated/rideshare.webp"/>
 <span class="absolute left-3 top-3 flex size-9 items-center justify-center rounded-lg bg-white/95 text-red-600 shadow-md"><i class="size-5" data-lucide="car-front"></i></span>
 </div>
 <div class="flex flex-1 flex-col p-5">
@@ -245,7 +233,7 @@
 </div>
 </article><article class="card-lift group reveal flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white">
 <div class="relative overflow-hidden">
-<img alt="Tesla &amp; EV Specialists" class="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-105" data-cms-img="i004" loading="lazy" src="./generated/tesla.png"/>
+<img alt="Tesla &amp; EV Specialists" class="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-105" data-cms-img="i004" loading="lazy" src="./generated/tesla.webp"/>
 <span class="absolute left-3 top-3 flex size-9 items-center justify-center rounded-lg bg-white/95 text-red-600 shadow-md"><i class="size-5" data-lucide="zap"></i></span>
 </div>
 <div class="flex flex-1 flex-col p-5">
@@ -258,7 +246,7 @@
 </div>
 </article><article class="card-lift group reveal flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white">
 <div class="relative overflow-hidden">
-<img alt="Mobile / Same-Day Service" class="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-105" data-cms-img="i005" loading="lazy" src="./generated/car-3.png"/>
+<img alt="Mobile / Same-Day Service" class="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-105" data-cms-img="i005" loading="lazy" src="./generated/car-3.webp"/>
 <span class="absolute left-3 top-3 flex size-9 items-center justify-center rounded-lg bg-white/95 text-red-600 shadow-md"><i class="size-5" data-lucide="truck"></i></span>
 </div>
 <div class="flex flex-1 flex-col p-5">
@@ -285,7 +273,7 @@
 <div class="relative">
 <div class="overflow-hidden rounded-2xl shadow-xl">
 <div class="relative aspect-video overflow-hidden rounded-2xl bg-zinc-950 bdp-native-video-player" data-video-shell>
-<video aria-label="Dashcam driving video" class="absolute inset-0 block h-full w-full bg-zinc-950 object-contain" controls data-background-video data-play-trigger="viewport" loop muted playsinline webkit-playsinline preload="auto">
+<video aria-label="Dashcam driving video" class="absolute inset-0 block h-full w-full bg-zinc-950 object-contain" controls data-background-video data-play-trigger="viewport" loop muted playsinline webkit-playsinline preload="none">
 <source src="./generated/dashcam-driving.mp4" type="video/mp4"/>
 Your browser does not support HTML5 video.
 </video>
@@ -447,7 +435,7 @@ Your browser does not support HTML5 video.
 <div>
 <div class="ba-slider rounded-2xl border border-zinc-200 shadow-xl">
 <img alt="After: same cabin with illustrated dash camera near mirror" class="ba-after-img" data-cms-img="i010" loading="lazy" src="./assets/images/before-after/sedan-after.svg"/>
-<img alt="Before: same cabin without an aftermarket dash camera" class="ba-before-img" data-cms-img="i011" loading="lazy" src="./assets/images/before-after/sedan-before.png"/>
+<img alt="Before: same cabin without an aftermarket dash camera" class="ba-before-img" data-cms-img="i011" loading="lazy" src="./assets/images/before-after/sedan-before.webp"/>
 <span class="ba-label ba-label-before"><span data-cms-text="t0195">Before</span></span>
 <span class="ba-label ba-label-after"><span data-cms-text="t0196">After</span></span>
 <div class="ba-handle"><div class="ba-handle-knob"><i data-lucide="move-horizontal"></i></div></div>
