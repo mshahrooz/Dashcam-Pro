@@ -1,0 +1,43 @@
+name: Compile optimized website assets once
+on:
+  push:
+    branches: [perf/static-tailwind-optimized-assets]
+permissions:
+  contents: write
+jobs:
+  compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compile production Tailwind CSS
+        run: |
+          npm install --no-save --no-audit --no-fund tailwindcss@3.4.17
+          mkdir -p assets/css
+          ./node_modules/.bin/tailwindcss -i assets/css/tailwind.input.css -o assets/css/tailwind.min.css -c tailwind.config.cjs --minify
+          test -s assets/css/tailwind.min.css
+          wc -c assets/css/tailwind.min.css
+      - name: Convert original generated PNG images to high quality WebP
+        run: |
+          python -m pip install --disable-pip-version-check pillow==11.1.0
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          for path in sorted(Path('generated').glob('*.png')):
+              dest = path.with_suffix('.webp')
+              with Image.open(path) as image:
+                  if image.mode not in ('RGB', 'RGBA'):
+                      image = image.convert('RGBA' if 'A' in image.getbands() else 'RGB')
+                  image.save(dest, 'WEBP', quality=88, method=6)
+              print(path, '=>', dest, path.stat().st_size, '=>', dest.stat().st_size)
+          PY
+      - name: Commit compiled assets
+        run: |
+          git add assets/css/tailwind.min.css generated/*.webp
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Build minified CSS and compact WebP imagery [skip ci]'
+          git push origin HEAD:perf/static-tailwind-optimized-assets
