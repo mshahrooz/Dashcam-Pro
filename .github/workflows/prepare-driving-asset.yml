@@ -1,0 +1,43 @@
+name: Temporary fetch and optimize driving footage
+on:
+  push:
+    branches: [feature/dashcam-driving-video]
+permissions:
+  contents: write
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download exact user-provided Pexels clip and verify integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fLsS --retry 3 --retry-delay 3 --max-time 180 \
+            'https://videos.pexels.com/video-files/5382495/5382495-hd_1280_720_24fps.mp4' \
+            -o /tmp/dashcam-original.mp4
+          echo '09732291425f05f54a1ee6709c94faf4c84fbe76af3c007993268781b2e31359  /tmp/dashcam-original.mp4' | sha256sum -c -
+          ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 /tmp/dashcam-original.mp4
+      - name: Produce web-optimized silent H.264 MP4
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p generated
+          ffmpeg -hide_banner -loglevel error -y -i /tmp/dashcam-original.mp4 \
+            -map 0:v:0 -an -vf "scale=960:-2" -c:v libx264 \
+            -preset medium -crf 29 -pix_fmt yuv420p -movflags +faststart \
+            generated/dashcam-driving.mp4
+          test -s generated/dashcam-driving.mp4
+          ls -lh generated/dashcam-driving.mp4
+      - name: Commit compressed video to feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add generated/dashcam-driving.mp4
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Add optimized user-supplied dashcam video [skip ci]'
+          git push origin HEAD:feature/dashcam-driving-video
