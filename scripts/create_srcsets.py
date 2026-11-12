@@ -37,7 +37,9 @@ for directory in DIRS:
 def optimize_tag(m,page):
     tag=m.group(0)
     if 'srcset=' in tag:
-        return tag
+        # HTML pages emitted by BeautifulSoup use self-closing IMG tags. Ensure
+        # extra attributes are inserted before the closing slash, not after.
+        return tag.replace('"/ srcset=', '" srcset=')
     src=SRC.search(tag)
     if not src:
         return tag
@@ -54,7 +56,9 @@ def optimize_tag(m,page):
         sizes='(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) 46vw, 360px'
     else:
         sizes='(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) 50vw, 660px'
-    return tag[:-1] + f' srcset="{srcset}" sizes="{sizes}">'
+    end='/>' if tag.endswith('/>') else '>'
+    base=tag[:-len(end)]
+    return base + f' srcset="{srcset}" sizes="{sizes}"' + end
 
 total=0
 for page in PATHS:
